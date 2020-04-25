@@ -12,12 +12,15 @@
     "migration:revert": "ts-node migration revert"
   },
   "dependencies": {
-    "@vendure/admin-ui-plugin": "0.10.2",
-    "@vendure/asset-server-plugin": "0.10.2",
-    "@vendure/core": "0.10.1",
-    "@vendure/email-plugin": "0.10.1",
+    "@vendure/admin-ui-plugin": "^0.11.1",
+    "@vendure/asset-server-plugin": "^0.11.1",
+    "@vendure/core": "^0.11.1",
+    "@vendure/email-plugin": "^0.11.1",
+    "@vendure/ui-devkit": "^0.11.1",
     "mysql": "2.18.1",
-    "typescript": "3.7.5"
+    "typescript": "3.7.5",
+    "vendure-bulk-discounts": "^0.1.0",
+    "vendure-product-recommendations": "^0.1.6"
   },
   "devDependencies": {
     "concurrently": "5.1.0",

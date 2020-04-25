@@ -2,16 +2,28 @@ import {
   examplePaymentHandler,
   DefaultSearchPlugin,
   VendureConfig,
+  LanguageCode,
 } from "@vendure/core";
 import { defaultEmailHandlers, EmailPlugin } from "@vendure/email-plugin";
 import { AssetServerPlugin } from "@vendure/asset-server-plugin";
 import { AdminUiPlugin } from "@vendure/admin-ui-plugin";
+import { compileUiExtensions } from "@vendure/ui-devkit/compiler";
 import path from "path";
 
-import { RandomCatPlugin } from "./plugins/random-cats";
-import { ProductRecommendationPlugin } from "./plugins/product-recommendations/product-recommendations";
+import {
+  ProductRecommendationsPlugin,
+  ProductRecommendationsInputModule,
+} from "vendure-product-recommendations";
+import {
+  BulkDiscountPlugin,
+  BulkDiscountsInputModule,
+} from "vendure-bulk-discounts";
+import { ProductDiscountsPlugin } from "./plugins/product-discounts/product-discounts";
+import { ProductMinimumOrderQuantityPlugin } from "./plugins/product-minimum-order-quantity/product-minimum-order-quantity";
+import { bulkDiscountModules } from "./ui-extensions/modules/ng-module-config";
 
 export const config: VendureConfig = {
+  defaultLanguageCode: LanguageCode.de,
   authOptions: {
     sessionSecret: "54snj4hf5e",
   },
@@ -55,8 +67,43 @@ export const config: VendureConfig = {
           "http://localhost:8080/verify-email-address-change",
       },
     }),
-    AdminUiPlugin.init({ port: 3002 }),
-    RandomCatPlugin,
-    ProductRecommendationPlugin,
+    AdminUiPlugin.init({
+      port: 3002,
+      app: compileUiExtensions({
+        outputPath: path.join(__dirname, "../__admin-ui"),
+        extensions: [
+          {
+            // Points to the path containing our Angular "glue code" module
+            extensionPath: path.join(__dirname, "ui-extensions/modules"),
+            ngModules: [...bulkDiscountModules],
+            staticAssets: [
+              {
+                path: path.join(__dirname, "ui-extensions/react-app/build"),
+                rename: "react-app",
+              },
+            ],
+          },
+          {
+            extensionPath: path.join(
+              __dirname,
+              "../node_modules/vendure-product-recommendations/ui-extensions/modules/"
+            ),
+            ngModules: [ProductRecommendationsInputModule],
+          },
+          {
+            extensionPath: path.join(
+              __dirname,
+              "../node_modules/vendure-bulk-discounts/ui-extensions/modules/"
+            ),
+            ngModules: [BulkDiscountsInputModule],
+          },
+        ],
+        devMode: true,
+      }),
+    }),
+    ProductRecommendationsPlugin,
+    BulkDiscountPlugin,
+    ProductDiscountsPlugin,
+    ProductMinimumOrderQuantityPlugin,
   ],
 };
