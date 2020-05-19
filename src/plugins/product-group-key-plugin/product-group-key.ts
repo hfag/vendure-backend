@@ -10,7 +10,7 @@ import { ProductGroupKeyAdminResolver } from "./product-group-key.resolver";
 const adminSchemaExtension = gql`
   extend type Query {
     getProductByGroupKey(productGroupKey: String!): Product
-    getProductsByGroupKeys(productGroupKeys: [String!]!): [Product]!
+    getProductsByGroupKeys(productGroupKeys: [String!]!): [Product!]!
   }
 `;
 

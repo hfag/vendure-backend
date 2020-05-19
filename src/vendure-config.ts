@@ -32,6 +32,8 @@ export const config: VendureConfig = {
     port: 3000,
     adminApiPath: "admin-api",
     shopApiPath: "shop-api",
+    adminApiPlayground: true,
+    shopApiPlayground: true,
   },
   dbConnectionOptions: {
     type: "mysql",
