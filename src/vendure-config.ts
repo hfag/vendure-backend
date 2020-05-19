@@ -21,15 +21,18 @@ import {
 import { ProductDiscountsPlugin } from "./plugins/product-discounts/product-discounts";
 import { ProductMinimumOrderQuantityPlugin } from "./plugins/product-minimum-order-quantity/product-minimum-order-quantity";
 import { bulkDiscountModules } from "./ui-extensions/modules/ng-module-config";
+import { ProductGroupKeyPlugin } from "./plugins/product-group-key-plugin/product-group-key";
 
 export const config: VendureConfig = {
   defaultLanguageCode: LanguageCode.de,
   authOptions: {
-    sessionSecret: "54snj4hf5e",
+    tokenMethod: "bearer",
   },
-  port: 3000,
-  adminApiPath: "admin-api",
-  shopApiPath: "shop-api",
+  apiOptions: {
+    port: 3000,
+    adminApiPath: "admin-api",
+    shopApiPath: "shop-api",
+  },
   dbConnectionOptions: {
     type: "mysql",
     synchronize: true, // turn this off for production
@@ -105,5 +108,6 @@ export const config: VendureConfig = {
     BulkDiscountPlugin,
     ProductDiscountsPlugin,
     ProductMinimumOrderQuantityPlugin,
+    ProductGroupKeyPlugin,
   ],
 };
