@@ -19,8 +19,8 @@
     "@vendure/ui-devkit": "^0.12.1",
     "mysql": "2.18.1",
     "typescript": "3.7.5",
-    "vendure-bulk-discounts": "^0.1.0",
-    "vendure-product-recommendations": "^0.1.6"
+    "vendure-bulk-discounts": "^0.1.4",
+    "vendure-product-recommendations": "^0.1.10"
   },
   "devDependencies": {
     "concurrently": "5.1.0",

@@ -22,6 +22,9 @@ import { ProductDiscountsPlugin } from "./plugins/product-discounts/product-disc
 import { ProductMinimumOrderQuantityPlugin } from "./plugins/product-minimum-order-quantity/product-minimum-order-quantity";
 import { bulkDiscountModules } from "./ui-extensions/modules/ng-module-config";
 import { ProductGroupKeyPlugin } from "./plugins/product-group-key-plugin/product-group-key";
+import { SeoDescriptionsPlugin } from "./plugins/seo-descriptions/seo-descriptions";
+import { CollectionProductsPlugin } from "./plugins/collection-products/collection-products";
+import { ProductBySlugPlugin } from "./plugins/product-by-slug/product-by-slug";
 
 export const config: VendureConfig = {
   defaultLanguageCode: LanguageCode.de,
@@ -111,5 +114,8 @@ export const config: VendureConfig = {
     ProductDiscountsPlugin,
     ProductMinimumOrderQuantityPlugin,
     ProductGroupKeyPlugin,
+    SeoDescriptionsPlugin,
+    CollectionProductsPlugin,
+    ProductBySlugPlugin,
   ],
 };

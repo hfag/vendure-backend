@@ -10854,17 +10854,17 @@ vendors@^1.0.0:
   resolved "https://registry.yarnpkg.com/vendors/-/vendors-1.0.4.tgz#e2b800a53e7a29b93506c3cf41100d16c4c4ad8e"
   integrity sha512-/juG65kTL4Cy2su4P8HjtkTxk6VmJDiOPBufWniqQ6wknac6jNiXS9vU+hO3wgusiyqWlzTbVHi0dyJqRONg3w==
 
-vendure-bulk-discounts@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/vendure-bulk-discounts/-/vendure-bulk-discounts-0.1.0.tgz#d45d19895db95d9b0d7bdeb40e36eac7b7e65c9e"
-  integrity sha512-zqg06VYAV4F4AZ6wXP1IuK2o57O16/zZNc1s89vNYyz07CeNXnOWr6h8sV6gq320a7wjr1FKd9ozbCj24SrUCQ==
+vendure-bulk-discounts@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/vendure-bulk-discounts/-/vendure-bulk-discounts-0.1.4.tgz#b29eba675e1e3e2b401d94672361e96c45e24d78"
+  integrity sha512-avrZPyIBoAbr8NiIjW2N464gj98PlKmXsDrI6uozxxTA4SRKCJsK4qAoD+V0TgpTEuiMcYW3wy/cb9ngrKikBA==
   dependencies:
     tslib "^1.11.1"
 
-vendure-product-recommendations@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/vendure-product-recommendations/-/vendure-product-recommendations-0.1.6.tgz#af1fd4dbc2f91bc31aa2056d11cbd04afd83903c"
-  integrity sha512-5WENZVwspGFEK2CW98xY+bcdV47lZ/Xq7RZEGShVyOLKxDE2TlQ0wX4rJT7Bl0/IH5GcljitoOkMKIP9cEhl+w==
+vendure-product-recommendations@^0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/vendure-product-recommendations/-/vendure-product-recommendations-0.1.10.tgz#8cac9fa67d24f091dc769e1bb0975e4316087ef6"
+  integrity sha512-L+UrkRkDcO5KaWo0Yuh4URz7xmABdH8tRb1zupplu5f26kZkwOTldHwEkIcUu3NK3T2gesjw2s0YY1asrvriWw==
   dependencies:
     tslib "^1.11.1"
 
