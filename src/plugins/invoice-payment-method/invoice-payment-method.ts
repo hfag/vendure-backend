@@ -10,9 +10,13 @@ export const InvoicePaymentIntegration = new PaymentMethodHandler({
   code: "invoice",
   description: [
     { languageCode: LanguageCode.en, value: "A simple invoice payment method" },
+    {
+      languageCode: LanguageCode.de,
+      value: "Eine simple Bezahlart per Rechnung",
+    },
   ],
   args: {
-    email: { type: "string" },
+    copyEmail: { type: "string" },
   },
   createPayment: async (
     order,
@@ -23,7 +27,7 @@ export const InvoicePaymentIntegration = new PaymentMethodHandler({
       amount: order.total,
       state: "Settled",
       transactionId: order.id.toString(),
-      metadata: {},
+      metadata: { copyEmail: args.copyEmail },
     };
   },
   settlePayment: async (order, payment, args): Promise<SettlePaymentResult> => {

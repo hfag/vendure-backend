@@ -8,19 +8,28 @@ import {
 } from "@vendure/email-plugin";
 import { OrderStateTransitionEvent, LanguageCode } from "@vendure/core";
 
-const invoicePaymentHandler = new EmailEventListener("order-invoice-copy")
+const orderConfirmationCopyHandler = new EmailEventListener(
+  "order-confirmation-copy"
+)
   .on(OrderStateTransitionEvent)
-  .filter((event) => event.toState === "PaymentSettled")
+  .filter((event) =>
+    event.toState === "PaymentSettled" &&
+    event.order.payments.find((p) => p.method === "invoice")
+      ? true
+      : false
+  )
   .setRecipient((event) => {
-    if (!event.order.customer) {
+    const payment = event.order.payments.find((p) => p.method === "invoice");
+
+    if (!payment) {
       throw new Error(
-        "Order in state PaymentSettled must have a customer email address"
+        "Internal server error, no invoice payment there even though we just checked for it! Bad interleaving?"
       );
     }
 
-    return event.order.customer.emailAddress;
+    return payment.metadata.copyEmail;
   })
-  .setSubject(`Neue Bestellung #{{ order.code }}`)
+  .setSubject(`New order #{{ order.code }}`)
   .setTemplateVars((event) => ({
     order: event.order,
   }))
@@ -28,13 +37,13 @@ const invoicePaymentHandler = new EmailEventListener("order-invoice-copy")
     channelCode: "default",
     languageCode: LanguageCode.de,
     templateFile: "body.de.hbs",
-    subject: "Bestellbestätigung für #{{ order.code }}",
+    subject: "Neue Bestellung #{{ order.code }}",
   })
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.fr,
     templateFile: "body.fr.hbs",
-    subject: "Bestellbestätigung für #{{ order.code }}",
+    subject: "Neue Bestellung #{{ order.code }}",
   });
 
 const extendedConfirmationHandler = orderConfirmationHandler
@@ -93,9 +102,9 @@ const extendedEmailAddressChangeHandler = emailAddressChangeHandler
   });
 
 export const extendedHandlers: Array<EmailEventHandler<any, any>> = [
+  orderConfirmationCopyHandler,
   extendedConfirmationHandler,
   extendedEmailVerificationHandler,
   extendedPasswordResetHandler,
   extendedEmailAddressChangeHandler,
-  invoicePaymentHandler,
 ];
