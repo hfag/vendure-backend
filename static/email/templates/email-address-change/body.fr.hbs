@@ -1,18 +1,18 @@
-{{> header title="Verify Your New Email Address" }}
+{{> header.fr title="Bestätigen Sie Ihre neue E-Mail Adresse" }}
 
 <mj-section background-color="white">
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5" font-weight="300">
-            We received a request to change your registered email address to this one.
-            Click the button below to verify this address and complete the process:
+            Wir haben eine Anfrage erhalten, deine registrierte E-Mail zu dieser zu ändern.
+            Klicken Sie auf die foglende Schaltfläche um diese E-Mail zu bestätigen:
         </mj-text>
 
         <mj-button font-family="'Roboto Condensed', sans-serif" background-color="#353535" color="white"
             href="{{ changeEmailAddressUrl }}?token={{ user.identifierChangeToken }}">
-            Verify email!
+            Neue E-Mail bestätigen
         </mj-button>
     </mj-column>
 </mj-section>
 
 
-{{> footer }}
+{{> footer.fr }}

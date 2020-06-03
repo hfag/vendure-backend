@@ -1,4 +1,4 @@
-{{> header title="Order Receipt" }}
+{{> header title="Order Receipt" noGreetings="true" }}
 
 <mj-raw>
     <style type="text/css">
@@ -48,7 +48,7 @@
 <mj-section background-color="white">
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
-            Thank you for your order!
+            A new order.
         </mj-text>
     </mj-column>
 </mj-section>
@@ -114,7 +114,7 @@
 <mj-section background-color="#ffffff">
     <mj-column>
         <mj-text>
-            <h3>Order Summary:</h3>
+            <h3>Order Summary::</h3>
         </mj-text>
         <mj-table cellpadding="6px">
             {{#each order.lines }}
@@ -129,11 +129,11 @@
             </tr>
             {{/each}}
             <tr class="order-row">
-                <td colspan="3">Sub-total:</td>
+                <td colspan="3">Subtotal:</td>
                 <td>${{ formatMoney order.subTotal }}</td>
             </tr>
             <tr class="order-row">
-                <td colspan="3">Shipping ({{ order.shippingMethod.description }}):</td>
+                <td colspan="3">Versand ({{ order.shippingMethod.description }}):</td>
                 <td>${{ formatMoney order.shipping }}</td>
             </tr>
             <tr class="order-row total-row">

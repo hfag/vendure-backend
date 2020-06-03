@@ -1,4 +1,4 @@
-{{> header title="Order Receipt" }}
+{{> header.fr title="Bestellbeleg" }}
 
 <mj-raw>
     <style type="text/css">
@@ -48,7 +48,7 @@
 <mj-section background-color="white">
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
-            Thank you for your order!
+            Vielen Dank für Ihre Bestellung!
         </mj-text>
     </mj-column>
 </mj-section>
@@ -56,18 +56,18 @@
 
 <mj-section css-class="callout">
     <mj-column>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Order Code</strong>
+        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Bestellnummer</strong>
         </mj-text>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">{{ order.code }}</mj-text>
     </mj-column>
     <mj-column>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Order Date</strong>
+        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Bestelldatum</strong>
         </mj-text>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">
             {{ formatDate order.orderPlacedAt }}</mj-text>
     </mj-column>
     <mj-column>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Total Price</strong>
+        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Gesamtbetrag</strong>
         </mj-text>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">${{ formatMoney order.total }}
         </mj-text>
@@ -79,7 +79,7 @@
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
             {{#with order.shippingAddress }}
-            <h3>Shipping To: {{ fullName }}</h3>
+            <h3>Wird versendet an: {{ fullName }}</h3>
             <ul class="address">
                 {{#if company}}
                 <li>{{ company }}</li>
@@ -114,7 +114,7 @@
 <mj-section background-color="#ffffff">
     <mj-column>
         <mj-text>
-            <h3>Order Summary:</h3>
+            <h3>Zusammenfassung:</h3>
         </mj-text>
         <mj-table cellpadding="6px">
             {{#each order.lines }}
@@ -129,11 +129,11 @@
             </tr>
             {{/each}}
             <tr class="order-row">
-                <td colspan="3">Sub-total:</td>
+                <td colspan="3">Subtotal:</td>
                 <td>${{ formatMoney order.subTotal }}</td>
             </tr>
             <tr class="order-row">
-                <td colspan="3">Shipping ({{ order.shippingMethod.description }}):</td>
+                <td colspan="3">Versand ({{ order.shippingMethod.description }}):</td>
                 <td>${{ formatMoney order.shipping }}</td>
             </tr>
             <tr class="order-row total-row">
@@ -144,4 +144,4 @@
     </mj-column>
 </mj-section>
 
-{{> footer }}
+{{> footer.fr }}

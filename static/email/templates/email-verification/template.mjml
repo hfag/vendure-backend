@@ -1,0 +1,96 @@
+<mjml>
+  <mj-head>
+    <mj-title>Titel</mj-title>
+    <mj-font name="Roboto Condensed" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400" />
+    <mj-style inline="inline">
+      /*h3 {
+        font-size: 18px;
+        color: #555;
+        font-weight: normal;
+      }*/
+    </mj-style>
+  </mj-head>
+  <mj-body>
+
+    <mj-section background-color="#e3e3e3">
+      <mj-column>
+        <mj-image align="left" width="500px" src="http://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#fafafa">
+      <mj-column>
+        <mj-text color="#525252" font-family="'Roboto Condensed', sans-serif">
+          Sehr geehrter Kunde
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="white">
+      <mj-column>
+        <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5" font-weight="300">
+          Vielen Dank für das Erstellen eines Benutzerkontos. Klicken Sie auf die folgende Schaltfläche um diese E-Mail zu bestätigen und den Registrationsprozess zu beenden.
+        </mj-text>
+
+        <mj-button font-family="'Roboto Condensed', sans-serif" background-color="#353535" color="white" href="{{ verifyEmailAddressUrl }}?token={{ user.verificationToken }}">
+          E-Mail bestätigen
+        </mj-button>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#fafafa">
+      <mj-column>
+        <mj-text color="#525252" font-family="'Roboto Condensed', sans-serif">
+          Ihre Hauser Feuerschutz AG
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#e3e3e3">
+      <mj-column width="50%">
+        <mj-image align="left" src="http://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
+        <mj-text font-family="'Roboto Condensed', sans-serif" font-size="12px" line-height="1.5" color="#525252">
+          Die 1970 gegründete Firma bietet Ihnen Dienstleistungen und Produkte an in den Bereichen Sicherheitskennzeichnung, Trittschutz und Feuerschutz.
+        </mj-text>
+      </mj-column>
+
+      <mj-column width="50%">
+        <mj-table font-family="'Roboto Condensed', sans-serif">
+          <tr>
+            <td style="padding: 0 16px 4px 0; width: 32px">
+              <img width="32px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAQKADAAQAAAABAAAAQAAAAABGUUKwAAAEUUlEQVR4Ad1bWYhPURg3lhnZsmRKlMRQqCnLFE0eKIUHWx48TSamNCXyJMnblDey5YGJCC9KNPIgRfKCKUu2kjJkScSQnd+vXN258z/O+b5z7jZf/brbt/7OdO453/1PVb9sZDjCLAEWANOAycBIYBjwE/gIvAUeAfeBi8BV4AdQWqlF5i1AB/AF+C0ECTkGrAIGA6WREci0DfgMSIs26XfBVzPQHyisVCOzTcAbwFSI7/278L0MKJxMQkZ3AN8CXe1PI9aQorDAiS3NUTeRchNxx+dNwnok8A0wJZn2/ReI3ZAXCRtyLDxObDfyqM+ahEYEzHPk4wTw/CkwFshEJiLKayCZRN7XV5DToLQZYIDOAhYfkb83bQJaC1w8SeCyemZaJHDd/gqI2C7q8XxaBOwsQfHRoHBtElTGwBt3bFEA7fETfBwFVgLcEXI1x13hdICv1QvAL0DrP7K7Bh9BhRuRyLn2eAQ+xjlkNQc6LEAbJ7Lj8jyYnIWnyLH0+BW264SZDIT+QY+YzHGzMKZRnX+mPlvbJqNn+4N2qEgJj/Qv2927aSz3SOKQWwijVg2eaHeZ7CaNNnoWPNgN3YhVyfED7GoFcUyqS5XxmSsH77/i0mFhD08jx2H0WmOYsOnA9YPEPddLa+4uBNS5RkvoceIMJVpfU2wJuBDA97RGbmiMDDZaX6MM/v7ddiGALW2pcKvMrm4oYeNDI9bcXQjQBA5tUxXaYeTPhQDO5lJhh5jL51DisoKsFMuae1oEMBkuaUOJ1lcQAtjx1Yj1HSxwqvWlzb1HagdwJVkARbpFWAit6VGJ8qJZSQCJyHMpzPhBdoRTPQhgEk2AVtphSB8adGmDVrK7rkyCiee1HW6rVIj2Hrs1mlGI27g2RGYjVoiGiHUZLCGDK6r3AUjIqiV2SVKcq+62AATE/yLSPJ/nWpREj52h5yUg4YykKKluiLkgzZFnF8jaA5AWHdcfgItbQJpF+PjeE082rfMGOOYnKJ9E07Dle9+6/Q1FCplOowgfnytCFefiZyiUnhSIhFMuSYfWWQiHIT5j+Yw6bdl4zezHEUkS9+GGbwG+9quTSWV5zbXB4xxJOJFlsaZY8/GA71/fkZTac9a3dn1NSYe+z52XtAAffc49i0MX4eOvGsadgE9RElvOPYWTGchI86twSeHU5Wcyzj2FlC3ISlqQRP87/M8tZOV/k+IHDO7FJUVJdHcUufgotwk4eZcCCWzLcTNWClmLLCUja9Pthr+gLa4sWDwZkISWLBIOHYOLlGcBSDgXOrEs/S1CMJ8NEzc6IX5mk2XNvWJpf2PEeUH7TbBXEnne4L+83QNsE13y+eE8kw4dexYcSv7Bgs2WzNpboYs1+duOB8lRrnTNfmOjyUmZ73MR4/KNcVeZi7TlXgcFfh6rNPK8dxvgzrJPy0ZUV4kAfkWu79OVx4rj4iZJwtbY8z5/WoMK9wMvgYdAK5CL/AGuNgjd8meM3wAAAABJRU5ErkJggg==" />
+            </td>
+            <td style="padding: 0 0 4px 16px">
+              <a href="https://www.google.ch/maps/place/Sonnmattweg+6,+5000+Aarau/@47.3971534,8.0412625,17z/data=!3m1!4b1!4m5!3m4!1s0x47903be72641ef39:0x35e802ea186c4a2d!8m2!3d47.3971534!4d8.0434512" style="color:#000">
+                Sonnmattweg 6
+                <br>
+                CH 5000 Aarau
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 16px 4px 0; width: 32px">
+              <img width="32px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAQKADAAQAAAABAAAAQAAAAABGUUKwAAABblBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABNA2d/AAAAeXRSTlMAAQIDBAUGBwgJCgsMDQ4REhMVFhghIiMlJigpKiwuLzo9P0lLT1FSU1RVYGNnaW5vcHR4eXp7fH2Cg4qLjpKTlJeYmZ2foqOkpqmrrrKztLa3uLm6u7y9v8DCycrMzdDW19jZ2tvd4OPn6ert7/Dy8/X2+Pn6+/z+3r1fRwAAAg1JREFUGBmdwQlXUkEABtDvEYoo0aKWWoiiJuECWWFZpoQpZhlmu1u4gKIhidj7/n0njyfmzRtkxnthpC11VMw+jbTiqhZ4rro2He3AFXTbrMnPj4UsmJmh5PAJTASP6RKHgTjd1qHP2qXbDvQNUGED+lao8A3aum0qvIe2V1RZhK7gMVXS0BWn0iQ0WbtUikHTANV6oSlLJdsPPc2nVCpA07VTKq1A12sqJaHL95YqfdA3adOl7IWBoTJlWRgJ5SmZgJlbX+l0H4a8MxRtwtwbChIw1lZkzVk7jCUp+ABjN0oURGEsRcGOB6b6bQpGYMqXo6DghamXFI3D1BBF+z4YuvOLohgMXd+i6BMMNX+hqNIFM54lOkyhrpYmuHnm6JDzQ80a/FitzrVA0rxEh5MQlIKJPf7zzoJD4DOdRqHSM1vmhecQ3d2iUwZu1uCqzf/sh6gZKtEpF4As+GiPDr/DuOB7YdPpoBOSntkyZYXbONe/TUkpDKe2jE2FH00AbqZsSioRSFJUSyPwrETZnweQHbGOhUO6VIbhUqS+UgRuWWo7CEMhSV25TqhEqCkTgFJrlTpORlHPGjX8DKGuaTZUmfKjvigbWe3CZTp4uf0YGsjzEoVxHxqZZ13bI140Nka1s+VhD3SEqLKRaIcm65CScnbiHgw8Zo1dWEn2eWEovr6z+X15MT0Z6/XD0F8/072CowLXzAAAAABJRU5ErkJggg==" />
+            </td>
+            <td style="padding: 4px 16px 4px 16px;">
+              <a href="tel:+41628340540" style="color:#000">
+                062 834 05 40
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 4px 16px 0 0; width: 32px">
+              <img width="32px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAQKADAAQAAAABAAAAQAAAAABGUUKwAAAD6klEQVR4Ae2YSWgUURCGx3hQQYyoiIjePIiISwRzEYQEPXkQr26guCGCCOpFcbt5ExTvXkQUhQguB0XjcvEiLieNCiruG8RExaDfn8wbOm9eT/fM9Ewy817BP9Vdr7qq/ppeqjuXCxI6EDoQOhA6EDoQOhA6MNSBtahu8B38a0KIl/iJ5zCZyl4XaEbScZzEV7wHxTfypiniPXg6GIN3uoUGbBs8Bzz9GQNv3RhaPeWfUwN02nsrugS8FjXgt88dUAMe+NwA3QPawF0wwcNG9BnOasJL4NMc8Aq+4l2QKWxdBT404Ro8C2NwoQNs6J5wCAyAZmyEeB0GiU+/FTh9AM3UhI/wWQmKJK4bM/G8BZqhCbfhIT5OeY31ApjkWB2L7Sho1EtCdR8D4mGLxv9LMpp/+BnbC2VwSAe2d8D4NoJWvZ0OLjItBj1APIaR6mc/7u1wOmu6ezYCedWpel2yA+MvYHgUNoxB+ixwXRIanPaCPyDqP1q2Vdc+oDptEZ9zwK61yGAcnuO8xI6S31+KfgGM72jQqqc9X5+txEN8XHU6jcZRL0q77Wj5fXVUZ4rxHUkdd8aqVNUvHnH1xS5ED7hMAOfkhH0T6C2RIBon6+2f+fyoIlG9XSApZ6KDCfCGYMuL0gwZ5qIeAuNbD618yusS1al609SRyskE0nP1CHA9V8dhP5EyqYlXqVYe5bNFdR0Gf0Ha2KkdowHvkGA2cMkqjJ9A1D+rbcVVfJfMwtgNys1V9gEmwVeSrXFVgk1j5w1gfLPQihc3zq5m7UuF+aou8jSJXR9TWrAfBAMVFmaapuMPAMWzZTyGU8D4VqKrOtgkfEIR8+3q8vsd6PfA+JajdZyOd8k8jI9AOfFcvlUHMEH7KGa7q1JsGkvL/dgifx3nkq0Ylc/krkZnEiRawEUKm+yoWuPpLvANRP3tba3LzzXOtmI/n3C8HS9pv2QxSQfHrfdQZBtwyTSMJ4H9PqF92bXukkUY48bZuDrS2GvSACXWG1fcPymCmtTWgf15HTdpspzbCfpBGkLl+tQkaLSI6xQe9/hiqaTMYPUKiMbLerumwU2xnyGxBbgeZZiLRH6bQa0GKlOXdF0aYBI+Jt9G4BpjVYvs60EWjzeTs6TWnVYO9ZZeEt4ET4EmOF3/eq53gomgbjJSDagbwaREaa/JpDgNux4a0LB/XUaFhzOARo7EUyCj/6/6MDoDNGx4K2rAfW/ZQ1xzQDu4B/RB0TcZEOm3QJ+0lvnGHr7HDWddCntArV45S87j5K33uniKb4v91WUOxg1gAdDXF3sdU8OKmvwD6EXrDNDHlSChA6EDoQOhA6EDPnfgP/FOR07GstKEAAAAAElFTkSuQmCC" />
+            </td>
+            <td style="padding: 4px 0 0 16px;">
+              <a href="mailto:info@feuerschutz.ch" style="color:#000">
+                info@feuerschutz.ch
+              </a>
+            </td>
+          </tr>
+        </mj-table>
+      </mj-column>
+    </mj-section>
+
+  </mj-body>
+</mjml>
