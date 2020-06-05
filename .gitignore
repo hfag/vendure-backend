@@ -106,4 +106,5 @@ dist
 # vendure
 __admin-ui
 static/assets/
+static/email/test-emails/
 src/vendure-config.ts

@@ -14,7 +14,7 @@ const orderConfirmationCopyHandler = new EmailEventListener(
   .on(OrderStateTransitionEvent)
   .filter((event) =>
     event.toState === "PaymentSettled" &&
-    event.order.payments.find((p) => p.method === "invoice")
+    event.order?.payments.find((p) => p.method === "invoice")
       ? true
       : false
   )

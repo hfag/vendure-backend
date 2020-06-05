@@ -9,17 +9,18 @@
     "build": "tsc",
     "migration:generate": "ts-node migration generate",
     "migration:run": "ts-node migration run",
-    "migration:revert": "ts-node migration revert"
+    "migration:revert": "ts-node migration revert",
+    "update-vendure": "yarn add @vendure/admin-ui-plugin @vendure/asset-server-plugin @vendure/core @vendure/email-plugin @vendure/ui-devkit"
   },
   "dependencies": {
-    "@vendure/admin-ui-plugin": "^0.12.1",
-    "@vendure/asset-server-plugin": "^0.12.1",
-    "@vendure/core": "^0.12.1",
-    "@vendure/email-plugin": "^0.12.1",
-    "@vendure/ui-devkit": "^0.12.1",
+    "@vendure/admin-ui-plugin": "^0.12.5",
+    "@vendure/asset-server-plugin": "^0.12.5",
+    "@vendure/core": "^0.12.5",
+    "@vendure/email-plugin": "^0.12.5",
+    "@vendure/ui-devkit": "^0.12.5",
     "mysql": "2.18.1",
     "typescript": "3.7.5",
-    "vendure-bulk-discounts": "^0.1.4",
+    "vendure-bulk-discounts": "^0.1.6",
     "vendure-product-recommendations": "^0.1.10"
   },
   "devDependencies": {
