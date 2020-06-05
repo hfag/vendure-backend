@@ -3,9 +3,20 @@ import {
   PluginCommonModule,
   PromotionCondition,
   LanguageCode,
-  PromotionOrderAction,
-  Order,
 } from "@vendure/core";
+import gql from "graphql-tag";
+import { CustomerResellerDiscountResolver } from "./customer-group-discounts.resolver";
+
+const schemaExtension = gql`
+  type ResellerDiscount {
+    facetValueIds: [ID!]!
+    discount: Int!
+  }
+
+  extend type Customer {
+    resellerDiscounts: [ResellerDiscount!]!
+  }
+`;
 
 const groupMember = new PromotionCondition({
   description: [
@@ -14,7 +25,7 @@ const groupMember = new PromotionCondition({
       value: "If the order is created by a member of group #{ group }",
     },
   ],
-  code: "group_member",
+  code: "group-member",
   args: {
     group: { type: "int", config: { inputType: "default" } },
   },
@@ -35,7 +46,7 @@ const notGroupMember = new PromotionCondition({
         "If the order is created by a customer who's not a member of #{ group }",
     },
   ],
-  code: "not_group_member",
+  code: "not-group-member",
   args: {
     group: { type: "int", config: { inputType: "default" } },
   },
@@ -48,23 +59,12 @@ const notGroupMember = new PromotionCondition({
   priorityValue: 10,
 });
 
-const applyResellerDiscount = new PromotionOrderAction({
-  description: [
-    {
-      languageCode: LanguageCode.en,
-      value: "Apply bulk discount configured elsewhere",
-    },
-  ],
-  code: "bulk_discount",
-  args: {},
-  execute(order, args, { hasFacetValues }) {
-    //TODO
-    return 0;
-  },
-});
-
 @VendurePlugin({
   imports: [PluginCommonModule],
+  shopApiExtensions: {
+    schema: schemaExtension,
+    resolvers: [CustomerResellerDiscountResolver],
+  },
   configuration: (config) => {
     if (!config.promotionOptions.promotionActions) {
       config.promotionOptions.promotionActions = [];
@@ -76,9 +76,6 @@ const applyResellerDiscount = new PromotionOrderAction({
 
     config.promotionOptions.promotionConditions.push(groupMember);
     config.promotionOptions.promotionConditions.push(notGroupMember);
-
-    config.promotionOptions.promotionActions.push(variantFixedPriceWithTaxes);
-    config.promotionOptions.promotionActions.push(applyResellerDiscount);
 
     return config;
   },
