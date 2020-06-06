@@ -12,22 +12,9 @@ import {
 import { Connection } from "typeorm";
 import { CreateAddressInput } from "@vendure/common/lib/generated-types";
 
-interface ConnectedPaymentMethodConfigOptions<
-  T extends PaymentMethodArgs = PaymentMethodArgs
-> extends PaymentMethodConfigOptions<T> {
-  connection: Connection | null;
-}
+let connection: null | Connection = null;
 
-class ConnectedPaymentMethodHandler<
-  T extends PaymentMethodArgs = PaymentMethodArgs
-> extends PaymentMethodHandler<T> {
-  constructor(config: ConnectedPaymentMethodConfigOptions<T>) {
-    super(config);
-  }
-}
-
-export const InvoicePaymentIntegration = new ConnectedPaymentMethodHandler({
-  connection: null,
+export const InvoicePaymentIntegration = new PaymentMethodHandler({
   code: "invoice",
   description: [
     { languageCode: LanguageCode.en, value: "A simple invoice payment method" },
@@ -62,20 +49,16 @@ export const InvoicePaymentIntegration = new ConnectedPaymentMethodHandler({
     },
   },
   init: function (injector) {
-    this.connection = injector.getConnection();
+    connection = injector.getConnection();
   },
   destroy: function () {
-    this.connection = null;
+    connection = null;
   },
   createPayment: async function (
-    this: ConnectedPaymentMethodHandler,
     order,
     args,
     metadata
   ): Promise<CreatePaymentResult | CreatePaymentErrorResult> {
-    //@ts-ignore
-    const connection: Connection = this["options"].connection;
-
     if (!connection) {
       throw new Error(
         "Object has already been destroyed or not created yet. Try again."
