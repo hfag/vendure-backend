@@ -16,6 +16,7 @@
     "@vendure/admin-ui-plugin": "^0.12.5",
     "@vendure/asset-server-plugin": "^0.12.5",
     "@vendure/core": "^0.12.5",
+    "@vendure/elasticsearch-plugin": "^0.12.5",
     "@vendure/email-plugin": "^0.12.5",
     "@vendure/ui-devkit": "^0.12.5",
     "mysql": "2.18.1",
