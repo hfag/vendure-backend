@@ -20,9 +20,7 @@ import { Translated } from "@vendure/core/dist/common/types/locale-types";
 import { TranslatableSaver } from "@vendure/core/dist/service/helpers/translatable-saver/translatable-saver";
 import { CollectionLinkTranslation } from "./collection-links-translation.entity";
 
-export function notEmpty<TValue>(
-  value: TValue | null | undefined
-): value is TValue {
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined;
 }
 

@@ -1,10 +1,10 @@
 import { VendurePlugin, PluginCommonModule } from "@vendure/core";
 import gql from "graphql-tag";
-import { ProductBySlugResolver } from "./product-by-slug.resolver";
+import { AssetByNameResolver } from "./asset-by-name.resolver";
 
 const schemaExtension = gql`
   extend type Query {
-    productBySlug(slug: String!): Product
+    assetByName(name: String!): Asset
   }
 `;
 
@@ -12,14 +12,10 @@ const schemaExtension = gql`
   imports: [PluginCommonModule],
   adminApiExtensions: {
     schema: schemaExtension,
-    resolvers: [ProductBySlugResolver],
-  },
-  shopApiExtensions: {
-    schema: schemaExtension,
-    resolvers: [ProductBySlugResolver],
+    resolvers: [AssetByNameResolver],
   },
   configuration: (config) => {
     return config;
   },
 })
-export class ProductBySlugPlugin {}
+export class AssetByNamePlugin {}
