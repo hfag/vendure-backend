@@ -46,9 +46,13 @@ import { parse } from "graphql";
           <tr *ngFor="let link of links; let i = index">
             <td>
               <select (input)="onTypeChange(i, $event.target.value)">
-                <option value="PDF">PDF</option>
-                <option value="VIDEO">Video</option>
-                <option value="LINK">Link</option>
+                <option value="PDF" [selected]="link.type == 'PDF'">PDF</option>
+                <option value="VIDEO" [selected]="link.type == 'VIDEO'"
+                  >Video</option
+                >
+                <option value="LINK" [selected]="link.type == 'LINK'"
+                  >Link</option
+                >
               </select>
             </td>
             <td>
