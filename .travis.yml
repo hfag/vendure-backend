@@ -19,7 +19,7 @@ branches:
 notifications:
   webhooks:
     urls:
-      - https://vendure.feuerschutz.ch/webhook/travis
+      - https://neowise.feuerschutz.ch/webhook/travis
     on_success: always
     on_failure: never
     on_start: never
