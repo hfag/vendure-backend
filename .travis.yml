@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+  - "14"
+cache:
+  directories:
+    - node_modules
+  yarn: true
+install:
+  - yarn install
+before_script:
+  - cp src/vendure-config.example.ts src/vendure-config.ts
+script:
+  - yarn build
+  - yarn test
+branches:
+  only:
+    - master
+    - staging
+notifications:
+  webhooks:
+    urls:
+      - https://vendure.feuerschutz.ch/webhook/travis
+    on_success: always
+    on_failure: never
+    on_start: never
+    on_cancel: never
+    on_error: never

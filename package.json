@@ -6,25 +6,34 @@
     "run:server": "ts-node ./src/index.ts",
     "run:worker": "ts-node ./src/index-worker.ts",
     "start": "concurrently yarn:run:*",
-    "build": "tsc",
+    "build-migrations": "tsc -p tsconfig.migrations.json",
+    "build": "rimraf dist && rimraf admin-ui && tsc && yarn compile-admin-ui",
     "migration:generate": "ts-node migration generate",
     "migration:run": "ts-node migration run",
     "migration:revert": "ts-node migration revert",
-    "update-vendure": "yarn add @vendure/admin-ui-plugin @vendure/asset-server-plugin @vendure/core @vendure/email-plugin @vendure/ui-devkit"
+    "update-vendure": "yarn add @vendure/admin-ui-plugin @vendure/asset-server-plugin @vendure/core @vendure/email-plugin @vendure/ui-devkit",
+    "compile-admin-ui": "yarn ts-node src/compile-admin-ui.ts",
+    "test": "echo 'sometime in the future'",
+    "deploy": "yarn build"
   },
   "dependencies": {
-    "@vendure/admin-ui-plugin": "^0.12.5",
-    "@vendure/asset-server-plugin": "^0.12.5",
-    "@vendure/core": "^0.12.5",
-    "@vendure/elasticsearch-plugin": "^0.12.5",
-    "@vendure/email-plugin": "^0.12.5",
-    "@vendure/ui-devkit": "^0.12.5",
+    "@types/prosemirror-menu": "^1.0.2",
+    "@types/prosemirror-model": "^1.7.2",
+    "@types/prosemirror-state": "^1.2.5",
+    "@vendure/admin-ui-plugin": "^0.13.0",
+    "@vendure/asset-server-plugin": "^0.13.0",
+    "@vendure/core": "^0.13.0",
+    "@vendure/elasticsearch-plugin": "^0.13.0",
+    "@vendure/email-plugin": "^0.13.0",
+    "@vendure/ui-devkit": "^0.13.0",
     "mysql": "2.18.1",
+    "rimraf": "^3.0.2",
     "typescript": "3.7.5",
-    "vendure-bulk-discounts": "^0.1.6",
-    "vendure-product-recommendations": "^0.1.10"
+    "vendure-bulk-discounts": "^0.1.10",
+    "vendure-product-recommendations": "^0.1.12"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^0.1000.0",
     "concurrently": "5.1.0",
     "ts-node": "8.8.2"
   }
