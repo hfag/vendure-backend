@@ -3,6 +3,7 @@ import {
   LanguageCode,
   DefaultSearchPlugin,
 } from "@vendure/core";
+import { ElasticsearchPlugin } from "@vendure/elasticsearch-plugin";
 import { EmailPlugin } from "@vendure/email-plugin";
 import { AssetServerPlugin } from "@vendure/asset-server-plugin";
 import { AdminUiPlugin } from "@vendure/admin-ui-plugin";
@@ -59,6 +60,34 @@ export const config: VendureConfig = {
     //   searchConfig: {
     //     boostFields: {
     //       sku: 100 /* if sku matches, give really high score */,
+    //     },
+    //     mapQuery: (query, input, searchConfig, channelId, enabledOnly) => {
+    //       if (query.bool.must) {
+    //         delete query.bool.must;
+    //       }
+    //       query.bool.should = [
+    //         {
+    //           query_string: {
+    //             query: "*" + input + "*",
+    //             fields: [
+    //               `productName^${searchConfig.boostFields.productName}`,
+    //               `productVariantName^${searchConfig.boostFields.productVariantName}`,
+    //             ],
+    //           },
+    //         },
+    //         {
+    //           multi_match: {
+    //             query: input,
+    //             type: searchConfig.multiMatchType,
+    //             fields: [
+    //               `description^${searchConfig.boostFields.description}`,
+    //               `sku^${searchConfig.boostFields.sku}`,
+    //             ],
+    //           },
+    //         },
+    //       ];
+
+    //       return query;
     //     },
     //   },
     // }),
