@@ -20,13 +20,6 @@ export const ADMIN_UI_EXTENSIONS = [
     ),
     ngModules: [BulkDiscountsInputModule],
   },
-  {
-    extensionPath: path.join(
-      __dirname,
-      "./plugins/collection-links/ui-extensions/modules/"
-    ),
-    ngModules: [CollectionLinkInputModule],
-  },
 ];
 
 compileUiExtensions({

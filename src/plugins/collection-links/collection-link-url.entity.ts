@@ -6,7 +6,6 @@ import {
   ManyToOne,
   OneToMany,
   JoinColumn,
-  PrimaryGeneratedColumn,
   RelationId,
 } from "typeorm";
 import {
@@ -14,37 +13,32 @@ import {
   LocaleString,
   Translation,
 } from "@vendure/core/dist/common/types/locale-types";
-import { CollectionLinkTranslation } from "./collection-links-translation.entity";
+import { CollectionLinkUrlTranslation } from "./collection-link-url-translation.entity";
+import { CollectionLink } from "./collection-link.entity";
 
 @Entity()
-export class CollectionLink extends VendureEntity implements Translatable {
-  constructor(input?: DeepPartial<CollectionLink>) {
+export class CollectionLinkUrl extends VendureEntity implements Translatable {
+  constructor(input?: DeepPartial<CollectionLinkUrl>) {
     super(input);
   }
 
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @ManyToOne((type) => Collection, {
+  @ManyToOne((type) => CollectionLink, {
     onDelete: "CASCADE",
     nullable: false,
     eager: false,
   })
   @JoinColumn()
-  collection: Collection;
+  collectionLink: CollectionLink;
 
-  @RelationId((item: CollectionLink) => item.collection)
-  collectionId: ID;
-
-  @Column()
-  type: string;
+  @RelationId((item: CollectionLinkUrl) => item.collectionLink)
+  collectionLinkId: ID;
 
   @OneToMany(
-    (type) => CollectionLinkTranslation,
+    (type) => CollectionLinkUrlTranslation,
     (translation) => translation.base,
     { eager: true }
   )
-  translations: Array<Translation<CollectionLink>>;
+  translations: Array<Translation<CollectionLinkUrl>>;
 
   name: LocaleString;
 

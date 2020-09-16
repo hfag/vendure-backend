@@ -4,8 +4,6 @@ import {
   CreatePaymentResult,
   CreatePaymentErrorResult,
   SettlePaymentResult,
-  PaymentMethodConfigOptions,
-  PaymentMethodArgs,
   Order,
   Country,
 } from "@vendure/core";

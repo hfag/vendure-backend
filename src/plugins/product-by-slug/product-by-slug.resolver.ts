@@ -12,6 +12,6 @@ export class ProductBySlugResolver {
     @Ctx() ctx: RequestContext,
     @Args() args: { slug: string }
   ): Promise<Translated<Product> | undefined> {
-    return this.productService.findOneBySlug(ctx, args.slug);
+    return await this.productService.findOneBySlug(ctx, args.slug);
   }
 }

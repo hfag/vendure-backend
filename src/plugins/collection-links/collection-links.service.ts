@@ -9,18 +9,32 @@ import {
   translateDeep,
   getEntityOrThrow,
   CollectionService,
+  AssetService,
 } from "@vendure/core";
 import {
   DeletionResponse,
   DeletionResult,
 } from "@vendure/common/lib/generated-types";
-import { CollectionLink } from "./collection-links.entity";
-import { CreateCollectionLinkInput, UpdateCollectionLinkInput } from "./index";
+import {
+  CollectionLink,
+  TranslatedAnyCollectionLink,
+} from "./collection-link.entity";
+import { CollectionLinkUrl } from "./collection-link-url.entity";
+import { CollectionLinkAsset } from "./collection-link-asset.entity";
+import { CollectionLinkUrlTranslation } from "./collection-link-url-translation.entity";
+import {
+  CreateCollectionLinkUrlInput,
+  CreateCollectionLinkAssetInput,
+  UpdateCollectionLinkUrlInput,
+  UpdateCollectionLinkAssetInput,
+  UpdateCollectionLinkInput,
+} from "./index";
 import { Translated } from "@vendure/core/dist/common/types/locale-types";
 import { TranslatableSaver } from "@vendure/core/dist/service/helpers/translatable-saver/translatable-saver";
-import { CollectionLinkTranslation } from "./collection-links-translation.entity";
 
-function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+export function notEmpty<TValue>(
+  value: TValue | null | undefined
+): value is TValue {
   return value !== null && value !== undefined;
 }
 
@@ -28,6 +42,7 @@ function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
 export class CollectionLinkService {
   constructor(
     @InjectConnection() private connection: Connection,
+    private assetService: AssetService,
     private collectionService: CollectionService,
     private translatableSaver: TranslatableSaver
   ) {}
@@ -35,159 +50,245 @@ export class CollectionLinkService {
   async findAll(
     ctx: RequestContext,
     options?: FindManyOptions<CollectionLink>
-  ): Promise<Translated<CollectionLink>[]> {
+  ): Promise<TranslatedAnyCollectionLink[]> {
     const collectionLinks = await this.connection
       .getRepository(CollectionLink)
       .find(options);
 
-    return collectionLinks.map((collectionLink) =>
-      translateDeep(collectionLink, ctx.languageCode)
-    );
+    const collectionLinkUrlsPromise = this.connection
+      .getRepository(CollectionLinkUrl)
+      .find({
+        where: {
+          collectionLinkId: In(
+            collectionLinks.filter((l) => l.type === "url").map((l) => l.id)
+          ),
+        },
+      })
+      .then((links) =>
+        links.map((urlLink) => {
+          const collectionLink = collectionLinks.find(
+            (l) => l.id === urlLink.collectionLinkId
+          )!;
+
+          return {
+            ...collectionLink,
+            ...translateDeep(urlLink, ctx.languageCode),
+            linkUrlId: urlLink.id,
+            linkId: collectionLink.id,
+          };
+        })
+      );
+
+    const collectionLinkAssetsPromise = this.connection
+      .getRepository(CollectionLinkAsset)
+      .find({
+        where: {
+          collectionLinkId: In(
+            collectionLinks.filter((l) => l.type === "asset").map((l) => l.id)
+          ),
+        },
+      })
+      .then((links) =>
+        links.map((assetLink) => {
+          const collectionLink = collectionLinks.find(
+            (l) => l.id === assetLink.collectionLinkId
+          )!;
+
+          return {
+            ...collectionLink,
+            ...assetLink,
+            linkAssetId: assetLink.id,
+            linkId: collectionLink.id,
+          };
+        })
+      );
+
+    return Promise.all([
+      collectionLinkUrlsPromise,
+      collectionLinkAssetsPromise,
+    ]).then(([collectionLinkUrls, collectionLinkAssets]) => {
+      return [
+        ...collectionLinkUrls.filter(notEmpty),
+        ...collectionLinkAssets.filter(notEmpty),
+      ].sort((a, b) => a.order - b.order);
+    });
   }
 
   async findOne(
     ctx: RequestContext,
     collectionLinkId: ID
-  ): Promise<Translated<CollectionLink> | undefined> {
-    const collection = await this.connection
+  ): Promise<TranslatedAnyCollectionLink | undefined> {
+    const collectionLink = await this.connection
       .getRepository(CollectionLink)
       .findOne(collectionLinkId, { loadEagerRelations: true });
 
-    if (!collection) {
+    if (!collectionLink) {
       return;
     }
 
-    return translateDeep(collection, ctx.languageCode);
+    switch (collectionLink.type) {
+      case "url":
+        const url = await this.connection
+          .getRepository(CollectionLinkUrl)
+          .findOne({ where: { collectionLinkId: collectionLink.id } });
+        if (!url) {
+          return;
+        }
+
+        return {
+          ...collectionLink,
+          ...translateDeep(url, ctx.languageCode),
+          linkId: collectionLink.id,
+          linkUrlId: url.id,
+        };
+      case "asset":
+        const asset = await this.connection
+          .getRepository(CollectionLinkAsset)
+          .findOne({ where: { collectionLinkId: collectionLink.id } });
+        if (!asset) {
+          return;
+        }
+
+        return {
+          ...collectionLink,
+          ...asset,
+          linkId: collectionLink.id,
+          linkAssetId: asset.id,
+        };
+      default:
+        throw new Error(
+          `Unsupported collection link type: ${collectionLink.type}`
+        );
+    }
   }
 
-  async create(
+  async createUrlLink(
     ctx: RequestContext,
-    input: CreateCollectionLinkInput
-  ): Promise<Translated<CollectionLink>> {
+    input: CreateCollectionLinkUrlInput
+  ): Promise<Translated<CollectionLinkUrl> & CollectionLink> {
     const collection = await assertFound(
       this.collectionService.findOne(ctx, input.collectionId)
     );
 
-    const collectionLink = await this.translatableSaver.create({
+    const collectionLink = await this.connection
+      .getRepository(CollectionLink)
+      .save(
+        new CollectionLink({
+          collection,
+          icon: input.icon,
+          order: input.order,
+          type: "url",
+        })
+      );
+
+    const collectionLinkUrl = await this.translatableSaver.create({
       input,
-      entityType: CollectionLink,
-      translationType: CollectionLinkTranslation,
-      beforeSave: (collectionLink) => {
+      entityType: CollectionLinkUrl,
+      translationType: CollectionLinkUrlTranslation,
+      beforeSave: (collectionLinkUrl) => {
         //add relations
-        collectionLink.collection = collection;
+        collectionLinkUrl.collectionLink = collectionLink;
       },
     });
 
-    return assertFound(this.findOne(ctx, collectionLink.id));
+    return {
+      ...collectionLink,
+      ...translateDeep(collectionLinkUrl, ctx.languageCode),
+    };
   }
 
-  async createMany(
+  async createAssetLink(
     ctx: RequestContext,
-    input: CreateCollectionLinkInput[]
-  ): Promise<Translated<CollectionLink>[]> {
-    const collectionLinks = await Promise.all(
-      input.map((collectionLinkInput) =>
-        this.translatableSaver.create({
-          input: collectionLinkInput,
-          entityType: CollectionLink,
-          translationType: CollectionLinkTranslation,
-          beforeSave: async (collectionLink) => {
-            //add relations
-            collectionLink.collection = await assertFound(
-              this.collectionService.findOne(
-                ctx,
-                collectionLinkInput.collectionId
-              )
-            );
-          },
-        })
-      )
+    input: CreateCollectionLinkAssetInput
+  ): Promise<CollectionLinkAsset & CollectionLink> {
+    const collection = await assertFound(
+      this.collectionService.findOne(ctx, input.collectionId)
     );
 
-    return this.findAll(ctx, {
-      where: { id: In([collectionLinks.map((l) => l.id)]) },
-    });
+    const asset = await assertFound(this.assetService.findOne(input.assetId));
+
+    const collectionLink = await this.connection
+      .getRepository(CollectionLink)
+      .save(
+        new CollectionLink({
+          collection,
+          icon: input.icon,
+          order: input.order,
+          type: "asset",
+        })
+      );
+
+    const collectionLinkAsset = await this.connection
+      .getRepository(CollectionLinkAsset)
+      .save(
+        new CollectionLinkAsset({
+          collectionLink,
+          languageCode: ctx.languageCode,
+          asset,
+        })
+      );
+
+    return {
+      ...collectionLink,
+      ...collectionLinkAsset,
+    };
   }
 
-  async update(ctx: RequestContext, input: UpdateCollectionLinkInput) {
-    await getEntityOrThrow(this.connection, CollectionLink, input.id);
-    const collectionLink = await this.translatableSaver.update({
+  async updateUrlLink(
+    ctx: RequestContext,
+    input: UpdateCollectionLinkUrlInput
+  ) {
+    const collectionLinkUrl = await getEntityOrThrow(
+      this.connection,
+      CollectionLinkUrl,
+      input.id
+    );
+    const updatedCollectionLinkUrl = await this.translatableSaver.update({
       input,
-      entityType: CollectionLink,
-      translationType: CollectionLinkTranslation,
-      beforeSave: async (collectionLink) => {
-        //update relations
-        if (input.collectionId) {
-          collectionLink.collection = await assertFound(
-            this.collectionService.findOne(ctx, input.collectionId)
-          );
-        }
-      },
+      entityType: CollectionLinkUrl,
+      translationType: CollectionLinkUrlTranslation,
     });
+
+    const collectionLink = await this.connection
+      .getRepository(CollectionLink)
+      .save({
+        id: collectionLinkUrl.collectionLinkId,
+        icon: input.icon,
+        order: input.order,
+      });
 
     return assertFound(this.findOne(ctx, collectionLink.id));
   }
 
-  async updateMany(ctx: RequestContext, input: UpdateCollectionLinkInput[]) {
-    const collectionLinks = (
-      await Promise.all(
-        input.map((collectionLinkInput) =>
-          getEntityOrThrow(
-            this.connection,
-            CollectionLink,
-            collectionLinkInput.id
-          )
-            .then(() =>
-              this.translatableSaver.update({
-                input: collectionLinkInput,
-                entityType: CollectionLink,
-                translationType: CollectionLinkTranslation,
-                beforeSave: async (collectionLink) => {
-                  //update relations
-                  if (collectionLinkInput.collectionId) {
-                    collectionLink.collection = await assertFound(
-                      this.collectionService.findOne(
-                        ctx,
-                        collectionLinkInput.collectionId
-                      )
-                    );
-                  }
-                },
-              })
-            )
-            .catch(() => null)
-        )
-      )
-    ).filter(notEmpty);
+  async updateAssetLink(
+    ctx: RequestContext,
+    input: UpdateCollectionLinkAssetInput
+  ) {
+    const collectionLinkAsset = await getEntityOrThrow(
+      this.connection,
+      CollectionLinkAsset,
+      input.id
+    );
 
-    return this.findAll(ctx, {
-      where: { id: In([collectionLinks.map((l) => l.id)]) },
-    });
+    const collectionLinkAssetUpdate = await this.connection
+      .getRepository(CollectionLinkAsset)
+      .save({ id: input.id, assetId: input.assetId });
+
+    const collectionLink = await this.connection
+      .getRepository(CollectionLink)
+      .save({
+        id: collectionLinkAsset.collectionLinkId,
+        icon: input.icon,
+        order: input.order,
+      });
+
+    return assertFound(this.findOne(ctx, collectionLink.id));
   }
 
   async delete(collectionLinkId: ID): Promise<DeletionResponse> {
     await this.connection
-      .getRepository(CollectionLinkTranslation)
-      .remove(
-        await this.connection
-          .getRepository(CollectionLinkTranslation)
-          .find({ where: { base: { id: collectionLinkId } } })
-      );
-    await this.connection
       .getRepository(CollectionLink)
       .delete(collectionLinkId);
-
-    return {
-      result: DeletionResult.DELETED,
-    };
-  }
-
-  async deleteMany(collectionLinkIds: ID[]): Promise<DeletionResponse> {
-    await Promise.all(
-      collectionLinkIds.map((id) =>
-        this.connection.getRepository(CollectionLink).delete(id)
-      )
-    );
 
     return {
       result: DeletionResult.DELETED,

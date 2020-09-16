@@ -6,35 +6,57 @@ import {
   ID,
 } from "@vendure/core";
 import gql from "graphql-tag";
-import { CollectionLink } from "./collection-links.entity";
-import { CollectionLinkTranslation } from "./collection-links-translation.entity";
+import { CollectionLink } from "./collection-link.entity";
 import {
   CollectionLinksAdminResolver,
   CollectionLinkEntityResolver,
-  CollectionEntityResolver,
+  CollectionEntityResolverAdmin,
+  CollectionAssetLinkResolverAdmin,
+  CollectionEntityResolverShop,
 } from "./collection-links.resolver";
 import { CollectionLinkService } from "./collection-links.service";
 import { AdminUiExtension } from "@vendure/ui-devkit/compiler";
+import { CollectionLinkUrl } from "./collection-link-url.entity";
+import { CollectionLinkUrlTranslation } from "./collection-link-url-translation.entity";
+import { CollectionLinkAsset } from "./collection-link-asset.entity";
 
-export type CreateCollectionLinkInput = {
+export type CreateCollectionLinkUrlInput = {
   collectionId: ID;
-  type: "pdf" | "video" | "link";
+  icon: "pdf" | "video" | "link";
+  order: number;
   translations: {
     languageCode: LanguageCode;
     name: string;
     url: string;
   }[];
 };
-export type UpdateCollectionLinkInput = {
+export type CreateCollectionLinkAssetInput = {
+  collectionId: ID;
+  icon: "pdf" | "video" | "link";
+  order: number;
+  assetId: ID;
+};
+
+export type UpdateCollectionLinkUrlInput = {
   id: ID;
-  collectionId: ID;
-  type: "pdf" | "video" | "link";
+  icon: "pdf" | "video" | "link";
+  order: number;
   translations: {
     languageCode: LanguageCode;
     name: string;
     url: string;
   }[];
 };
+export type UpdateCollectionLinkAssetInput = {
+  id: ID;
+  assetId: ID;
+  icon: "pdf" | "video" | "link";
+  order: number;
+};
+
+export type UpdateCollectionLinkInput =
+  | UpdateCollectionLinkUrlInput
+  | UpdateCollectionLinkAssetInput;
 
 export const CollectionLinkInputModule: AdminUiExtension["ngModules"][0] = {
   type: "shared",
@@ -58,15 +80,28 @@ const adminSchemaExtension = gql`
     url: String!
   }
 
-  type CollectionLink {
-    id: ID!
-    collection: Collection!
+  type CollectionAssetLink {
+    linkId: ID!
+    linkAssetId: ID!
     collectionId: ID!
-    type: CollectionLinkType!
+    icon: CollectionLinkType!
+    order: Int!
+    assetId: ID!
+    asset: Asset!
+  }
+
+  type CollectionUrlLink {
+    linkId: ID!
+    linkUrlId: ID!
+    collectionId: ID!
+    icon: CollectionLinkType!
+    order: Int!
     name: String!
     url: String!
     translations: [CollectionLinkTranslation!]!
   }
+
+  union CollectionLink = CollectionUrlLink | CollectionAssetLink
 
   input CollectionLinkTranslationInput {
     id: ID
@@ -75,17 +110,32 @@ const adminSchemaExtension = gql`
     url: String!
   }
 
-  input CreateCollectionLinkInput {
+  input CreateCollectionLinkUrlInput {
     collectionId: ID!
-    type: CollectionLinkType!
+    icon: CollectionLinkType!
+    order: Int!
     translations: [CollectionLinkTranslationInput!]!
   }
 
-  input UpdateCollectionLinkInput {
-    id: ID!
+  input CreateCollectionLinkAssetInput {
     collectionId: ID!
-    type: CollectionLinkType!
+    icon: CollectionLinkType!
+    order: Int!
+    assetId: ID!
+  }
+
+  input UpdateCollectionLinkUrlInput {
+    id: ID!
+    icon: CollectionLinkType!
+    order: Int!
     translations: [CollectionLinkTranslationInput!]!
+  }
+
+  input UpdateCollectionLinkAssetInput {
+    id: ID!
+    icon: CollectionLinkType!
+    order: Int!
+    assetId: ID!
   }
 
   extend type Collection {
@@ -93,13 +143,17 @@ const adminSchemaExtension = gql`
   }
 
   extend type Mutation {
-    createCollectionLink(input: CreateCollectionLinkInput!): Collection!
-    createCollectionLinks(input: [CreateCollectionLinkInput!]!): Boolean!
+    createCollectionLinkUrl(input: CreateCollectionLinkUrlInput!): Collection!
+    createCollectionLinkAsset(
+      input: CreateCollectionLinkAssetInput!
+    ): Collection!
 
-    updateCollectionLink(input: UpdateCollectionLinkInput!): Collection!
-    updateCollectionLinks(input: [UpdateCollectionLinkInput!]!): Boolean!
+    updateCollectionUrlLink(input: UpdateCollectionLinkUrlInput!): Collection!
+    updateCollectionAssetLink(
+      input: UpdateCollectionLinkAssetInput!
+    ): Collection!
 
-    deleteCollectionLink(id: ID!): Boolean!
+    deleteCollectionLink(id: ID!): Collection!
   }
 `;
 
@@ -121,10 +175,10 @@ const shopSchemaExtension = gql`
     id: ID!
     collection: Collection!
     collectionId: ID!
-    type: CollectionLinkType!
+    icon: CollectionLinkType!
+    order: Int!
     name: String!
     url: String!
-    translations: [CollectionLinkTranslation!]!
   }
 
   extend type Collection {
@@ -134,27 +188,25 @@ const shopSchemaExtension = gql`
 
 @VendurePlugin({
   imports: [PluginCommonModule],
-  entities: [CollectionLink, CollectionLinkTranslation],
+  entities: [
+    CollectionLink,
+    CollectionLinkUrl,
+    CollectionLinkUrlTranslation,
+    CollectionLinkAsset,
+  ],
   providers: [CollectionLinkService],
   adminApiExtensions: {
     schema: adminSchemaExtension,
     resolvers: [
       CollectionLinksAdminResolver,
       CollectionLinkEntityResolver,
-      CollectionEntityResolver,
+      CollectionEntityResolverAdmin,
+      CollectionAssetLinkResolverAdmin,
     ],
   },
   shopApiExtensions: {
     schema: shopSchemaExtension,
-    resolvers: [CollectionLinkEntityResolver, CollectionEntityResolver],
-  },
-  configuration: (config) => {
-    config.customFields.Collection.push({
-      type: "boolean",
-      name: "hasLinks",
-      label: [{ languageCode: LanguageCode.en, value: "Has links" }],
-    });
-    return config;
+    resolvers: [CollectionLinkEntityResolver, CollectionEntityResolverShop],
   },
 })
 export class CollectionLinksPlugin {}
