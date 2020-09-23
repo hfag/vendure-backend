@@ -12,5 +12,13 @@
     "baseUrl": "./",
     "strictPropertyInitialization": false
   },
-  "exclude": ["node_modules", "migration.ts"]
+  "exclude": [
+    "node_modules",
+    "migration.ts",
+    "dist",
+    "admin-ui",
+    "sql",
+    "static",
+    "migrations"
+  ]
 }
