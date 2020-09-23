@@ -30,7 +30,7 @@
     "rimraf": "^3.0.2",
     "typescript": "3.7.5",
     "vendure-bulk-discounts": "^0.1.11",
-    "vendure-product-recommendations": "^0.1.14"
+    "vendure-product-recommendations": "^0.1.16"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1000.0",

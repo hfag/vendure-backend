@@ -12042,10 +12042,10 @@ vendure-bulk-discounts@^0.1.11:
   dependencies:
     tslib "^1.11.1"
 
-vendure-product-recommendations@^0.1.14:
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/vendure-product-recommendations/-/vendure-product-recommendations-0.1.14.tgz#3ccbebcd3a45e7e0ae83d2055d383506d57f6965"
-  integrity sha512-qJqyKfOee0NNHJLekzsqGaxDQZ2Xf3GeSN4L1gPu1YYkWzYcD/ywO70AbaGxn5O5zCAUzfEsqbGp3YsqJHNnmQ==
+vendure-product-recommendations@^0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/vendure-product-recommendations/-/vendure-product-recommendations-0.1.16.tgz#71e7e13d336c1d8112b780904606e4767c35bdb2"
+  integrity sha512-9DA+6ONV2C/jzJXk/kWSLf8ZJz6X6Cfqx4+fkt2yCejptQOA+5WHldXgcNG8SucdyxMDZcwep6bmo4pBGAk/Zg==
   dependencies:
     "@ng-select/ng-select" "3.7.3"
     tslib "^1.11.1"
