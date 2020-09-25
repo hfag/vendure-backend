@@ -23,7 +23,7 @@ export const ADMIN_UI_EXTENSIONS = [
 ];
 
 compileUiExtensions({
-  outputPath: path.join(__dirname, "..", "admin-ui/"),
+  outputPath: path.join(__dirname, "..", "dist/admin-ui/"),
   extensions: ADMIN_UI_EXTENSIONS,
 })
   .compile?.()
