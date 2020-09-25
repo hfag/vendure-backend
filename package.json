@@ -14,7 +14,7 @@
     "update-vendure": "yarn add @vendure/admin-ui-plugin @vendure/asset-server-plugin @vendure/core @vendure/email-plugin @vendure/ui-devkit",
     "compile-admin-ui": "yarn ts-node src/compile-admin-ui.ts",
     "test": "echo 'sometime in the future'",
-    "deploy": "yarn build"
+    "deploy": "yarn build && cp -r dist/migrations/*.js migrations/ && rm migrations/*.ts"
   },
   "dependencies": {
     "@types/prosemirror-menu": "^1.0.2",
