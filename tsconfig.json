@@ -18,7 +18,6 @@
     "dist",
     "admin-ui",
     "sql",
-    "static",
-    "migrations"
+    "static"
   ]
 }
