@@ -163,7 +163,7 @@ export class CollectionEntityResolverAdmin {
     @Ctx() ctx: RequestContext,
     @Parent() collection: Collection
   ): Promise<TranslatedAnyCollectionLink[]> {
-    return this.collectionLinkService.findAll(ctx, {
+    return this.collectionLinkService.findAll(ctx, false, {
       where: { collection: { id: collection.id } },
     });
   }
@@ -173,8 +173,7 @@ export class CollectionEntityResolverAdmin {
 export class CollectionEntityResolverShop {
   constructor(
     private connection: Connection,
-    private collectionLinkService: CollectionLinkService,
-    private configService: ConfigService
+    private collectionLinkService: CollectionLinkService
   ) {}
 
   @ResolveField()
@@ -191,7 +190,7 @@ export class CollectionEntityResolverShop {
       url: string;
     }[]
   > {
-    const links = await this.collectionLinkService.findAll(ctx, {
+    const links = await this.collectionLinkService.findAll(ctx, true, {
       where: { collection: { id: collection.id } },
     });
 

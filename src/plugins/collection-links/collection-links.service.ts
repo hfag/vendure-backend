@@ -49,6 +49,7 @@ export class CollectionLinkService {
 
   async findAll(
     ctx: RequestContext,
+    restrictLocale?: boolean,
     options?: FindManyOptions<CollectionLink>
   ): Promise<TranslatedAnyCollectionLink[]> {
     const collectionLinks = await this.connection
@@ -108,7 +109,11 @@ export class CollectionLinkService {
       collectionLinkAssetsPromise,
     ]).then(([collectionLinkUrls, collectionLinkAssets]) => {
       return [
-        ...collectionLinkUrls.filter(notEmpty),
+        ...collectionLinkUrls
+          .filter(notEmpty)
+          .filter((link) =>
+            restrictLocale ? link.languageCode === ctx.languageCode : true
+          ),
         ...collectionLinkAssets.filter(notEmpty),
       ].sort((a, b) => a.order - b.order);
     });
