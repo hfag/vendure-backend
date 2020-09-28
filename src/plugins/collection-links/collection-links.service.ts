@@ -69,9 +69,7 @@ export class CollectionLinkService {
         : this.connection
             .getRepository(CollectionLinkUrl)
             .find({
-              where: {
-                collectionLink: In(urlLinks),
-              },
+              where: urlLinks.map((collectionLink) => ({ collectionLink })),
             })
             .then((links) =>
               links.map((urlLink) => {
@@ -94,9 +92,7 @@ export class CollectionLinkService {
         : this.connection
             .getRepository(CollectionLinkAsset)
             .find({
-              where: {
-                collectionLink: In(assetLinks),
-              },
+              where: assetLinks.map((collectionLink) => ({ collectionLink })),
             })
             .then((links) =>
               links.map((assetLink) => {
