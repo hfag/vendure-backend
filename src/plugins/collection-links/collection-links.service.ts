@@ -109,12 +109,12 @@ export class CollectionLinkService {
       collectionLinkAssetsPromise,
     ]).then(([collectionLinkUrls, collectionLinkAssets]) => {
       return [
-        ...collectionLinkUrls
+        ...collectionLinkUrls.filter(notEmpty),
+        ...collectionLinkAssets
           .filter(notEmpty)
           .filter((link) =>
             restrictLocale ? link.languageCode === ctx.languageCode : true
           ),
-        ...collectionLinkAssets.filter(notEmpty),
       ].sort((a, b) => a.order - b.order);
     });
   }
