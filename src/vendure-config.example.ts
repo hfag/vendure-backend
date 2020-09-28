@@ -13,7 +13,6 @@ import { ProductRecommendationsPlugin } from "vendure-product-recommendations";
 import { BulkDiscountPlugin } from "vendure-bulk-discounts";
 import { ProductMinimumOrderQuantityPlugin } from "./plugins/product-minimum-order-quantity/product-minimum-order-quantity";
 import { ProductGroupKeyPlugin } from "./plugins/product-group-key-plugin/product-group-key";
-import { SeoDescriptionsPlugin } from "./plugins/seo-descriptions/seo-descriptions";
 import { CollectionProductsPlugin } from "./plugins/collection-products/collection-products";
 import { ProductBySlugPlugin } from "./plugins/product-by-slug/product-by-slug";
 import { InvoicePaymentIntegration } from "./plugins/invoice-payment-method/invoice-payment-method";
@@ -118,7 +117,6 @@ export const config: VendureConfig = {
     CustomerGroupDiscountsPlugin,
     ProductMinimumOrderQuantityPlugin,
     ProductGroupKeyPlugin,
-    SeoDescriptionsPlugin,
     CollectionProductsPlugin,
     ProductBySlugPlugin,
     AssetByNamePlugin,
