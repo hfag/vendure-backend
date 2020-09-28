@@ -60,53 +60,58 @@ export class CollectionLinkService {
       return [];
     }
 
-    const collectionLinkUrlsPromise = this.connection
-      .getRepository(CollectionLinkUrl)
-      .find({
-        where: {
-          collectionLinkId: In(
-            collectionLinks.filter((l) => l.type === "url").map((l) => l.id)
-          ),
-        },
-      })
-      .then((links) =>
-        links.map((urlLink) => {
-          const collectionLink = collectionLinks.find(
-            (l) => l.id === urlLink.collectionLinkId
-          )!;
+    const urlLinks = collectionLinks.filter((l) => l.type === "url");
+    const assetLinks = collectionLinks.filter((l) => l.type === "asset");
 
-          return {
-            ...collectionLink,
-            ...translateDeep(urlLink, ctx.languageCode),
-            linkUrlId: urlLink.id,
-            linkId: collectionLink.id,
-          };
-        })
-      );
+    const collectionLinkUrlsPromise =
+      urlLinks.length === 0
+        ? Promise.resolve([])
+        : this.connection
+            .getRepository(CollectionLinkUrl)
+            .find({
+              where: {
+                collectionLinkId: In(urlLinks.map((l) => l.id)),
+              },
+            })
+            .then((links) =>
+              links.map((urlLink) => {
+                const collectionLink = urlLinks.find(
+                  (l) => l.id == urlLink.collectionLinkId
+                )!;
 
-    const collectionLinkAssetsPromise = this.connection
-      .getRepository(CollectionLinkAsset)
-      .find({
-        where: {
-          collectionLinkId: In(
-            collectionLinks.filter((l) => l.type === "asset").map((l) => l.id)
-          ),
-        },
-      })
-      .then((links) =>
-        links.map((assetLink) => {
-          const collectionLink = collectionLinks.find(
-            (l) => l.id === assetLink.collectionLinkId
-          )!;
+                return {
+                  ...collectionLink,
+                  ...translateDeep(urlLink, ctx.languageCode),
+                  linkUrlId: urlLink.id,
+                  linkId: collectionLink.id,
+                };
+              })
+            );
 
-          return {
-            ...collectionLink,
-            ...assetLink,
-            linkAssetId: assetLink.id,
-            linkId: collectionLink.id,
-          };
-        })
-      );
+    const collectionLinkAssetsPromise =
+      assetLinks.length === 0
+        ? Promise.resolve([])
+        : this.connection
+            .getRepository(CollectionLinkAsset)
+            .find({
+              where: {
+                collectionLinkId: In(assetLinks.map((l) => l.id)),
+              },
+            })
+            .then((links) =>
+              links.map((assetLink) => {
+                const collectionLink = assetLinks.find(
+                  (l) => l.id == assetLink.collectionLinkId
+                )!;
+
+                return {
+                  ...collectionLink,
+                  ...assetLink,
+                  linkAssetId: assetLink.id,
+                  linkId: collectionLink.id,
+                };
+              })
+            );
 
     return Promise.all([
       collectionLinkUrlsPromise,
