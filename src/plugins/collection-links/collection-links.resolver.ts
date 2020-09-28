@@ -166,10 +166,8 @@ export class CollectionEntityResolverAdmin {
     @Ctx() ctx: RequestContext,
     @Parent() collection: Collection
   ): Promise<TranslatedAnyCollectionLink[]> {
-    assertFound(this.collectionService.findOne(ctx, collection.id));
-
     return this.collectionLinkService.findAll(ctx, false, {
-      where: { collection: { id: collection.id } },
+      where: { collection },
     });
   }
 }
@@ -196,10 +194,8 @@ export class CollectionEntityResolverShop {
       url: string;
     }[]
   > {
-    assertFound(this.collectionService.findOne(ctx, collection.id));
-
     const links = await this.collectionLinkService.findAll(ctx, true, {
-      where: { collection: { id: collection.id } },
+      where: { collection },
     });
 
     const assets = await this.connection

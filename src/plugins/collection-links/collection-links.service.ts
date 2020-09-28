@@ -56,6 +56,10 @@ export class CollectionLinkService {
       .getRepository(CollectionLink)
       .find(options);
 
+    if (collectionLinks.length === 0) {
+      return [];
+    }
+
     const collectionLinkUrlsPromise = this.connection
       .getRepository(CollectionLinkUrl)
       .find({
