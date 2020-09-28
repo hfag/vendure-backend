@@ -124,6 +124,7 @@ const adminSchemaExtension = gql`
     collectionId: ID!
     icon: CollectionLinkType!
     order: Int!
+    languageCode: LanguageCode!
     assetId: ID!
   }
 
@@ -138,6 +139,7 @@ const adminSchemaExtension = gql`
     id: ID!
     icon: CollectionLinkType!
     order: Int!
+    languageCode: LanguageCode!
     assetId: ID!
   }
 
