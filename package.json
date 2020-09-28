@@ -7,7 +7,7 @@
     "run:worker": "ts-node ./src/index-worker.ts",
     "start": "concurrently yarn:run:*",
     "build-migrations": "tsc -p tsconfig.migrations.json",
-    "build": "rimraf dist/migrations && rimraf dist/src && tsc && yarn compile-admin-ui",
+    "build": "rimraf dist/migrations && rimraf dist/src && tsc",
     "migration:generate": "ts-node migration generate",
     "migration:run": "ts-node migration run",
     "migration:revert": "ts-node migration revert",
