@@ -35,6 +35,7 @@ export type CreateCollectionLinkAssetInput = {
   icon: "pdf" | "video" | "link";
   order: number;
   assetId: ID;
+  languageCode: LanguageCode;
 };
 
 export type UpdateCollectionLinkUrlInput = {
@@ -52,6 +53,7 @@ export type UpdateCollectionLinkAssetInput = {
   assetId: ID;
   icon: "pdf" | "video" | "link";
   order: number;
+  languageCode: LanguageCode;
 };
 
 export type UpdateCollectionLinkInput =

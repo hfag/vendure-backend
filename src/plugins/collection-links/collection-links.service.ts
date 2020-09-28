@@ -228,7 +228,7 @@ export class CollectionLinkService {
       .save(
         new CollectionLinkAsset({
           collectionLink,
-          languageCode: ctx.languageCode,
+          languageCode: input.languageCode,
           asset,
         })
       );
@@ -275,9 +275,11 @@ export class CollectionLinkService {
       input.id
     );
 
+    const asset = await assertFound(this.assetService.findOne(input.assetId));
+
     const collectionLinkAssetUpdate = await this.connection
       .getRepository(CollectionLinkAsset)
-      .save({ id: input.id, assetId: input.assetId });
+      .save({ id: input.id, asset, languageCode: input.languageCode });
 
     const collectionLink = await this.connection
       .getRepository(CollectionLink)
