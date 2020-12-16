@@ -6,15 +6,14 @@ import {
   Product,
   ProductService,
   Collection,
+  TransactionalConnection,
 } from "@vendure/core";
-import { InjectConnection } from "@nestjs/typeorm";
-import { Connection } from "typeorm";
 import { Translated } from "@vendure/core/dist/common/types/locale-types";
 
 @Resolver("Collection")
 export class CollectionProductResolver {
   constructor(
-    @InjectConnection() private connection: Connection,
+    private connection: TransactionalConnection,
     private productService: ProductService
   ) {}
 

@@ -29,7 +29,7 @@ const groupMember = new PromotionCondition({
   args: {
     group: { type: "int", config: { inputType: "default" } },
   },
-  check(order, args) {
+  check(ctx, order, args) {
     return order.customer &&
       order.customer.groups.map((g) => g.id).includes(args.group)
       ? true
@@ -50,7 +50,7 @@ const notGroupMember = new PromotionCondition({
   args: {
     group: { type: "int", config: { inputType: "default" } },
   },
-  check(order, args) {
+  check(ctx, order, args) {
     return (
       !order.customer ||
       !order.customer.groups.map((g) => g.id).includes(args.group)

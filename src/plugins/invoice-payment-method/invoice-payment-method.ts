@@ -6,11 +6,11 @@ import {
   SettlePaymentResult,
   Order,
   Country,
+  TransactionalConnection,
 } from "@vendure/core";
-import { Connection } from "typeorm";
 import { CreateAddressInput } from "@vendure/common/lib/generated-types";
 
-let connection: null | Connection = null;
+let connection: null | TransactionalConnection = null;
 
 export const InvoicePaymentIntegration = new PaymentMethodHandler({
   code: "invoice",
@@ -47,7 +47,7 @@ export const InvoicePaymentIntegration = new PaymentMethodHandler({
     },
   },
   init: function (injector) {
-    connection = injector.getConnection();
+    connection = injector.get(TransactionalConnection);
   },
   destroy: function () {
     connection = null;

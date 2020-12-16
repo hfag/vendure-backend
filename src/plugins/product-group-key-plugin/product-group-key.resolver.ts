@@ -6,13 +6,12 @@ import {
   ID,
   Product,
   assertFound,
+  TransactionalConnection,
 } from "@vendure/core";
-import { InjectConnection } from "@nestjs/typeorm";
-import { Connection } from "typeorm";
 
 @Resolver()
 export class ProductGroupKeyAdminResolver {
-  constructor(@InjectConnection() private connection: Connection) {}
+  constructor(private connection: TransactionalConnection) {}
 
   @Query()
   async getProductByGroupKey(

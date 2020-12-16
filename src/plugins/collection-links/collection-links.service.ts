@@ -1,6 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { InjectConnection } from "@nestjs/typeorm";
-import { Connection, In } from "typeorm";
 import { FindManyOptions } from "typeorm/find-options/FindManyOptions";
 import {
   ID,
@@ -10,6 +8,7 @@ import {
   getEntityOrThrow,
   CollectionService,
   AssetService,
+  TransactionalConnection,
 } from "@vendure/core";
 import {
   DeletionResponse,
@@ -41,7 +40,7 @@ export function notEmpty<TValue>(
 @Injectable()
 export class CollectionLinkService {
   constructor(
-    @InjectConnection() private connection: Connection,
+    private connection: TransactionalConnection,
     private assetService: AssetService,
     private collectionService: CollectionService,
     private translatableSaver: TranslatableSaver
@@ -192,6 +191,7 @@ export class CollectionLinkService {
       );
 
     const collectionLinkUrl = await this.translatableSaver.create({
+      ctx,
       input,
       entityType: CollectionLinkUrl,
       translationType: CollectionLinkUrlTranslation,
@@ -215,7 +215,9 @@ export class CollectionLinkService {
       this.collectionService.findOne(ctx, input.collectionId)
     );
 
-    const asset = await assertFound(this.assetService.findOne(input.assetId));
+    const asset = await assertFound(
+      this.assetService.findOne(ctx, input.assetId)
+    );
 
     const collectionLink = await this.connection
       .getRepository(CollectionLink)
@@ -248,12 +250,13 @@ export class CollectionLinkService {
     ctx: RequestContext,
     input: UpdateCollectionLinkUrlInput
   ) {
-    const collectionLinkUrl = await getEntityOrThrow(
-      this.connection,
+    const collectionLinkUrl = await this.connection.getEntityOrThrow(
+      ctx,
       CollectionLinkUrl,
       input.id
     );
     const updatedCollectionLinkUrl = await this.translatableSaver.update({
+      ctx,
       input,
       entityType: CollectionLinkUrl,
       translationType: CollectionLinkUrlTranslation,
@@ -280,7 +283,9 @@ export class CollectionLinkService {
       input.id
     );
 
-    const asset = await assertFound(this.assetService.findOne(input.assetId));
+    const asset = await assertFound(
+      this.assetService.findOne(ctx, input.assetId)
+    );
 
     const collectionLinkAssetUpdate = await this.connection
       .getRepository(CollectionLinkAsset)

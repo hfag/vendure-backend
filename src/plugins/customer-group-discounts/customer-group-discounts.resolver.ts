@@ -10,16 +10,11 @@ import {
   ID,
   PromotionService,
 } from "@vendure/core";
-import { InjectConnection } from "@nestjs/typeorm";
-import { Connection } from "typeorm";
 import { Translated } from "@vendure/core/dist/common/types/locale-types";
 
 @Resolver("Customer")
 export class CustomerResellerDiscountResolver {
-  constructor(
-    @InjectConnection() private connection: Connection,
-    private promotionService: PromotionService
-  ) {}
+  constructor(private promotionService: PromotionService) {}
 
   @ResolveField()
   async resellerDiscounts(

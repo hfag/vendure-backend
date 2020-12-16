@@ -1,10 +1,15 @@
 import { Args, Resolver, Query } from "@nestjs/graphql";
-import { Connection, Like } from "typeorm";
-import { Ctx, RequestContext, Asset } from "@vendure/core";
+import { Like } from "typeorm";
+import {
+  Ctx,
+  RequestContext,
+  Asset,
+  TransactionalConnection,
+} from "@vendure/core";
 
 @Resolver()
 export class AssetByNameResolver {
-  constructor(private connection: Connection) {}
+  constructor(private connection: TransactionalConnection) {}
 
   @Query()
   async assetByName(

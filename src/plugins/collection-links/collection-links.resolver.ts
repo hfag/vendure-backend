@@ -18,6 +18,8 @@ import {
   AssetService,
   Asset,
   ConfigService,
+  TransactionalConnection,
+  Transaction,
 } from "@vendure/core";
 import { Permission } from "@vendure/common/lib/generated-types";
 import { Connection } from "typeorm";
@@ -44,6 +46,7 @@ export class CollectionLinksAdminResolver {
     private collectionService: CollectionService
   ) {}
 
+  @Transaction()
   @Mutation()
   @Allow(Permission.UpdateCatalog)
   async createCollectionLinkUrl(
@@ -60,6 +63,7 @@ export class CollectionLinksAdminResolver {
     );
   }
 
+  @Transaction()
   @Mutation()
   @Allow(Permission.UpdateCatalog)
   async createCollectionLinkAsset(
@@ -76,6 +80,7 @@ export class CollectionLinksAdminResolver {
     );
   }
 
+  @Transaction()
   @Mutation()
   @Allow(Permission.UpdateCatalog)
   async updateCollectionAssetLink(
@@ -95,6 +100,7 @@ export class CollectionLinksAdminResolver {
     return collection;
   }
 
+  @Transaction()
   @Mutation()
   @Allow(Permission.UpdateCatalog)
   async updateCollectionUrlLink(
@@ -114,6 +120,7 @@ export class CollectionLinksAdminResolver {
     return collection;
   }
 
+  @Transaction()
   @Mutation()
   @Allow(Permission.UpdateCatalog)
   async deleteCollectionLink(
@@ -150,7 +157,9 @@ export class CollectionAssetLinkResolverAdmin {
     @Ctx() ctx: RequestContext,
     @Parent() collectionLinkAsset: CollectionLinkAsset
   ): Promise<Asset> {
-    return assertFound(this.assetService.findOne(collectionLinkAsset.assetId));
+    return assertFound(
+      this.assetService.findOne(ctx, collectionLinkAsset.assetId)
+    );
   }
 }
 
@@ -175,7 +184,7 @@ export class CollectionEntityResolverAdmin {
 @Resolver("Collection")
 export class CollectionEntityResolverShop {
   constructor(
-    private connection: Connection,
+    private connection: TransactionalConnection,
     private collectionLinkService: CollectionLinkService,
     private collectionService: CollectionService
   ) {}
