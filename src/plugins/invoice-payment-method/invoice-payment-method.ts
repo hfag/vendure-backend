@@ -53,6 +53,7 @@ export const InvoicePaymentIntegration = new PaymentMethodHandler({
     connection = null;
   },
   createPayment: async function (
+    ctx,
     order,
     args,
     metadata
