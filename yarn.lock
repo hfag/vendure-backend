@@ -1508,7 +1508,7 @@
     is-absolute "^1.0.0"
     is-negated-glob "^1.0.0"
 
-"@elastic/elasticsearch@^7.1.0":
+"@elastic/elasticsearch@^7.9.1":
   version "7.10.0"
   resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.10.0.tgz#da105a9c1f14146f9f2cab4e7026cb7949121b8d"
   integrity sha512-vXtMAQf5/DwqeryQgRriMtnFppJNLc/R7/R0D8E+wG5/kGM5i7mg+Hi7TM4NZEuXgtzZ2a/Nf7aR0vLyrxOK/w==
@@ -2406,13 +2406,13 @@
     rxjs "^6.6.3"
     typeorm "0.2.28"
 
-"@vendure/elasticsearch-plugin@^0.13.0":
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/@vendure/elasticsearch-plugin/-/elasticsearch-plugin-0.13.1.tgz#82338469bd51d166e297a77ed2e9468ae68087e0"
-  integrity sha512-Tv+uasrPi+LSMj7ewJqZyQSC+kdiS5swRMfLfabA3/x+vQYBeS2K+AcpR40pLEQgHwmpVybm0G5A5vybk+Y8aw==
+"@vendure/elasticsearch-plugin@^0.17.3":
+  version "0.17.3"
+  resolved "https://registry.yarnpkg.com/@vendure/elasticsearch-plugin/-/elasticsearch-plugin-0.17.3.tgz#1945a87395d67e85a4dfae28d82603507c813d22"
+  integrity sha512-RfTKOGtaec673j6cnvoyCAW02KTsKSMRo3wDMhk43DqxBVBGmx2dbRjJU6eQyAl72vtDesrOn5sB5Gm2rI0i2w==
   dependencies:
-    "@elastic/elasticsearch" "^7.1.0"
-    deepmerge "^4.0.0"
+    "@elastic/elasticsearch" "^7.9.1"
+    deepmerge "^4.2.2"
 
 "@vendure/email-plugin@^0.17.3":
   version "0.17.3"
@@ -4839,7 +4839,7 @@ deep-extend@^0.6.0:
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
   integrity sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==
 
-deepmerge@^4.0.0:
+deepmerge@^4.2.2:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
   integrity sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==

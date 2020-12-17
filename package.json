@@ -11,7 +11,7 @@
     "migration:generate": "ts-node migration generate",
     "migration:run": "ts-node migration run",
     "migration:revert": "ts-node migration revert",
-    "update-vendure": "yarn add @vendure/admin-ui-plugin @vendure/admin-ui @vendure/asset-server-plugin @vendure/core @vendure/email-plugin @vendure/ui-devkit",
+    "update-vendure": "yarn add @vendure/admin-ui-plugin @vendure/elasticsearch-plugin @vendure/admin-ui @vendure/asset-server-plugin @vendure/core @vendure/email-plugin @vendure/ui-devkit",
     "compile-admin-ui": "rimraf dist/admin-ui && ts-node src/compile-admin-ui.ts",
     "test": "echo 'sometime in the future'",
     "deploy": "yarn build && cp -r dist/migrations/*.js migrations/ && rm migrations/*.ts"
@@ -25,7 +25,7 @@
     "@vendure/admin-ui-plugin": "^0.17.3",
     "@vendure/asset-server-plugin": "^0.17.3",
     "@vendure/core": "^0.17.3",
-    "@vendure/elasticsearch-plugin": "^0.13.0",
+    "@vendure/elasticsearch-plugin": "^0.17.3",
     "@vendure/email-plugin": "^0.17.3",
     "@vendure/ui-devkit": "^0.17.3",
     "graphql": "15.3.0",
