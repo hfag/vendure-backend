@@ -7,6 +7,7 @@ import {
   ProductService,
   Collection,
   TransactionalConnection,
+  CollectionService,
 } from "@vendure/core";
 import { Translated } from "@vendure/core/dist/common/types/locale-types";
 
@@ -31,6 +32,12 @@ export class CollectionProductResolver {
         id: collection.id,
       })
       .getMany();
+
+    if (products.length === 0) {
+      //otherwise findByIds fails
+      return [];
+    }
+
     //not the most efficient i guess
     return this.productService.findByIds(
       ctx,
