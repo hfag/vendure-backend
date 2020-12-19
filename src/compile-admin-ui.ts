@@ -13,13 +13,13 @@ export const ADMIN_UI_EXTENSIONS = [
     ),
     ngModules: [ProductRecommendationsInputModule],
   },
-  {
+  /*{
     extensionPath: path.join(
       __dirname,
       "../node_modules/vendure-bulk-discounts/ui-extensions/modules/"
     ),
     ngModules: [BulkDiscountsInputModule],
-  },
+  },*/
 ];
 
 compileUiExtensions({
