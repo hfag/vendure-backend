@@ -7,14 +7,14 @@ export class v0171608121093166 implements MigrationInterface {
       undefined
     );
 
-    /*await queryRunner.query(
+    await queryRunner.query(
       "ALTER TABLE `history_entry` DROP FOREIGN KEY `FK_3a05127e67435b4d2332ded7c9e`",
       undefined
     );
     await queryRunner.query(
       "ALTER TABLE `history_entry` DROP FOREIGN KEY `FK_43ac602f839847fdb91101f30ec`",
       undefined
-    );*/
+    );
 
     await queryRunner.query(
       "ALTER TABLE `stock_movement` DROP FOREIGN KEY `FK_cbb0990e398bf7713aebdd38482`;",
