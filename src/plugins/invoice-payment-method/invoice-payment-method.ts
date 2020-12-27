@@ -64,25 +64,6 @@ export const InvoicePaymentIntegration = new PaymentMethodHandler({
       );
     }
 
-    const billingAddress: CreateAddressInput = metadata.billingAddress;
-
-    const country = await connection
-      .getRepository(Country)
-      .findOne({ where: { code: billingAddress.countryCode } }); // countryService.findOneByCode(ctx, input.countryCode);
-
-    if (!country) {
-      throw new Error(
-        "The given billing adddress is invalid (invalid country code)"
-      );
-    }
-
-    order.billingAddress = {
-      ...billingAddress,
-      countryCode: billingAddress.countryCode,
-      country: country.name,
-    };
-    connection.getRepository(Order).save(order);
-
     return {
       amount: order.total,
       state: "Settled",

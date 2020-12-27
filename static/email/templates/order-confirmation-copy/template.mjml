@@ -67,6 +67,8 @@
       <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
           Eine neue Bestellung.
+          Kommentar vom Kunden:
+          {{ order.customFields.notes }}
         </mj-text>
       </mj-column>
     </mj-section>
@@ -83,7 +85,7 @@
       </mj-column>
       <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Gesamtbetrag</strong></mj-text>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">${{ formatMoney order.total }}</mj-text>
+        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">CHF {{ formatMoney order.total }}</mj-text>
       </mj-column>
     </mj-section>
 
@@ -168,20 +170,20 @@
               </td>
               <td>{{ quantity }} x {{ productVariant.name }}</td>
               <td>{{ productVariant.quantity }}</td>
-              <td>${{ formatMoney totalPrice }}</td>
+              <td>CHF {{ formatMoney totalPrice }}</td>
             </tr>
           {{/each}}
           <tr class="order-row">
             <td colspan="3">Subtotal:</td>
-            <td>${{ formatMoney order.subTotal }}</td>
+            <td>CHF {{ formatMoney order.subTotal }}</td>
           </tr>
           <tr class="order-row">
-            <td colspan="3">Versand ({{ order.shippingMethod.description }}):</td>
-            <td>${{ formatMoney order.shipping }}</td>
+            <td colspan="3">Versand:</td>
+            <td>CHF {{ formatMoney order.shipping }}</td>
           </tr>
           <tr class="order-row total-row">
             <td colspan="3">Total:</td>
-            <td>${{ formatMoney order.total }}</td>
+            <td>CHF {{ formatMoney order.total }}</td>
           </tr>
         </mj-table>
       </mj-column>

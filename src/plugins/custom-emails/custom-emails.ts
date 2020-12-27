@@ -18,6 +18,7 @@ const orderConfirmationCopyHandler = new EmailEventListener(
       ? true
       : false
   )
+  .setFrom(`{{ fromAddress }}`)
   .setRecipient((event) => {
     const payment = event.order.payments.find((p) => p.method === "invoice");
 

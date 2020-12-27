@@ -49,6 +49,8 @@
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
             Thank you for your order!
+            Your comment:
+            {{ order.customFields.notes }}
         </mj-text>
     </mj-column>
 </mj-section>
@@ -64,18 +66,53 @@
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Order Date</strong>
         </mj-text>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">
-            {{ formatDate order.orderPlacedAt }}</mj-text>
+            {{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}
+        </mj-text>
     </mj-column>
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Total Price</strong>
         </mj-text>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">${{ formatMoney order.total }}
+        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">CHF {{ formatMoney order.total
+            }}
         </mj-text>
     </mj-column>
 </mj-section>
 
 
 <mj-section css-class="bg-off-white">
+    <mj-column>
+        <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
+            {{#with order.billingAddress }}
+            <h3>Shipping To: {{ fullName }}</h3>
+            <ul class="address">
+                {{#if company}}
+                <li>{{ company }}</li>
+                {{/if}}
+                {{#if streetLine1}}
+                <li>{{ streetLine1 }}</li>
+                {{/if}}
+                {{#if streetLine2}}
+                <li>{{ streetLine2 }}</li>
+                {{/if}}
+                {{#if city}}
+                <li>{{ city }}</li>
+                {{/if}}
+                {{#if province}}
+                <li>{{ province }}</li>
+                {{/if}}
+                {{#if postalCode}}
+                <li>{{ postalCode }}</li>
+                {{/if}}
+                {{#if country}}
+                <li>{{ country }}</li>
+                {{/if}}
+                {{#if phoneNumber}}
+                <li>{{ phoneNumber }}</li>
+                {{/if}}
+            </ul>
+            {{/with}}
+        </mj-text>
+    </mj-column>
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
             {{#with order.shippingAddress }}
@@ -125,20 +162,20 @@
                 </td>
                 <td>{{ quantity }} x {{ productVariant.name }}</td>
                 <td>{{ productVariant.quantity }}</td>
-                <td>${{ formatMoney totalPrice }}</td>
+                <td>CHF {{ formatMoney totalPrice }}</td>
             </tr>
             {{/each}}
             <tr class="order-row">
                 <td colspan="3">Sub-total:</td>
-                <td>${{ formatMoney order.subTotal }}</td>
+                <td>CHF {{ formatMoney order.subTotal }}</td>
             </tr>
             <tr class="order-row">
-                <td colspan="3">Shipping ({{ order.shippingMethod.description }}):</td>
-                <td>${{ formatMoney order.shipping }}</td>
+                <td colspan="3">Shipping:</td>
+                <td>CHF {{ formatMoney order.shipping }}</td>
             </tr>
             <tr class="order-row total-row">
                 <td colspan="3">Total:</td>
-                <td>${{ formatMoney order.total }}</td>
+                <td>CHF {{ formatMoney order.total }}</td>
             </tr>
         </mj-table>
     </mj-column>
