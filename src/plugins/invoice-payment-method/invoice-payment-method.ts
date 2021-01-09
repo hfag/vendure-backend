@@ -55,6 +55,7 @@ export const InvoicePaymentIntegration = new PaymentMethodHandler({
   createPayment: async function (
     ctx,
     order,
+    amount,
     args,
     metadata
   ): Promise<CreatePaymentResult | CreatePaymentErrorResult> {
