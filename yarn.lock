@@ -11974,10 +11974,10 @@ vendors@^1.0.0:
   resolved "https://registry.yarnpkg.com/vendors/-/vendors-1.0.4.tgz#e2b800a53e7a29b93506c3cf41100d16c4c4ad8e"
   integrity sha512-/juG65kTL4Cy2su4P8HjtkTxk6VmJDiOPBufWniqQ6wknac6jNiXS9vU+hO3wgusiyqWlzTbVHi0dyJqRONg3w==
 
-vendure-bulk-discounts@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/vendure-bulk-discounts/-/vendure-bulk-discounts-0.1.13.tgz#fbca47e308e868a77f26ca7c7d3b956857802f59"
-  integrity sha512-AF82E+N9oCHxP8Y4ERDsdiKWAhZ598ukJ9dKYUockqa6O9y1obFXrYBRHbAx7REuD1l6ywq0N5M+iaL5dng0uQ==
+vendure-bulk-discounts@^0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/vendure-bulk-discounts/-/vendure-bulk-discounts-0.1.16.tgz#3a22802aed497bf2b0446417a23b18a402f8b584"
+  integrity sha512-qgknZ+cs0huLOIxY+8yUO3dHLI3Cp6mvecD2FVkSJVIbS78rpb4fdAXlcnMKjbXuuHlasB7Pn0K9aZYiaXUn6A==
   dependencies:
     tslib "^1.11.1"
 
