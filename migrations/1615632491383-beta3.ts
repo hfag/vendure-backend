@@ -251,10 +251,6 @@ export class beta31615632491383 implements MigrationInterface {
       undefined
     );
     await queryRunner.query(
-      "ALTER TABLE `order_item` DROP FOREIGN KEY `FK_69384323444206753f0cdeb64e0`",
-      undefined
-    );
-    await queryRunner.query(
       "ALTER TABLE `order_item` CHANGE `updatedAt` `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)",
       undefined
     );
@@ -348,10 +344,6 @@ export class beta31615632491383 implements MigrationInterface {
     );
     await queryRunner.query(
       "ALTER TABLE `collection_link_asset` CHANGE `updatedAt` `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)",
-      undefined
-    );
-    await queryRunner.query(
-      "ALTER TABLE `order_item` ADD CONSTRAINT `FK_69384323444206753f0cdeb64e0` FOREIGN KEY (`lineId`) REFERENCES `order_line`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION",
       undefined
     );
   }
