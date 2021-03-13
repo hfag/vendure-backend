@@ -50,7 +50,6 @@ export const config: VendureConfig = {
     AssetServerPlugin.init({
       route: "assets",
       assetUploadDir: path.join(__dirname, "../static/assets"),
-      port: 3001,
     }),
     DefaultSearchPlugin,
     // ElasticsearchPlugin.init({
@@ -92,21 +91,19 @@ export const config: VendureConfig = {
     // }),
     CollectionLinksPlugin,
     EmailPlugin.init({
+      route: "mailbox",
       handlers: extendedHandlers,
       templatePath: path.join(__dirname, "../static/email/templates"),
       devMode: true,
       outputPath: path.join(__dirname, "../static/email/test-emails"),
-      mailboxPort: 3003,
       globalTemplateVars: {
         // The following variables will change depending on your storefront implementation
         fromAddress: '"Hauser Feuerschutz AG" <info@feuerschutz.ch>',
-        verifyEmailAddressUrl: "http://localhost:8080/verify",
-        passwordResetUrl: "http://localhost:8080/password-reset",
-        changeEmailAddressUrl:
-          "http://localhost:8080/verify-email-address-change",
+        frontendUrl: "https://beta.feuerschutz.ch",
       },
     }),
     AdminUiPlugin.init({
+      route: "admin",
       port: 3002,
       app: {
         path: path.join(__dirname, "..", "admin-ui/admin-ui/dist"),

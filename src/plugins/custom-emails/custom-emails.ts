@@ -102,7 +102,7 @@ const extendedEmailAddressChangeHandler = emailAddressChangeHandler
     subject: "Neue E-Mail bestätigen",
   });
 
-export const extendedHandlers: Array<EmailEventHandler<any, any>> = [
+export const emailHandlers: Array<EmailEventHandler<any, any>> = [
   orderConfirmationCopyHandler,
   extendedConfirmationHandler,
   extendedEmailVerificationHandler,

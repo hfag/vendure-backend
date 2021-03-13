@@ -4,11 +4,8 @@ import {
   CreatePaymentResult,
   CreatePaymentErrorResult,
   SettlePaymentResult,
-  Order,
-  Country,
   TransactionalConnection,
 } from "@vendure/core";
-import { CreateAddressInput } from "@vendure/common/lib/generated-types";
 
 let connection: null | TransactionalConnection = null;
 

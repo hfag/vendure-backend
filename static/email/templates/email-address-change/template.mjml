@@ -33,7 +33,7 @@
           Klicken Sie auf die foglende Schaltfläche um diese E-Mail zu bestätigen:
         </mj-text>
 
-        <mj-button font-family="'Roboto Condensed', sans-serif" background-color="#353535" color="white" href="{{ changeEmailAddressUrl }}?token={{ identifierChangeToken }}">
+        <mj-button font-family="'Roboto Condensed', sans-serif" background-color="#353535" color="white" href="{{ frontendUrl }}/de/neue-email-verifizieren?token={{ identifierChangeToken }}">
           Neue E-Mail bestätigen
         </mj-button>
       </mj-column>
