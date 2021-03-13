@@ -66,8 +66,8 @@ export const InvoicePaymentIntegration = new PaymentMethodHandler({
     }
 
     return {
-      amount: order.total,
-      state: "Settled",
+      amount: amount,
+      state: "Settled" as const,
       transactionId: order.id.toString(),
       metadata: { copyEmail: args.copyEmail },
     };
