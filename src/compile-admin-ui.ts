@@ -5,7 +5,7 @@ import { BulkDiscountsInputModule } from "vendure-bulk-discounts";
 import { ProductRecommendationsInputModule } from "vendure-product-recommendations";
 
 export const ADMIN_UI_EXTENSIONS = [
-  {
+  /*{
     extensionPath: path.join(
       // "/Users/mac/synced-data/Projekte/web-development/node/vendure-product-recommendations/src/ui-extensions/modules/"
       __dirname,
@@ -13,7 +13,7 @@ export const ADMIN_UI_EXTENSIONS = [
     ),
     ngModules: [ProductRecommendationsInputModule],
   },
-  /*{
+  {
     extensionPath: path.join(
       __dirname,
       "../node_modules/vendure-bulk-discounts/ui-extensions/modules/"
