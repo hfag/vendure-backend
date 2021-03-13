@@ -5,7 +5,7 @@ import {
   migrateOrderAdjustmentsToSurcharges,
   migrateOrderItemPromotionsAndTaxes,
   migrateOrderShippingToShippingLines,
-} from "../migration-utils";
+} from "../migration-utils-v018";
 
 export class v0181610204170263 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
