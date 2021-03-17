@@ -6,7 +6,16 @@ import {
   emailAddressChangeHandler,
   EmailEventHandler,
 } from "@vendure/email-plugin";
-import { OrderStateTransitionEvent, LanguageCode } from "@vendure/core";
+import {
+  OrderStateTransitionEvent,
+  LanguageCode,
+  Order,
+  Customer,
+  OrderLine,
+  ProductVariant,
+  OrderItem,
+  AdjustmentType,
+} from "@vendure/core";
 
 const orderConfirmationCopyHandler = new EmailEventListener(
   "order-confirmation-copy"
@@ -14,22 +23,23 @@ const orderConfirmationCopyHandler = new EmailEventListener(
   .on(OrderStateTransitionEvent)
   .filter((event) =>
     event.toState === "PaymentSettled" &&
+    event.fromState !== "Modifying" &&
     event.order?.payments.find((p) => p.method === "invoice")
       ? true
       : false
   )
-  .setFrom(`{{ fromAddress }}`)
   .setRecipient((event) => {
     const payment = event.order.payments.find((p) => p.method === "invoice");
 
     if (!payment) {
       throw new Error(
-        "Internal server error, no invoice payment there even though we just checked for it! Bad interleaving?"
+        "Internal server error, no invoice payment there even though we just checked for it?!?"
       );
     }
 
     return payment.metadata.copyEmail;
   })
+  .setFrom(`{{ fromAddress }}`)
   .setSubject(`New order #{{ order.code }}`)
   .setTemplateVars((event) => ({
     order: event.order,
