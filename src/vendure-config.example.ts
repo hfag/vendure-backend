@@ -2,6 +2,7 @@ import {
   VendureConfig,
   LanguageCode,
   DefaultSearchPlugin,
+  DefaultJobQueuePlugin,
 } from "@vendure/core";
 import { ElasticsearchPlugin } from "@vendure/elasticsearch-plugin";
 import { EmailPlugin } from "@vendure/email-plugin";
@@ -16,7 +17,7 @@ import { ProductGroupKeyPlugin } from "./plugins/product-group-key-plugin/produc
 import { CollectionProductsPlugin } from "./plugins/collection-products/collection-products";
 import { ProductBySlugPlugin } from "./plugins/product-by-slug/product-by-slug";
 import { InvoicePaymentIntegration } from "./plugins/invoice-payment-method/invoice-payment-method";
-import { extendedHandlers } from "./plugins/custom-emails/custom-emails";
+import { emailHandlers } from "./plugins/custom-emails/custom-emails";
 import { CustomerGroupDiscountsPlugin } from "./plugins/customer-group-discounts/customer-group-discounts";
 import { CollectionLinksPlugin } from "./plugins/collection-links";
 import { AssetByNamePlugin } from "./plugins/asset-by-name/asset-by-name";
@@ -51,6 +52,7 @@ export const config: VendureConfig = {
       route: "assets",
       assetUploadDir: path.join(__dirname, "../static/assets"),
     }),
+    DefaultJobQueuePlugin,
     DefaultSearchPlugin,
     // ElasticsearchPlugin.init({
     //   host: "http://localhost",
@@ -89,10 +91,9 @@ export const config: VendureConfig = {
     //     },
     //   },
     // }),
-    CollectionLinksPlugin,
     EmailPlugin.init({
       route: "mailbox",
-      handlers: extendedHandlers,
+      handlers: emailHandlers,
       templatePath: path.join(__dirname, "../static/email/templates"),
       devMode: true,
       outputPath: path.join(__dirname, "../static/email/test-emails"),
@@ -100,6 +101,7 @@ export const config: VendureConfig = {
         // The following variables will change depending on your storefront implementation
         fromAddress: '"Hauser Feuerschutz AG" <info@feuerschutz.ch>',
         frontendUrl: "https://beta.feuerschutz.ch",
+        assetsUrl: "https://vendure.feuerschutz.ch/assets",
       },
     }),
     AdminUiPlugin.init({
@@ -109,6 +111,7 @@ export const config: VendureConfig = {
         path: path.join(__dirname, "..", "admin-ui/admin-ui/dist"),
       },
     }),
+    CollectionLinksPlugin,
     ProductRecommendationsPlugin,
     BulkDiscountPlugin,
     CustomerGroupDiscountsPlugin,
