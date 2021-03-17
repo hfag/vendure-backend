@@ -101,7 +101,7 @@ export const config: VendureConfig = {
         // The following variables will change depending on your storefront implementation
         fromAddress: '"Hauser Feuerschutz AG" <info@feuerschutz.ch>',
         frontendUrl: "https://beta.feuerschutz.ch",
-        assetsUrl: "https://vendure.feuerschutz.ch/assets",
+        assetUrl: "https://vendure.feuerschutz.ch/assets",
       },
     }),
     AdminUiPlugin.init({
