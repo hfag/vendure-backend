@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@nestjs/graphql": "7.6.0",
+    "@types/nodemailer": "^6.4.1",
     "@types/prosemirror-menu": "^1.0.2",
     "@types/prosemirror-model": "^1.7.2",
     "@types/prosemirror-state": "^1.2.5",
