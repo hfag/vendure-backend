@@ -176,11 +176,16 @@
           {{#each order.lines }}
             <tr class="order-row">
               <td>
-                <img alt="{{ productVariant.name }}" style="width: 50px; height: 50px;" src="{{ assetUrl }}/{{ productVariant.featuredAsset.preview }}?w=50&h=50" />
-              </td>
-              <td>{{ quantity }} x {{ productVariant.name }}</td>
-              <td>{{ productVariant.quantity }}</td>
-              <td>CHF {{ formatMoney totalPrice }}</td>
+                    <img alt="{{ productVariant.name }}" style="width: 100px; height: 50px;"
+                        src="{{ ../assetUrl }}/{{ productVariant.featuredAsset.preview }}?preset=small" />
+                </td>
+                <td>
+                    {{ quantity }} x {{ productVariant.name }}
+                    <br />
+                    {{ productVariant.sku }}
+                </td>
+                <td>{{ productVariant.quantity }}</td>
+                <td>CHF {{ formatMoney totalPrice }}</td>
             </tr>
           {{/each}}
           <tr class="order-row">

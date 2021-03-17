@@ -1,10 +1,10 @@
 import {
   EmailEventListener,
-  orderConfirmationHandler,
   emailVerificationHandler,
   passwordResetHandler,
   emailAddressChangeHandler,
   EmailEventHandler,
+  EventWithAsyncData,
 } from "@vendure/email-plugin";
 import {
   OrderStateTransitionEvent,
@@ -15,7 +15,72 @@ import {
   ProductVariant,
   OrderItem,
   AdjustmentType,
+  ShippingMethod,
+  TransactionalConnection,
+  Asset,
+  Injector,
 } from "@vendure/core";
+
+const orderLoadData = async (context: {
+  event: OrderStateTransitionEvent;
+  injector: Injector;
+}) => {
+  const shippingMethods: ShippingMethod[] = [];
+  const featuredAssets: {
+    [productVariantId: string]: Asset;
+  } = {};
+
+  for (const line of context.event.order.shippingLines || []) {
+    let shippingMethod: ShippingMethod | undefined;
+    if (!line.shippingMethod && line.shippingMethodId) {
+      shippingMethod = await context.injector
+        .get(TransactionalConnection)
+        .getRepository(ShippingMethod)
+        .findOne(line.shippingMethodId);
+    } else if (line.shippingMethod) {
+      shippingMethod = line.shippingMethod;
+    }
+    if (shippingMethod) {
+      shippingMethods.push(shippingMethod);
+    }
+  }
+
+  const variants: ProductVariant[] = await context.injector
+    .get(TransactionalConnection)
+    .getRepository(ProductVariant)
+    .findByIds(
+      context.event.order.lines.map((l) => l.productVariant.id),
+      { relations: ["featuredAsset"] }
+    );
+
+  for (const variant of variants) {
+    featuredAssets[variant.id] = variant.featuredAsset;
+  }
+
+  return { shippingMethods, featuredAssets };
+};
+
+const orderSetTemplateVars = (
+  event: EventWithAsyncData<
+    OrderStateTransitionEvent,
+    {
+      shippingMethods: ShippingMethod[];
+      featuredAssets: {
+        [productVariantId: string]: Asset;
+      };
+    }
+  >
+) => ({
+  order: {
+    ...event.order,
+    lines: event.order.lines.map((line) => {
+      line.productVariant.featuredAsset =
+        event.data.featuredAssets[line.productVariant.featuredAsset.id];
+      return line;
+    }),
+  },
+  shippingMethods: event.data.shippingMethods,
+});
 
 const orderConfirmationCopyHandler = new EmailEventListener(
   "order-confirmation-copy"
@@ -28,6 +93,7 @@ const orderConfirmationCopyHandler = new EmailEventListener(
       ? true
       : false
   )
+  .loadData(orderLoadData)
   .setRecipient((event) => {
     const payment = event.order.payments.find((p) => p.method === "invoice");
 
@@ -41,9 +107,7 @@ const orderConfirmationCopyHandler = new EmailEventListener(
   })
   .setFrom(`{{ fromAddress }}`)
   .setSubject(`New order #{{ order.code }}`)
-  .setTemplateVars((event) => ({
-    order: event.order,
-  }))
+  .setTemplateVars(orderSetTemplateVars)
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.de,
@@ -57,7 +121,19 @@ const orderConfirmationCopyHandler = new EmailEventListener(
     subject: "Neue Bestellung #{{ order.code }}",
   });
 
-const extendedConfirmationHandler = orderConfirmationHandler
+const orderConfirmationHandler = new EmailEventListener("order-confirmation")
+  .on(OrderStateTransitionEvent)
+  .filter(
+    (event) =>
+      event.toState === "PaymentSettled" &&
+      event.fromState !== "Modifying" &&
+      !!event.order.customer
+  )
+  .loadData(orderLoadData)
+  .setRecipient((event) => event.order.customer!.emailAddress)
+  .setFrom(`{{ fromAddress }}`)
+  .setSubject(`Order confirmation for #{{ order.code }}`)
+  .setTemplateVars(orderSetTemplateVars)
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.de,
@@ -114,7 +190,7 @@ const extendedEmailAddressChangeHandler = emailAddressChangeHandler
 
 export const emailHandlers: Array<EmailEventHandler<any, any>> = [
   orderConfirmationCopyHandler,
-  extendedConfirmationHandler,
+  orderConfirmationHandler,
   extendedEmailVerificationHandler,
   extendedPasswordResetHandler,
   extendedEmailAddressChangeHandler,
