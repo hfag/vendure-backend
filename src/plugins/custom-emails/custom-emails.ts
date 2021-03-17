@@ -75,7 +75,7 @@ const orderSetTemplateVars = (
     ...event.order,
     lines: event.order.lines.map((line) => {
       line.productVariant.featuredAsset =
-        event.data.featuredAssets[line.productVariant.featuredAsset.id];
+        event.data.featuredAssets[line.productVariant.id];
       return line;
     }),
   },
