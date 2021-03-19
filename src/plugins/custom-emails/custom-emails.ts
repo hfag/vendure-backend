@@ -106,19 +106,19 @@ const orderConfirmationCopyHandler = new EmailEventListener(
     return payment.metadata.copyEmail;
   })
   .setFrom(`{{ fromAddress }}`)
-  .setSubject(`New order #{{ order.code }}`)
+  .setSubject(`New order #{{ order.id }}`)
   .setTemplateVars(orderSetTemplateVars)
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.de,
     templateFile: "body.de.hbs",
-    subject: "Neue Bestellung #{{ order.code }}",
+    subject: "Neue Bestellung #{{ order.id }}",
   })
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.fr,
     templateFile: "body.fr.hbs",
-    subject: "Neue Bestellung #{{ order.code }}",
+    subject: "Neue Bestellung #{{ order.id }}",
   });
 
 const orderConfirmationHandler = new EmailEventListener("order-confirmation")
@@ -132,19 +132,19 @@ const orderConfirmationHandler = new EmailEventListener("order-confirmation")
   .loadData(orderLoadData)
   .setRecipient((event) => event.order.customer!.emailAddress)
   .setFrom(`{{ fromAddress }}`)
-  .setSubject(`Order confirmation for #{{ order.code }}`)
+  .setSubject(`Order confirmation for #{{ order.id }}`)
   .setTemplateVars(orderSetTemplateVars)
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.de,
     templateFile: "body.de.hbs",
-    subject: "Bestellbestätigung für #{{ order.code }}",
+    subject: "Bestellbestätigung für #{{ order.id }}",
   })
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.fr,
     templateFile: "body.fr.hbs",
-    subject: "Bestellbestätigung für #{{ order.code }}",
+    subject: "Bestellbestätigung für #{{ order.id }}",
   });
 
 const extendedEmailVerificationHandler = emailVerificationHandler

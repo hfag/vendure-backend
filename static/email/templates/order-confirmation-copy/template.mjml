@@ -77,7 +77,7 @@
     <mj-section css-class="callout">
       <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Bestellnummer</strong></mj-text>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">{{ order.code }}</mj-text>
+        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">{{ order.id }}</mj-text>
       </mj-column>
       <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Bestelldatum</strong></mj-text>
