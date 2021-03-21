@@ -11,7 +11,6 @@ import { AdminUiPlugin } from "@vendure/admin-ui-plugin";
 import path from "path";
 
 import { ProductRecommendationsPlugin } from "vendure-product-recommendations";
-import { BulkDiscountPlugin } from "vendure-bulk-discounts";
 import { ProductMinimumOrderQuantityPlugin } from "./plugins/product-minimum-order-quantity/product-minimum-order-quantity";
 import { ProductGroupKeyPlugin } from "./plugins/product-group-key-plugin/product-group-key";
 import { CollectionProductsPlugin } from "./plugins/collection-products/collection-products";
@@ -22,6 +21,7 @@ import { CustomerGroupDiscountsPlugin } from "./plugins/customer-group-discounts
 import { CollectionLinksPlugin } from "./plugins/collection-links";
 import { AssetByNamePlugin } from "./plugins/asset-by-name/asset-by-name";
 import { ADMIN_UI_EXTENSIONS } from "./compile-admin-ui";
+import { BulkDiscountPlugin } from "./plugins/vendure-bulk-discounts";
 
 export const config: VendureConfig = {
   defaultLanguageCode: LanguageCode.de,

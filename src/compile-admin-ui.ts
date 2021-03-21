@@ -1,8 +1,6 @@
 import { compileUiExtensions } from "@vendure/ui-devkit/compiler";
 import * as path from "path";
-import { CollectionLinkInputModule } from "./plugins/collection-links";
-import { BulkDiscountsInputModule } from "vendure-bulk-discounts";
-import { ProductRecommendationsInputModule } from "vendure-product-recommendations";
+import { BulkDiscountsInputModule } from "./plugins/vendure-bulk-discounts";
 
 export const ADMIN_UI_EXTENSIONS = [
   /*{
@@ -12,14 +10,14 @@ export const ADMIN_UI_EXTENSIONS = [
       "../node_modules/vendure-product-recommendations/ui-extensions/modules/"
     ),
     ngModules: [ProductRecommendationsInputModule],
-  },
+  },*/
   {
     extensionPath: path.join(
       __dirname,
-      "../node_modules/vendure-bulk-discounts/ui-extensions/modules/"
+      "plugins/vendure-bulk-discounts/ui-extensions/modules/"
     ),
     ngModules: [BulkDiscountsInputModule],
-  },*/
+  },
 ];
 
 compileUiExtensions({

@@ -3,9 +3,14 @@ import {
   PluginCommonModule,
   PromotionCondition,
   LanguageCode,
+  CustomerService,
 } from "@vendure/core";
 import gql from "graphql-tag";
-import { CustomerResellerDiscountResolver } from "./customer-group-discounts.resolver";
+import {
+  CustomerResellerDiscountResolver,
+  ProductResellerDiscountResolver,
+  ProductVariantResellerDiscountResolver,
+} from "./customer-group-discounts.resolver";
 
 const schemaExtension = gql`
   type ResellerDiscount {
@@ -16,24 +21,84 @@ const schemaExtension = gql`
   extend type Customer {
     resellerDiscounts: [ResellerDiscount!]!
   }
+
+  extend type Product {
+    resellerDiscount: Int!
+  }
+
+  extend type ProductVariant {
+    resellerDiscount: Int!
+  }
 `;
 
-const groupMember = new PromotionCondition({
+let customerService: CustomerService;
+
+const groupMemberAny = new PromotionCondition({
   description: [
     {
       languageCode: LanguageCode.en,
-      value: "If the order is created by a member of group #{ group }",
+      value: "Customer is member of any of the groups with ids { groups }",
     },
   ],
-  code: "group-member",
+  code: "group-member-any",
   args: {
-    group: { type: "int", config: { inputType: "default" } },
+    groups: { type: "string", list: true, config: { inputType: "default" } },
   },
-  check(ctx, order, args) {
-    return order.customer &&
-      order.customer.groups.map((g) => g.id).includes(args.group)
-      ? true
-      : false;
+  init(injector) {
+    customerService = injector.get(CustomerService);
+  },
+  async check(ctx, order, args) {
+    if (!order.customer || !customerService) {
+      return false;
+    }
+
+    const groups = await customerService.getCustomerGroups(
+      ctx,
+      order.customer.id
+    );
+    return groups.reduce<boolean>((b, group) => {
+      return (
+        b ||
+        (args.groups.find((g) => g.toString() === group.id.toString())
+          ? true
+          : false)
+      );
+    }, false);
+  },
+  priorityValue: 10,
+});
+
+const groupMemberAll = new PromotionCondition({
+  description: [
+    {
+      languageCode: LanguageCode.en,
+      value: "Customer is member of all of the groups with ids { groups }",
+    },
+  ],
+  code: "group-member-all",
+  args: {
+    groups: { type: "string", list: true, config: { inputType: "default" } },
+  },
+  init(injector) {
+    customerService = injector.get(CustomerService);
+  },
+  async check(ctx, order, args) {
+    if (!order.customer || !customerService) {
+      return false;
+    }
+
+    const groups = await customerService.getCustomerGroups(
+      ctx,
+      order.customer.id
+    );
+    return args.groups.reduce<boolean>(
+      (b, group) =>
+        b &&
+        (groups.find((g) => g.id.toString() === group.toString())
+          ? true
+          : false),
+      true
+    );
   },
   priorityValue: 10,
 });
@@ -42,20 +107,114 @@ const notGroupMember = new PromotionCondition({
   description: [
     {
       languageCode: LanguageCode.en,
-      value:
-        "If the order is created by a customer who's not a member of #{ group }",
+      value: "Customer isn't a member of any of the groups with ids { groups }",
     },
   ],
   code: "not-group-member",
   args: {
-    group: { type: "int", config: { inputType: "default" } },
+    groups: { type: "string", list: true, config: { inputType: "default" } },
   },
-  check(ctx, order, args) {
+  init(injector) {
+    customerService = injector.get(CustomerService);
+  },
+  async check(ctx, order, args) {
+    if (!customerService) {
+      return false;
+    }
+
+    if (!order.customer) {
+      return true;
+    }
+
+    const groups = await customerService.getCustomerGroups(
+      ctx,
+      order.customer.id
+    );
+
     return (
-      !order.customer ||
-      !order.customer.groups ||
-      order.customer.groups.length === 0 ||
-      !order.customer.groups.map((g) => g.id).includes(args.group)
+      groups.length === 0 ||
+      groups.reduce<boolean>((b, group) => {
+        return (
+          b && !args.groups.find((g) => g.toString() === group.id.toString())
+        );
+      }, true)
+    );
+  },
+  priorityValue: 10,
+});
+
+const groupMemberPrefix = new PromotionCondition({
+  description: [
+    {
+      languageCode: LanguageCode.en,
+      value:
+        'Customer is a member of any group whose name starts with "{ prefix }"',
+    },
+  ],
+  code: "group-member-prefix",
+  args: {
+    prefix: { type: "string", config: { inputType: "default" } },
+  },
+  init(injector) {
+    customerService = injector.get(CustomerService);
+  },
+  async check(ctx, order, args) {
+    if (!customerService) {
+      return false;
+    }
+
+    if (!order.customer) {
+      return true;
+    }
+
+    const groups = await customerService.getCustomerGroups(
+      ctx,
+      order.customer.id
+    );
+
+    return order.customer
+      ? groups.reduce<boolean>((b, group) => {
+          return b || group.name.startsWith(args.prefix);
+        }, false)
+      : false;
+  },
+  priorityValue: 10,
+});
+
+const notGroupMemberPrefix = new PromotionCondition({
+  description: [
+    {
+      languageCode: LanguageCode.en,
+      value:
+        "Customer isn't a member of any group whose name starts with '{ prefix }'",
+    },
+  ],
+  code: "not-group-member-prefix",
+  args: {
+    prefix: { type: "string", config: { inputType: "default" } },
+  },
+  init(injector) {
+    customerService = injector.get(CustomerService);
+  },
+  async check(ctx, order, args) {
+    if (!customerService) {
+      return false;
+    }
+
+    if (!order.customer) {
+      return true;
+    }
+
+    const groups = await customerService.getCustomerGroups(
+      ctx,
+      order.customer.id
+    );
+
+    return (
+      groups.length === 0 ||
+      groups.reduce<boolean>((b, group) => {
+        return b && !group.name.startsWith(args.prefix);
+      }, true)
     );
   },
   priorityValue: 10,
@@ -65,7 +224,11 @@ const notGroupMember = new PromotionCondition({
   imports: [PluginCommonModule],
   shopApiExtensions: {
     schema: schemaExtension,
-    resolvers: [CustomerResellerDiscountResolver],
+    resolvers: [
+      CustomerResellerDiscountResolver,
+      ProductResellerDiscountResolver,
+      ProductVariantResellerDiscountResolver,
+    ],
   },
   configuration: (config) => {
     if (!config.promotionOptions.promotionActions) {
@@ -76,8 +239,11 @@ const notGroupMember = new PromotionCondition({
       config.promotionOptions.promotionConditions = [];
     }
 
-    config.promotionOptions.promotionConditions.push(groupMember);
+    config.promotionOptions.promotionConditions.push(groupMemberAny);
+    config.promotionOptions.promotionConditions.push(groupMemberAll);
     config.promotionOptions.promotionConditions.push(notGroupMember);
+    config.promotionOptions.promotionConditions.push(groupMemberPrefix);
+    config.promotionOptions.promotionConditions.push(notGroupMemberPrefix);
 
     return config;
   },
