@@ -5,7 +5,6 @@ import {
   assertFound,
   RequestContext,
   translateDeep,
-  getEntityOrThrow,
   CollectionService,
   AssetService,
   TransactionalConnection,
@@ -277,8 +276,8 @@ export class CollectionLinkService {
     ctx: RequestContext,
     input: UpdateCollectionLinkAssetInput
   ) {
-    const collectionLinkAsset = await getEntityOrThrow(
-      this.connection,
+    const collectionLinkAsset = await this.connection.getEntityOrThrow(
+      ctx,
       CollectionLinkAsset,
       input.id
     );

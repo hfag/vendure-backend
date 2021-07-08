@@ -6,11 +6,11 @@ import {
   Injector,
   isGraphQlErrorResult,
   NativeAuthenticationMethod,
+  PasswordCipher,
   RequestContext,
   TransactionalConnection,
   User,
 } from "@vendure/core";
-import { PasswordCiper } from "@vendure/core/dist/service/helpers/password-cipher/password-ciper";
 import { DocumentNode } from "graphql";
 import gql from "graphql-tag";
 import fetch from "node-fetch";
@@ -40,14 +40,14 @@ export class LegacyAuthenticationStrategy
   readonly name = "legacy";
   private customerService: CustomerService;
   private connection: TransactionalConnection;
-  private passwordCipher: PasswordCiper;
+  private passwordCipher: PasswordCipher;
 
   constructor(private url: string) {}
 
   init(injector: Injector) {
     this.customerService = injector.get(CustomerService);
     this.connection = injector.get(TransactionalConnection);
-    this.passwordCipher = injector.get(PasswordCiper);
+    this.passwordCipher = injector.get(PasswordCipher);
   }
 
   defineInputType(): DocumentNode {
