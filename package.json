@@ -16,6 +16,9 @@
     "test": "echo 'sometime in the future'",
     "deploy": "yarn build && cp -r dist/migrations/*.js migrations/ && rm migrations/*.ts"
   },
+  "resolutions": {
+    "graphql": "15.5.0"
+  },
   "dependencies": {
     "@angular/forms": "11.2.5",
     "@angular/platform-browser": "11.2.5",
@@ -32,7 +35,7 @@
     "@vendure/email-plugin": "^1.1.0",
     "@vendure/ui-devkit": "^1.1.0",
     "apollo-server-express": "^2.25.2",
-    "graphql": "^15.5.1",
+    "graphql": "15.5.0",
     "graphql-tag": "^2.12.5",
     "mysql": "2.18.1",
     "node-fetch": "^2.6.1",
