@@ -17,31 +17,25 @@
     "deploy": "yarn build && cp -r dist/migrations/*.js migrations/ && rm migrations/*.ts"
   },
   "resolutions": {
-    "graphql": "15.5.0"
+    "graphql": "15.5.1"
   },
   "dependencies": {
-    "@angular/forms": "11.2.5",
-    "@angular/platform-browser": "11.2.5",
-    "@angular/platform-browser-dynamic": "11.2.5",
-    "@angular/router": "11.2.5",
-    "@nestjs/graphql": "7.10.6",
     "@types/node-fetch": "^2.5.11",
     "@types/nodemailer": "^6.4.1",
-    "@vendure/admin-ui": "^1.1.0",
-    "@vendure/admin-ui-plugin": "^1.1.0",
-    "@vendure/asset-server-plugin": "^1.1.0",
-    "@vendure/core": "^1.1.0",
-    "@vendure/elasticsearch-plugin": "^1.1.0",
-    "@vendure/email-plugin": "^1.1.0",
-    "@vendure/ui-devkit": "^1.1.0",
-    "apollo-server-express": "^2.25.2",
-    "graphql": "15.5.0",
+    "@vendure/admin-ui": "^1.2.0",
+    "@vendure/admin-ui-plugin": "^1.2.0",
+    "@vendure/asset-server-plugin": "^1.2.0",
+    "@vendure/core": "^1.2.0",
+    "@vendure/elasticsearch-plugin": "^1.2.0",
+    "@vendure/email-plugin": "^1.2.0",
+    "@vendure/ui-devkit": "^1.2.0",
+    "graphql": "15.5.1",
     "graphql-tag": "^2.12.5",
     "mysql": "2.18.1",
     "node-fetch": "^2.6.1",
     "rimraf": "^3.0.2",
-    "typescript": "4.0.2",
-    "vendure-product-recommendations": "^0.1.19"
+    "typescript": "4.3.5",
+    "vendure-product-recommendations": "^0.1.21"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
