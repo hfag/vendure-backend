@@ -24,7 +24,13 @@ const adminSchemaExtension = gql`
     config.customFields.Product.push({
       type: "string",
       name: "groupKey",
-      label: [{ languageCode: LanguageCode.en, value: "Product group key" }],
+      label: [
+        { languageCode: LanguageCode.en, value: "Product group key" },
+        {
+          languageCode: LanguageCode.de,
+          value: "Produktgruppenbezeichnung",
+        },
+      ],
     });
     return config;
   },

@@ -27,6 +27,10 @@ const always = new PromotionCondition({
       languageCode: LanguageCode.en,
       value: "Always",
     },
+    {
+      languageCode: LanguageCode.de,
+      value: "Immer",
+    },
   ],
   code: "always",
   args: {},
@@ -46,6 +50,10 @@ const applyBulkDiscount = new PromotionItemAction({
     {
       languageCode: LanguageCode.en,
       value: "Apply bulk discount configured in the product variants ",
+    },
+    {
+      languageCode: LanguageCode.de,
+      value: "Mengenrabatte anwenden die bei den Varianten konfiguriert sind",
     },
   ],
   code: "bulk-discount",
@@ -154,7 +162,10 @@ const shopSchemaExtension = gql`
     config.customFields.ProductVariant.push({
       name: "bulkDiscountEnabled",
       type: "boolean",
-      label: [{ languageCode: LanguageCode.en, value: "Has bulk discounts" }],
+      label: [
+        { languageCode: LanguageCode.en, value: "Has bulk discounts" },
+        { languageCode: LanguageCode.de, value: "Hat Mengenrabatte" },
+      ],
     });
 
     return config;

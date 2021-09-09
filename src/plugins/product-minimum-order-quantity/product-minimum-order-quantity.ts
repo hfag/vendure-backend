@@ -13,6 +13,7 @@ import {
       name: "minimumOrderQuantity",
       label: [
         { languageCode: LanguageCode.en, value: "Minimum order quantity" },
+        { languageCode: LanguageCode.de, value: "Minimale Bestellmenge" },
       ],
     });
     return config;

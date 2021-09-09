@@ -39,6 +39,10 @@ const groupMemberAny = new PromotionCondition({
       languageCode: LanguageCode.en,
       value: "Customer is member of any of the groups with ids { groups }",
     },
+    {
+      languageCode: LanguageCode.de,
+      value: "Der Kunde ist Mitglied einer Gruppe mit einer der IDs { groups }",
+    },
   ],
   code: "group-member-any",
   args: {
@@ -74,6 +78,10 @@ const groupMemberAll = new PromotionCondition({
       languageCode: LanguageCode.en,
       value: "Customer is member of all of the groups with ids { groups }",
     },
+    {
+      languageCode: LanguageCode.de,
+      value: "Der Kunde ist Mitglied aller Gruppen mit den IDs { groups }",
+    },
   ],
   code: "group-member-all",
   args: {
@@ -108,6 +116,10 @@ const notGroupMember = new PromotionCondition({
     {
       languageCode: LanguageCode.en,
       value: "Customer isn't a member of any of the groups with ids { groups }",
+    },
+    {
+      languageCode: LanguageCode.de,
+      value: "Der Kunde ist nicht Mitglied einer Gruppe mit den IDs { groups }",
     },
   ],
   code: "not-group-member",
@@ -150,6 +162,11 @@ const groupMemberPrefix = new PromotionCondition({
       value:
         'Customer is a member of any group whose name starts with "{ prefix }"',
     },
+    {
+      languageCode: LanguageCode.de,
+      value:
+        'Der Kunde ist Mitglied einer Gruppe deren Name mit "{ prefix }" beginnt',
+    },
   ],
   code: "group-member-prefix",
   args: {
@@ -187,6 +204,11 @@ const notGroupMemberPrefix = new PromotionCondition({
       languageCode: LanguageCode.en,
       value:
         "Customer isn't a member of any group whose name starts with '{ prefix }'",
+    },
+    {
+      languageCode: LanguageCode.de,
+      value:
+        'Der Kunde ist nicht Mitglied einer Gruppe deren Name mit "{ prefix }" beginnt',
     },
   ],
   code: "not-group-member-prefix",
