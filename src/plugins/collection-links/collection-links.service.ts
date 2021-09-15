@@ -138,7 +138,7 @@ export class CollectionLinkService {
       case "url":
         const url = await this.connection
           .getRepository(CollectionLinkUrl)
-          .findOne({ where: { collectionLinkId: collectionLink.id } });
+          .findOne({ where: { collectionLink } });
         if (!url) {
           return;
         }
@@ -152,7 +152,7 @@ export class CollectionLinkService {
       case "asset":
         const asset = await this.connection
           .getRepository(CollectionLinkAsset)
-          .findOne({ where: { collectionLinkId: collectionLink.id } });
+          .findOne({ where: { collectionLink } });
         if (!asset) {
           return;
         }
