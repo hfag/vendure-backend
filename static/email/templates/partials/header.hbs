@@ -5,6 +5,11 @@
             href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400" />
         <mj-raw>
             <style type="text/css">
+                .print-only {
+                    display: none;
+                    width: 0px;
+                }
+
                 @media print {
                     body .callout, body .print-white, body .print-white>table, body .bg-off-white {
                         background-color: #FFFFFF !important;
@@ -56,6 +61,10 @@
 
                     body .logo{
                         padding-bottom: 16px;
+                    }
+
+                    .print-only {
+                        display: block !important;
                     }
                 }
             </style>
