@@ -168,7 +168,7 @@
                     {{ productVariant.sku }}
                 </td>
                 <td>{{ productVariant.quantity }}</td>
-                <td>CHF {{ formatMoney totalPrice }}</td>
+                <td>CHF {{ formatMoney linePriceWithTax }}</td>
             </tr>
             {{/each}}
             <tr class="order-row">
