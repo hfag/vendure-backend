@@ -12,12 +12,6 @@
   </mj-head>
   <mj-body>
 
-    <mj-section background-color="#e3e3e3">
-      <mj-column>
-        <mj-image align="left" width="500px" src="http://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
-      </mj-column>
-    </mj-section>
-
     <mj-raw>
       <style type="text/css">
         .callout {
@@ -38,6 +32,20 @@
           color: #fff !important;
           font-size: 14px !important;
           padding: 0;
+        }
+
+        @media print {
+          .callout, .print-white, .print-white>table, .bg-off-white {
+            background-color: #FFFFFF !important;
+          }
+
+          .print-text-black, .callout-large>div, .callout-small>div {
+            color: #000 !important;
+          }
+
+          .print-invisible {
+            display: none !important;
+          }
         }
 
         ul.address {
@@ -62,6 +70,12 @@
         }
       </style>
     </mj-raw>
+
+    <mj-section css-class="print-white" background-color="#e3e3e3">
+      <mj-column>
+        <mj-image align="left" width="500px" src="http://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
+      </mj-column>
+    </mj-section>
 
     <mj-section background-color="white">
       <mj-column>
@@ -194,18 +208,18 @@
       </mj-column>
     </mj-section>
 
-    <mj-section background-color="#fafafa">
+    <mj-section css-class="print-white" background-color="#fafafa">
       <mj-column>
-        <mj-text color="#525252" font-family="'Roboto Condensed', sans-serif">
+        <mj-text css-class="print-text-black" color="#525252" font-family="'Roboto Condensed', sans-serif">
           Ihre Hauser Feuerschutz AG
         </mj-text>
       </mj-column>
     </mj-section>
 
-    <mj-section background-color="#e3e3e3">
+    <mj-section css-class="print-white print-invisible" background-color="#e3e3e3">
       <mj-column width="50%">
         <mj-image align="left" src="http://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
-        <mj-text font-family="'Roboto Condensed', sans-serif" font-size="12px" line-height="1.5" color="#525252">
+        <mj-text css-class="print-text-black" font-family="'Roboto Condensed', sans-serif" font-size="12px" line-height="1.5" color="#525252">
           Die 1970 gegründete Firma bietet Ihnen Dienstleistungen und Produkte an in den Bereichen Sicherheitskennzeichnung, Trittschutz und Feuerschutz.
         </mj-text>
       </mj-column>

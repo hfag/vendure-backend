@@ -1,4 +1,4 @@
-{{> header.fr title="Bestellbeleg" }}
+{{> header.fr title="Document d'ordre" }}
 
 <mj-raw>
     <style type="text/css">
@@ -48,8 +48,8 @@
 <mj-section background-color="white">
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
-            Vielen Dank für Ihre Bestellung!
-            Ihr Kommentar:
+            Merci pour votre commande !
+            Votre commentaire:
             {{ order.customFields.notes }}
         </mj-text>
     </mj-column>
@@ -83,7 +83,7 @@
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
             {{#with order.billingAddress }}
-            <h3>Wird versendet an: {{ fullName }}</h3>
+            <h3>Facture à: {{ fullName }}</h3>
             <ul class="address">
                 {{#if company}}
                 <li>{{ company }}</li>
@@ -116,7 +116,7 @@
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
             {{#with order.shippingAddress }}
-            <h3>Wird versendet an: {{ fullName }}</h3>
+            <h3>Livraison à: {{ fullName }}</h3>
             <ul class="address">
                 {{#if company}}
                 <li>{{ company }}</li>
@@ -151,7 +151,7 @@
 <mj-section background-color="#ffffff">
     <mj-column>
         <mj-text>
-            <h3>Zusammenfassung:</h3>
+            <h3>Résumé:</h3>
         </mj-text>
         <mj-table cellpadding="6px">
             {{#each order.lines }}

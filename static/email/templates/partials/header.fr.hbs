@@ -3,17 +3,66 @@
         <mj-title>{{ title }}</mj-title>
         <mj-font name="Roboto Condensed"
             href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400" />
-        <mj-style inline="inline">
-            /*h3 {
-            font-size: 18px;
-            color: #555;
-            font-weight: normal;
-            }*/
-        </mj-style>
+        <mj-raw>
+            <style type="text/css">
+                @media print {
+                    body .callout, body .print-white, body .print-white>table, body .bg-off-white {
+                        background-color: #FFFFFF !important;
+                    }
+
+                    body .print-text-black, body .callout-large>div, body .callout-small>div {
+                        color: #000 !important;
+                    }
+
+                    body .print-invisible {
+                        display: none !important;
+                    }
+
+                    body table td {
+                        padding-top: 0 !important;
+                        padding-bottom: 0 !important;
+                    }
+
+                    body .print-collapse-table table, body .print-collapse-table thead, body .print-collapse-table tbody, body .print-collapse-table tr, body .print-collapse-table td, body .print-collapse-table td>div {
+                        display: block !important;
+                        padding-top: 0 !important;
+                        padding-bottom: 0 !important;
+                    }
+
+                    body .print-collapse-table td div table, body .print-collapse-table td div thead, body .print-collapse-table td div tbody, body .print-collapse-table td div tr, body .print-collapse-table td div td {
+                        display: inline-block !important;
+                        padding-top: 0 !important;
+                        padding-bottom: 0 !important;
+                    }
+
+                    body .callout-large>div>strong{
+                        font-weight: normal;
+                        font-size: 13px;
+                    }
+
+                    body .callout-large>div>strong::after{
+                        content:":";
+                    }
+
+                    
+                    body .callout-small{
+                        padding: 0 !important;
+                    }
+
+                    body .print-fix-50{
+                        width: 50% !important;
+                    }
+
+                    body .logo{
+                        padding-bottom: 16px;
+                    }
+                }
+            </style>
+        </mj-raw>
     </mj-head>
     <mj-body>
 
-        <mj-section background-color="#e3e3e3">
+        <mj-section css-class="print-white logo" background-color="#e3e3e3">
             <mj-column>
                 <mj-image align="left" width="500px"
                     src="http://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
@@ -21,10 +70,10 @@
         </mj-section>
         {{#if noGreetings}}
         {{else}}
-        <mj-section background-color="#fafafa">
+        <mj-section css-class="print-white" background-color="#fafafa">
             <mj-column>
-                <mj-text color="#525252" font-family="'Roboto Condensed', sans-serif">
-                    Sehr geehrter Kunde
+                <mj-text css-class="print-text-black" color="#525252" font-family="'Roboto Condensed', sans-serif">
+                    Cher client
                 </mj-text>
             </mj-column>
         </mj-section>

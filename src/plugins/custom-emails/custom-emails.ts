@@ -19,6 +19,7 @@ import {
   TransactionalConnection,
   Asset,
   Injector,
+  Payment,
 } from "@vendure/core";
 
 const orderLoadData = async (context: {
@@ -82,6 +83,55 @@ const orderSetTemplateVars = (
   shippingMethods: event.data.shippingMethods,
 });
 
+export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
+  "ArrangingPayment",
+  "PaymentSettled",
+  {} as any,
+  new Order({
+    id: 1,
+    billingAddress: {
+      city: "Night City",
+      province: "California",
+      phoneNumber: "+41 00 000 00 00",
+      postalCode: "0000",
+      streetLine1: "Street #NUM",
+    },
+    shippingAddress: {
+      city: "Night City",
+      province: "California",
+      phoneNumber: "+41 00 000 00 00",
+      postalCode: "0000",
+      streetLine1: "Street #NUM",
+    },
+    state: "PaymentSettled",
+    payments: [
+      new Payment({
+        method: "invoice",
+        //@ts-ignore
+        metadata: { copyEmail: "copy@email.com" },
+      }),
+    ],
+    lines: [
+      new OrderLine({
+        productVariant: {
+          name: "Dummy Product",
+          priceWithTax: 0.5,
+          price: 0.5,
+          sku: "sku",
+        },
+        items: [new OrderItem({ listPrice: 0.5, listPriceIncludesTax: true })],
+      }),
+    ],
+    customer: new Customer({
+      id: 1,
+      firstName: "John",
+      lastName: "Doe",
+      emailAddress: "john@doe.us",
+      phoneNumber: "+41 00 000 00 00",
+    }),
+  })
+);
+
 const orderConfirmationCopyHandler = new EmailEventListener(
   "order-confirmation-copy"
 )
@@ -119,7 +169,8 @@ const orderConfirmationCopyHandler = new EmailEventListener(
     languageCode: LanguageCode.fr,
     templateFile: "body.fr.hbs",
     subject: "Neue Bestellung #{{ order.id }}",
-  });
+  })
+  .setMockEvent(mockOrderStateTransitionEvent);
 
 const orderConfirmationHandler = new EmailEventListener("order-confirmation")
   .on(OrderStateTransitionEvent)
@@ -145,7 +196,8 @@ const orderConfirmationHandler = new EmailEventListener("order-confirmation")
     languageCode: LanguageCode.fr,
     templateFile: "body.fr.hbs",
     subject: "Bestellbestätigung für #{{ order.id }}",
-  });
+  })
+  .setMockEvent(mockOrderStateTransitionEvent);
 
 const extendedEmailVerificationHandler = emailVerificationHandler
   .addTemplate({
