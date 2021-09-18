@@ -56,7 +56,7 @@
 </mj-section>
 
 
-<mj-section css-class="callout">
+<mj-section css-class="callout print-collapse-table">
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Bestellnummer</strong>
         </mj-text>
@@ -80,7 +80,7 @@
 
 
 <mj-section css-class="bg-off-white">
-    <mj-column>
+    <mj-column css-class="print-fix-50">
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
             {{#with order.billingAddress }}
             <h3>Facture à: {{ fullName }}</h3>
@@ -113,7 +113,7 @@
             {{/with}}
         </mj-text>
     </mj-column>
-    <mj-column>
+    <mj-column css-class="print-fix-50">
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
             {{#with order.shippingAddress }}
             <h3>Livraison à: {{ fullName }}</h3>
@@ -157,7 +157,7 @@
             {{#each order.lines }}
             <tr class="order-row">
                 <td>
-                    <img alt="{{ productVariant.name }}" style="width: 100px; height: 50px;"
+                    <img class="print-invisible" alt="{{ productVariant.name }}" style="width: 100px; height: 50px;"
                         src="{{ ../assetUrl }}/{{ productVariant.featuredAsset.preview }}?preset=small" />
                 </td>
                 <td>
