@@ -49,8 +49,6 @@
     <mj-column>
         <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
             Vielen Dank für Ihre Bestellung!
-            Ihr Kommentar:
-            {{ order.customFields.notes }}
         </mj-text>
     </mj-column>
 </mj-section>
@@ -69,7 +67,7 @@
             {{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}
         </mj-text>
     </mj-column>
-    <mj-column>
+    <mj-column css-class="print-invisible">
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Gesamtbetrag</strong>
         </mj-text>
         <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">
@@ -150,7 +148,7 @@
 
 <mj-section background-color="#ffffff">
     <mj-column>
-        <mj-text>
+        <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
             <h3>Zusammenfassung:</h3>
         </mj-text>
         <mj-table cellpadding="6px" font-family="'Roboto Condensed', sans-serif">
@@ -182,6 +180,14 @@
                 <td>CHF {{ formatMoney order.total }}</td>
             </tr>
         </mj-table>
+    </mj-column>
+</mj-section>
+
+<mj-section background-color="white">
+    <mj-column>
+        <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
+            Ihr Kommentar: {{ order.customFields.notes }}
+        </mj-text>
     </mj-column>
 </mj-section>
 
