@@ -1,27 +1,27 @@
 import {
-  Args,
-  Mutation,
-  Resolver,
-  Query,
-  ResolveField,
-  Parent,
-} from "@nestjs/graphql";
-import {
   Allow,
   Ctx,
-  RequestContext,
   ID,
-  ProductService,
   Product,
+  ProductService,
   ProductVariant,
   ProductVariantService,
+  RequestContext,
   Transaction,
 } from "@vendure/core";
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from "@nestjs/graphql";
 import { Permission } from "@vendure/common/lib/generated-types";
 
-import { BulkDiscountService } from "./bulk-discount.service";
 import { BulkDiscount } from "./bulk-discount.entity";
 import { BulkDiscountInput } from ".";
+import { BulkDiscountService } from "./bulk-discount.service";
 import { Translated } from "@vendure/core/dist/common/types/locale-types";
 
 @Resolver()
@@ -40,7 +40,7 @@ export class BulkDiscountAdminResolver {
         discounts: BulkDiscountInput["discounts"];
       }[];
     }
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     const promises: Promise<any>[] = [];
 
     for (const discount of args.updates) {

@@ -1,21 +1,21 @@
-import {
-  NgModule,
-  Component,
-  OnInit,
-  OnDestroy,
-  ChangeDetectorRef,
-} from "@angular/core";
-import { notify } from "@vendure/ui-devkit";
-import { FormControl } from "@angular/forms";
-import {
-  SharedModule,
-  CustomFieldControl,
-  CustomFieldConfigType,
-  registerCustomFieldComponent,
-  DataService,
-} from "@vendure/admin-ui/core";
 import { ActivatedRoute } from "@angular/router";
+import {
+  ChangeDetectorRef,
+  Component,
+  NgModule,
+  OnDestroy,
+  OnInit,
+} from "@angular/core";
+import {
+  CustomFieldConfigType,
+  CustomFieldControl,
+  DataService,
+  SharedModule,
+  registerCustomFieldComponent,
+} from "@vendure/admin-ui/core";
+import { FormControl } from "@angular/forms";
 import { ID } from "@vendure/core";
+import { notify } from "@vendure/ui-devkit";
 import { parse } from "graphql";
 
 @Component({
@@ -80,7 +80,8 @@ import { parse } from "graphql";
   `,
 })
 export class BulkDiscountControl
-  implements CustomFieldControl, OnInit, OnDestroy {
+  implements CustomFieldControl, OnInit, OnDestroy
+{
   config: CustomFieldConfigType;
   readonly: boolean;
   formControl: FormControl;
@@ -175,24 +176,30 @@ export class BulkDiscountControl
       this.dataService
         .mutate<
           {
-            updateProductBulkDiscount: boolean;
+            updateBulkDiscounts: boolean;
           },
           {
-            productVariantSku: ID;
-            discounts: { quantity: number; price: number }[];
+            updates: {
+              productVariantSku: ID;
+              discounts: { quantity: number; price: number }[];
+            }[];
           }
         >(
           parse(
-            `mutation updateProductVariantBulkDiscountsBySku($productVariantSku: String!, $discounts: [BulkDiscountInput!]!) {
-              updateProductVariantBulkDiscountsBySku(productVariantSku: $productVariantSku, discounts: $discounts)
+            `mutation UpdateBulkDiscounts($updates: [BulkDiscountUpdate!]!) {
+              updateBulkDiscounts(updated: $updates)
             }`
           ),
           {
-            productVariantSku: this.productVariantSku,
-            discounts: this.discounts.map((d) => ({
-              quantity: d.quantity,
-              price: d.price * 100,
-            })),
+            updates: [
+              {
+                productVariantSku: this.productVariantSku,
+                discounts: this.discounts.map((d) => ({
+                  quantity: d.quantity,
+                  price: d.price * 100,
+                })),
+              },
+            ],
           }
         )
         .toPromise()

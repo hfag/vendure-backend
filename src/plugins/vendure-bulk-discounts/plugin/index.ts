@@ -1,20 +1,20 @@
-import {
-  VendurePlugin,
-  PluginCommonModule,
-  PromotionCondition,
-  LanguageCode,
-  ID,
-  PromotionItemAction,
-} from "@vendure/core";
-import gql from "graphql-tag";
 import { BulkDiscount } from "./bulk-discount.entity";
 import {
   BulkDiscountAdminResolver,
-  BulkDiscountShopResolver,
   BulkDiscountEntityResolver,
+  BulkDiscountShopResolver,
   ProductVariantEntityResolver,
 } from "./bulk-discount.resolver";
 import { BulkDiscountService } from "./bulk-discount.service";
+import {
+  ID,
+  LanguageCode,
+  PluginCommonModule,
+  PromotionCondition,
+  PromotionItemAction,
+  VendurePlugin,
+} from "@vendure/core";
+import gql from "graphql-tag";
 
 export type BulkDiscountInput = {
   productVariantId: ID;
@@ -102,9 +102,7 @@ const adminSchemaExtension = gql`
   }
 
   extend type Mutation {
-    updateBulkDiscounts(
-      updates: [BulkDiscountUpdate!]!
-    ): Boolean!
+    updateBulkDiscounts(updates: [BulkDiscountUpdate!]!): Boolean!
   }
 
   extend type ProductVariant {

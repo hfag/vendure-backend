@@ -1,11 +1,11 @@
 import {
-  VendurePlugin,
-  PluginCommonModule,
   ID,
   LanguageCode,
+  PluginCommonModule,
+  VendurePlugin,
 } from "@vendure/core";
-import gql from "graphql-tag";
 import { ProductGroupKeyAdminResolver } from "./product-group-key.resolver";
+import gql from "graphql-tag";
 
 const adminSchemaExtension = gql`
   extend type Query {
