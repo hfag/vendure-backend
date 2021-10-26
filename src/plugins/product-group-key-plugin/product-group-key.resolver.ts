@@ -21,7 +21,9 @@ export class ProductGroupKeyAdminResolver {
     return this.connection
       .getRepository(Product)
       .createQueryBuilder("product")
-      .where("customFieldsGroupkey = :key", { key: args.productGroupKey })
+      .where("customFieldsGroupkey = :key AND deletedAt IS NULL", {
+        key: args.productGroupKey,
+      })
       .getOne();
   }
 
@@ -33,7 +35,9 @@ export class ProductGroupKeyAdminResolver {
     return this.connection
       .getRepository(Product)
       .createQueryBuilder("product")
-      .where("customFieldsGroupkey IN (:keys)", { keys: args.productGroupKeys })
+      .where("customFieldsGroupkey IN (:keys) AND deletedAt IS NULL", {
+        keys: args.productGroupKeys,
+      })
       .getMany();
   }
 }

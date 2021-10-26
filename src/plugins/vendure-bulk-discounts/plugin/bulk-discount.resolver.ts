@@ -31,102 +31,55 @@ export class BulkDiscountAdminResolver {
   @Transaction()
   @Mutation()
   @Allow(Permission.UpdateCatalog)
-  async updateProductVariantBulkDiscounts(
+  async updateBulkDiscounts(
     @Ctx() ctx: RequestContext,
     @Args()
     args: {
-      productVariantId: ID;
-      discounts: BulkDiscountInput["discounts"];
+      updates: {
+        productVariantId: ID;
+        discounts: BulkDiscountInput["discounts"];
+      }[];
     }
   ): Promise<Boolean> {
-    const discounts = await this.bulkDiscountService.findAll({
-      where: { productVariant: args.productVariantId },
-    });
+    const promises: Promise<any>[] = [];
 
-    if (discounts.length < args.discounts.length) {
-      this.bulkDiscountService.create({
-        productVariantId: args.productVariantId,
-        discounts: args.discounts.slice(
-          discounts.length,
-          args.discounts.length
-        ),
+    for (const discount of args.updates) {
+      const discounts = await this.bulkDiscountService.findAll({
+        where: { productVariant: discount.productVariantId },
       });
-    } else if (args.discounts.length < discounts.length) {
-      this.bulkDiscountService.delete(
-        discounts
-          .slice(args.discounts.length, discounts.length)
-          .map((d) => d.id)
-      );
+
+      if (discounts.length < discount.discounts.length) {
+        promises.push(
+          this.bulkDiscountService.create({
+            productVariantId: discount.productVariantId,
+            discounts: discount.discounts.slice(
+              discounts.length,
+              discount.discounts.length
+            ),
+          })
+        );
+      } else if (discount.discounts.length < discounts.length) {
+        promises.push(
+          this.bulkDiscountService.delete(
+            discounts
+              .slice(discount.discounts.length, discounts.length)
+              .map((d) => d.id)
+          )
+        );
+      }
+
+      for (let i = 0; i < discounts.length; i++) {
+        promises.push(
+          this.bulkDiscountService.update(
+            discounts[i].id,
+            discount.discounts[i].quantity,
+            discount.discounts[i].price
+          )
+        );
+      }
     }
 
-    const updates = [];
-
-    for (let i = 0; i < discounts.length; i++) {
-      updates.push(
-        this.bulkDiscountService.update(
-          discounts[i].id,
-          args.discounts[i].quantity,
-          args.discounts[i].price
-        )
-      );
-    }
-
-    await Promise.all(updates);
-
-    return true;
-  }
-
-  @Transaction()
-  @Mutation()
-  @Allow(Permission.UpdateCatalog)
-  async updateProductVariantBulkDiscountsBySku(
-    @Ctx() ctx: RequestContext,
-    @Args()
-    args: {
-      productVariantSku: string;
-      discounts: BulkDiscountInput["discounts"];
-    }
-  ): Promise<Boolean> {
-    const productVariantId = await this.bulkDiscountService.findProductVariantIdBySku(
-      args.productVariantSku
-    );
-
-    let discounts = await this.bulkDiscountService.findAll({
-      where: { productVariant: productVariantId },
-    });
-
-    if (discounts.length < args.discounts.length) {
-      discounts = discounts.concat(
-        await this.bulkDiscountService.create({
-          productVariantId: productVariantId,
-          discounts: args.discounts.slice(
-            discounts.length,
-            args.discounts.length
-          ),
-        })
-      );
-    } else if (args.discounts.length < discounts.length) {
-      await this.bulkDiscountService.delete(
-        discounts
-          .slice(args.discounts.length, discounts.length)
-          .map((d) => d.id)
-      );
-      //won't be accessed below so don't delete them from 'discounts'
-    }
-
-    const updates = [];
-
-    for (let i = 0; i < discounts.length; i++) {
-      updates.push(
-        this.bulkDiscountService.update(
-          discounts[i].id,
-          args.discounts[i].quantity,
-          args.discounts[i].price
-        )
-      );
-    }
-
-    await Promise.all(updates);
+    await Promise.all(promises);
 
     return true;
   }

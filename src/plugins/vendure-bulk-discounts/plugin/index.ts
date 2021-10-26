@@ -92,18 +92,18 @@ const adminSchemaExtension = gql`
     price: Int!
   }
 
+  input BulkDiscountUpdate {
+    productVariantId: ID!
+    discounts: [BulkDiscountInput!]!
+  }
+
   extend type Query {
     productBulkDiscounts(productId: ID!): [BulkDiscount!]!
   }
 
   extend type Mutation {
-    updateProductVariantBulkDiscounts(
-      productVariantId: ID!
-      discounts: [BulkDiscountInput!]!
-    ): Boolean!
-    updateProductVariantBulkDiscountsBySku(
-      productVariantSku: String!
-      discounts: [BulkDiscountInput!]!
+    updateBulkDiscounts(
+      updates: [BulkDiscountUpdate!]!
     ): Boolean!
   }
 
