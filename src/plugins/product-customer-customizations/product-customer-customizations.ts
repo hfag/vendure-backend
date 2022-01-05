@@ -51,6 +51,7 @@ const shopSchemaExtension = gql`
         },
       ],
     });
+
     return config;
   },
 })

@@ -164,21 +164,23 @@
                     {{ quantity }} x {{ productVariant.name }}
                     <br />
                     {{ productVariant.sku }}
+                    <br />
+                    {{ description }}
                 </td>
                 <td class="print-only"></td>
                 <td>CHF {{ formatMoney linePriceWithTax }}</td>
             </tr>
             {{/each}}
             <tr class="order-row">
-                <td colspan="2">Subtotal:</td>
+                <td colspan="3">Subtotal:</td>
                 <td>CHF {{ formatMoney order.subTotal }}</td>
             </tr>
             <tr class="order-row">
-                <td colspan="2">Versand:</td>
+                <td colspan="3">Versand:</td>
                 <td>CHF {{ formatMoney order.shipping }}</td>
             </tr>
             <tr class="order-row total-row">
-                <td colspan="2">Total:</td>
+                <td colspan="3">Total:</td>
                 <td>CHF {{ formatMoney order.total }}</td>
             </tr>
         </mj-table>

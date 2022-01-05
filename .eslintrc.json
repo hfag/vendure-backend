@@ -21,7 +21,6 @@
   "plugins": ["@typescript-eslint", "sort-imports-es6-autofix"],
   "rules": {
     "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "double"],
     "semi": ["error", "always"],
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",

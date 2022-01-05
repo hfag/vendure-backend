@@ -187,6 +187,8 @@
                     {{ quantity }} x {{ productVariant.name }}
                     <br />
                     {{ productVariant.sku }}
+                    <br />
+                    {{ description }}
                 </td>
                 <td>{{ productVariant.quantity }}</td>
                 <td>CHF {{ formatMoney totalPrice }}</td>

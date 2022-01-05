@@ -1,26 +1,26 @@
 import {
-  EmailEventListener,
-  emailVerificationHandler,
-  passwordResetHandler,
-  emailAddressChangeHandler,
-  EmailEventHandler,
-  EventWithAsyncData,
-} from "@vendure/email-plugin";
-import {
-  OrderStateTransitionEvent,
+  AdjustmentType,
+  Asset,
+  Customer,
+  Injector,
   LanguageCode,
   Order,
-  Customer,
-  OrderLine,
-  ProductVariant,
   OrderItem,
-  AdjustmentType,
+  OrderLine,
+  OrderStateTransitionEvent,
+  Payment,
+  ProductVariant,
   ShippingMethod,
   TransactionalConnection,
-  Asset,
-  Injector,
-  Payment,
 } from "@vendure/core";
+import {
+  EmailEventHandler,
+  EmailEventListener,
+  EventWithAsyncData,
+  emailAddressChangeHandler,
+  emailVerificationHandler,
+  passwordResetHandler,
+} from "@vendure/email-plugin";
 
 const orderLoadData = async (context: {
   event: OrderStateTransitionEvent;
@@ -77,6 +77,35 @@ const orderSetTemplateVars = (
     lines: event.order.lines.map((line) => {
       line.productVariant.featuredAsset =
         event.data.featuredAssets[line.productVariant.id];
+
+      /*let optionsString: string | null = null;
+      if (line.productVariant.options.length > 0) {
+        optionsString = line.productVariant.options
+          .map((option) => option.name)
+          .join(", ");
+      }*/
+
+      const customFields = line.customFields as { [key: string]: any };
+      let customizationString: string | null = null;
+
+      if (customFields?.customizations) {
+        try {
+          const customizations = JSON.parse(customFields.customizations);
+          customizationString = Object.keys(customizations)
+            .map(
+              (key) =>
+                `${customizations[key].label}: ${customizations[key].value}`
+            )
+            .join(", ");
+          // eslint-disable-next-line no-empty
+        } catch (e) {}
+      }
+
+      //@ts-ignore
+      line.description = customizationString || "";
+      /*(optionsString || "") +
+        (optionsString && customizationString ? ", " : "") +*/
+
       return line;
     }),
   },
@@ -120,6 +149,9 @@ export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
           sku: "sku",
         },
         items: [new OrderItem({ listPrice: 0.5, listPriceIncludesTax: true })],
+        customFields: {
+          customizations: '{"field":{"label": "label","value":"value"}}',
+        },
       }),
     ],
     customer: new Customer({
@@ -155,8 +187,8 @@ const orderConfirmationCopyHandler = new EmailEventListener(
 
     return payment.metadata.copyEmail;
   })
-  .setFrom(`{{ fromAddress }}`)
-  .setSubject(`New order #{{ order.id }}`)
+  .setFrom("{{ fromAddress }}")
+  .setSubject("New order #{{ order.id }}")
   .setTemplateVars(orderSetTemplateVars)
   .addTemplate({
     channelCode: "default",
@@ -182,8 +214,8 @@ const orderConfirmationHandler = new EmailEventListener("order-confirmation")
   )
   .loadData(orderLoadData)
   .setRecipient((event) => event.order.customer!.emailAddress)
-  .setFrom(`{{ fromAddress }}`)
-  .setSubject(`Order confirmation for #{{ order.id }}`)
+  .setFrom("{{ fromAddress }}")
+  .setSubject("Order confirmation for #{{ order.id }}")
   .setTemplateVars(orderSetTemplateVars)
   .addTemplate({
     channelCode: "default",
