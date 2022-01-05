@@ -69,9 +69,14 @@ export class ProductCustomerCustomizationsResolver {
           const keys = Object.keys(customizationOptions);
 
           for (const key of keys) {
+            const label = customizationOptions[key].labels.find(
+              (l: { language: string; label: string }) =>
+                l.language === ctx.languageCode
+            )?.label;
+
             switch (customizationOptions[key].type) {
               case "text":
-                validatedCustomizations[key] = input[key];
+                validatedCustomizations[key] = { label, value: input[key] };
                 break;
               default:
                 break;
