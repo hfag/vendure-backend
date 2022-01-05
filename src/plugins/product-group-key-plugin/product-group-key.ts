@@ -24,6 +24,8 @@ const adminSchemaExtension = gql`
     config.customFields.Product.push({
       type: "string",
       name: "groupKey",
+      public: true,
+      //in the shop api there is no function call for updating product variants
       label: [
         { languageCode: LanguageCode.en, value: "Product group key" },
         {

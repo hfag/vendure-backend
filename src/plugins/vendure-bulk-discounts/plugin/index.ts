@@ -160,6 +160,8 @@ const shopSchemaExtension = gql`
     config.customFields.ProductVariant.push({
       name: "bulkDiscountEnabled",
       type: "boolean",
+      public: true,
+      //in the shop api there is no function call for updating product variants
       label: [
         { languageCode: LanguageCode.en, value: "Has bulk discounts" },
         { languageCode: LanguageCode.de, value: "Hat Mengenrabatte" },

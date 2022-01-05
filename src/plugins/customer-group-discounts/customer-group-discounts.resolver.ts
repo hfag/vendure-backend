@@ -1,20 +1,21 @@
-import { Args, Resolver, Query, ResolveField, Parent } from "@nestjs/graphql";
+import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
 
 import {
   Ctx,
-  RequestContext,
-  Product,
   Customer,
-  ID,
-  PromotionService,
   CustomerService,
+  ID,
+  Product,
   ProductVariant,
+  Promotion,
+  RequestContext,
+  TransactionalConnection,
 } from "@vendure/core";
 
 @Resolver("Customer")
 export class CustomerResellerDiscountResolver {
   constructor(
-    private promotionService: PromotionService,
+    private connection: TransactionalConnection,
     private customerService: CustomerService
   ) {}
 
@@ -32,7 +33,11 @@ export class CustomerResellerDiscountResolver {
       ctx,
       customer.id
     );
-    const activePromotions = await this.promotionService.getActivePromotions();
+    const activePromotions = await this.connection
+      .getRepository(Promotion)
+      .find({
+        where: { enabled: true },
+      });
 
     return activePromotions
       .filter(
@@ -68,7 +73,7 @@ export class CustomerResellerDiscountResolver {
 @Resolver("Product")
 export class ProductResellerDiscountResolver {
   constructor(
-    private promotionService: PromotionService,
+    private connection: TransactionalConnection,
     private customerService: CustomerService
   ) {}
 
@@ -92,7 +97,11 @@ export class ProductResellerDiscountResolver {
       ctx,
       customer.id
     );
-    const activePromotions = await this.promotionService.getActivePromotions();
+    const activePromotions = await this.connection
+      .getRepository(Promotion)
+      .find({
+        where: { enabled: true },
+      });
 
     return activePromotions
       .filter(
@@ -136,7 +145,7 @@ export class ProductResellerDiscountResolver {
 @Resolver("ProductVariant")
 export class ProductVariantResellerDiscountResolver {
   constructor(
-    private promotionService: PromotionService,
+    private connection: TransactionalConnection,
     private customerService: CustomerService
   ) {}
 
@@ -160,7 +169,11 @@ export class ProductVariantResellerDiscountResolver {
       ctx,
       customer.id
     );
-    const activePromotions = await this.promotionService.getActivePromotions();
+    const activePromotions = await this.connection
+      .getRepository(Promotion)
+      .find({
+        where: { enabled: true },
+      });
 
     return activePromotions
       .filter(
