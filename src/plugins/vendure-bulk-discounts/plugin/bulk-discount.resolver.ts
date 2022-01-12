@@ -41,43 +41,83 @@ export class BulkDiscountAdminResolver {
       }[];
     }
   ): Promise<boolean> {
-    const promises: Promise<any>[] = [];
+    const updates: { id: number; quantity: number; price: number }[] = [];
+    const creations: {
+      [productVariantId: string]: { price: number; quantity: number }[];
+    } = {};
+    const deletions: number[] = [];
 
     for (const discount of args.updates) {
+      //check if all received quantites are unique
+      const quantities = discount.discounts.map((d) => d.quantity);
+      const uniqueQuantities = new Set(quantities);
+
+      if (quantities.length !== uniqueQuantities.size) {
+        return false;
+      }
+
       const discounts = await this.bulkDiscountService.findAll({
         where: { productVariant: discount.productVariantId },
       });
 
-      if (discounts.length < discount.discounts.length) {
-        promises.push(
-          this.bulkDiscountService.create({
-            productVariantId: discount.productVariantId,
-            discounts: discount.discounts.slice(
-              discounts.length,
-              discount.discounts.length
-            ),
-          })
+      for (const d of discount.discounts) {
+        // for each received discount check whether an entry with the same quantity exists
+        const existingDiscount = discounts.find(
+          (d2) => d2.quantity === d.quantity
         );
-      } else if (discount.discounts.length < discounts.length) {
-        promises.push(
-          this.bulkDiscountService.delete(
-            discounts
-              .slice(discount.discounts.length, discounts.length)
-              .map((d) => d.id)
-          )
-        );
+        if (existingDiscount) {
+          // if there is one, update the price
+          updates.push({
+            id: existingDiscount.id,
+            quantity: existingDiscount.quantity,
+            price: d.price,
+          });
+        } else {
+          // if none exists yet we create a new one
+          if (creations[discount.productVariantId]) {
+            creations[discount.productVariantId].push({
+              price: d.price,
+              quantity: d.quantity,
+            });
+          } else {
+            creations[discount.productVariantId] = [
+              { price: d.price, quantity: d.quantity },
+            ];
+          }
+        }
       }
 
-      for (let i = 0; i < discounts.length; i++) {
-        promises.push(
-          this.bulkDiscountService.update(
-            discounts[i].id,
-            discount.discounts[i].quantity,
-            discount.discounts[i].price
-          )
+      for (const d of discounts) {
+        // for each existing discount check whether there is still one with the same quantity
+        const newDiscount = discount.discounts.find(
+          (d2) => d2.quantity === d.quantity
         );
+        if (!newDiscount) {
+          // if there is none, delete it
+          deletions.push(d.id);
+        }
       }
     }
+
+    const promises: Promise<any>[] = [];
+    for (const update of updates) {
+      promises.push(
+        this.bulkDiscountService.update(
+          update.id,
+          update.quantity,
+          update.price
+        )
+      );
+    }
+    for (const productVariantId of Object.keys(creations)) {
+      promises.push(
+        this.bulkDiscountService.create({
+          productVariantId: productVariantId,
+          discounts: creations[productVariantId],
+        })
+      );
+    }
+    promises.push(this.bulkDiscountService.delete(deletions));
 
     await Promise.all(promises);
 
