@@ -168,7 +168,7 @@
                     {{ description }}
                 </td>
                 <td class="print-only"></td>
-                <td>CHF {{ formatMoney linePriceWithTax }}</td>
+                <td>CHF {{ formatMoney proratedLinePrice }}</td>
             </tr>
             {{/each}}
             <tr class="order-row">
@@ -179,9 +179,13 @@
                 <td colspan="3">Versand:</td>
                 <td>CHF {{ formatMoney order.shipping }}</td>
             </tr>
+            <tr class="order-row">
+                <td colspan="3">Steuern:</td>
+                <td>CHF {{ formatMoney order.totalTaxes }}</td>
+            </tr>
             <tr class="order-row total-row">
                 <td colspan="3">Total:</td>
-                <td>CHF {{ formatMoney order.total }}</td>
+                <td>CHF {{ formatMoney order.totalWithTax }}</td>
             </tr>
         </mj-table>
     </mj-column>

@@ -58,7 +58,11 @@ const orderLoadData = async (context: {
     featuredAssets[variant.id] = variant.featuredAsset;
   }
 
-  return { shippingMethods, featuredAssets };
+  return {
+    shippingMethods,
+    featuredAssets,
+    totalTaxes: context.event.order.totalWithTax - context.event.order.total,
+  };
 };
 
 const orderSetTemplateVars = (
@@ -69,6 +73,7 @@ const orderSetTemplateVars = (
       featuredAssets: {
         [productVariantId: string]: Asset;
       };
+      totalTaxes: number;
     }
   >
 ) => ({
@@ -108,6 +113,7 @@ const orderSetTemplateVars = (
 
       return line;
     }),
+    totalTaxes: event.data.totalTaxes,
   },
   shippingMethods: event.data.shippingMethods,
 });
@@ -144,11 +150,13 @@ export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
       new OrderLine({
         productVariant: {
           name: "Dummy Product",
-          priceWithTax: 0.5,
-          price: 0.5,
+          priceWithTax: 1070,
+          price: 1000,
           sku: "sku",
         },
-        items: [new OrderItem({ listPrice: 0.5, listPriceIncludesTax: true })],
+        items: [
+          new OrderItem({ listPrice: 1000, listPriceIncludesTax: false }),
+        ],
         customFields: {
           customizations: '{"field":{"label": "label","value":"value"}}',
         },
@@ -161,6 +169,14 @@ export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
       emailAddress: "john@doe.us",
       phoneNumber: "+41 00 000 00 00",
     }),
+    subTotal: 1000,
+    subTotalWithTax: 1070,
+    shippingLines: [
+      { listPrice: 1250, price: 1250, priceWithTax: 1338, taxRate: 1.07 },
+    ],
+    shipping: 1250,
+    shippingWithTax: 1338,
+    taxZoneId: 1,
   })
 );
 
