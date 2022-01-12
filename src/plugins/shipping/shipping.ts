@@ -83,14 +83,6 @@ export const flatShippingCalculator = new ShippingCalculator({
     },
   },
   calculate: (ctx, order, args) => {
-    console.log({
-      price: args.rate,
-      taxRate: args.taxRate,
-      priceIncludesTax: getPriceIncludesTax(
-        ctx,
-        args.includesTax as TaxSetting
-      ),
-    });
     return {
       price: args.rate,
       taxRate: args.taxRate,
