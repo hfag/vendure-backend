@@ -17,4 +17,4 @@ import { LanguageCode, PluginCommonModule, VendurePlugin } from "@vendure/core";
     return config;
   },
 })
-export class UnBuyableProdutsPlugin {}
+export class UnBuyableProductsPlugin {}
