@@ -1,24 +1,24 @@
-import {
-  VendurePlugin,
-  PluginCommonModule,
-  PromotionCondition,
-  LanguageCode,
-  ID,
-} from "@vendure/core";
-import gql from "graphql-tag";
-import { CollectionLink } from "./collection-link.entity";
-import {
-  CollectionLinksAdminResolver,
-  CollectionLinkEntityResolver,
-  CollectionEntityResolverAdmin,
-  CollectionAssetLinkResolverAdmin,
-  CollectionEntityResolverShop,
-} from "./collection-links.resolver";
-import { CollectionLinkService } from "./collection-links.service";
 import { AdminUiExtension } from "@vendure/ui-devkit/compiler";
+import {
+  CollectionAssetLinkResolverAdmin,
+  CollectionEntityResolverAdmin,
+  CollectionEntityResolverShop,
+  CollectionLinkEntityResolver,
+  CollectionLinksAdminResolver,
+} from "./collection-links.resolver";
+import { CollectionLink } from "./collection-link.entity";
+import { CollectionLinkAsset } from "./collection-link-asset.entity";
+import { CollectionLinkService } from "./collection-links.service";
 import { CollectionLinkUrl } from "./collection-link-url.entity";
 import { CollectionLinkUrlTranslation } from "./collection-link-url-translation.entity";
-import { CollectionLinkAsset } from "./collection-link-asset.entity";
+import {
+  ID,
+  LanguageCode,
+  PluginCommonModule,
+  PromotionCondition,
+  VendurePlugin,
+} from "@vendure/core";
+import gql from "graphql-tag";
 
 export type CreateCollectionLinkUrlInput = {
   collectionId: ID;
@@ -159,6 +159,15 @@ const adminSchemaExtension = gql`
     ): Collection!
 
     deleteCollectionLink(id: ID!): Collection!
+
+    updateCollectionLinks(
+      collectionId: ID!
+      urlsToCreate: [CreateCollectionLinkUrlInput!]!
+      urlsToUpdate: [UpdateCollectionLinkUrlInput!]!
+      assetsToCreate: [CreateCollectionLinkAssetInput!]!
+      assetsToUpdate: [UpdateCollectionLinkAssetInput!]!
+      toDelete: [ID!]!
+    ): Collection!
   }
 `;
 

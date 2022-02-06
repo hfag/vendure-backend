@@ -1,42 +1,42 @@
 import {
-  Args,
-  Mutation,
-  Resolver,
-  Query,
-  ResolveField,
-  Parent,
-} from "@nestjs/graphql";
-import {
   Allow,
-  Ctx,
-  RequestContext,
-  ID,
+  Asset,
+  AssetService,
   Collection,
   CollectionService,
+  ConfigService,
+  Ctx,
+  ID,
+  RequestContext,
+  Transaction,
+  TransactionalConnection,
   assertFound,
   translateDeep,
-  AssetService,
-  Asset,
-  ConfigService,
-  TransactionalConnection,
-  Transaction,
 } from "@vendure/core";
-import { Permission } from "@vendure/common/lib/generated-types";
-import { Connection } from "typeorm";
-import { CollectionLinkService } from "./collection-links.service";
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from "@nestjs/graphql";
 import {
   CollectionLink,
   TranslatedAnyCollectionLink,
 } from "./collection-link.entity";
 import { CollectionLinkAsset } from "./collection-link-asset.entity";
+import { CollectionLinkService } from "./collection-links.service";
 import { CollectionLinkUrl } from "./collection-link-url.entity";
-import { Translated } from "@vendure/core/dist/common/types/locale-types";
+import { Connection } from "typeorm";
 import {
   CreateCollectionLinkAssetInput,
+  CreateCollectionLinkUrlInput,
   UpdateCollectionLinkAssetInput,
   UpdateCollectionLinkUrlInput,
-  CreateCollectionLinkUrlInput,
 } from ".";
+import { Permission } from "@vendure/common/lib/generated-types";
+import { Translated } from "@vendure/core/dist/common/types/locale-types";
 import { notEmpty } from "./collection-links.service";
 
 @Resolver()
@@ -133,6 +133,53 @@ export class CollectionLinksAdminResolver {
     await this.collectionLinkService.delete(args.id);
 
     return assertFound(this.collectionService.findOne(ctx, link.collectionId));
+  }
+
+  @Transaction()
+  @Mutation()
+  @Allow(Permission.UpdateCatalog)
+  async updateCollectionLinks(
+    @Ctx() ctx: RequestContext,
+    @Args()
+    args: {
+      collectionId: ID;
+      urlsToCreate: CreateCollectionLinkUrlInput[];
+      urlsToUpdate: UpdateCollectionLinkUrlInput[];
+      assetsToCreate: CreateCollectionLinkAssetInput[];
+      assetsToUpdate: UpdateCollectionLinkAssetInput[];
+      toDelete: ID[];
+    }
+  ): Promise<Collection> {
+    const promises = [];
+
+    for (const url of args.urlsToCreate) {
+      promises.push(this.collectionLinkService.createUrlLink(ctx, url));
+    }
+    for (const url of args.urlsToUpdate) {
+      promises.push(this.collectionLinkService.updateUrlLink(ctx, url));
+    }
+
+    for (const asset of args.assetsToCreate) {
+      promises.push(this.collectionLinkService.createAssetLink(ctx, asset));
+    }
+    for (const asset of args.assetsToUpdate) {
+      promises.push(this.collectionLinkService.updateAssetLink(ctx, asset));
+    }
+
+    for (const id of args.toDelete) {
+      promises.push(
+        assertFound(this.collectionLinkService.findOne(ctx, id)).then(
+          (link) => {
+            return this.collectionLinkService.delete(id);
+          }
+        )
+      );
+    }
+
+    //@ts-ignore
+    await Promise.all(promises);
+
+    return assertFound(this.collectionService.findOne(ctx, args.collectionId));
   }
 }
 
