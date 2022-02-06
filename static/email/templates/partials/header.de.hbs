@@ -1,8 +1,7 @@
 <mjml>
     <mj-head>
         <mj-title>{{ title }}</mj-title>
-        <mj-font name="Roboto Condensed"
-            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400" />
+        <mj-font name="Helvetica Neue Condensed" href="https://feuerschutz.ch/fonts.css" />
         <mj-raw>
             <style type="text/css">
                 .print-only {
@@ -11,7 +10,7 @@
                 }
                 
                 @media print {
-                    body .callout, body .print-white, body .print-white>table, body .bg-off-white {
+                    body .callout, body .print-white, body .print-white>table {
                         background-color: #FFFFFF !important;
                     }
 
@@ -71,18 +70,16 @@
         </mj-raw>
     </mj-head>
     <mj-body>
-
-        <mj-section css-class="print-white logo" background-color="#e3e3e3">
+        <mj-section css-class="logo" background-color="white" padding="10px 0 5px 0">
             <mj-column>
-                <mj-image align="left" width="500px"
-                    src="http://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
+                <mj-image align="left" width="350px" src="https://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
             </mj-column>
         </mj-section>
         {{#if noGreetings}}
         {{else}}
-        <mj-section css-class="print-white" background-color="#fafafa">
+        <mj-section background-color="white" padding="5px 0 0 0">
             <mj-column>
-                <mj-text css-class="print-text-black" color="#525252" font-family="'Roboto Condensed', sans-serif">
+                <mj-text font-family="'Helvetica Neue Condensed', sans-serif">
                     Sehr geehrter Kunde
                 </mj-text>
             </mj-column>

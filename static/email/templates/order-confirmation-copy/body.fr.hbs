@@ -3,83 +3,90 @@
 <mj-raw>
     <style type="text/css">
         .callout {
-            background-color: #353535;
-            padding: 15px 0;
+          background-color: #f5f5f5;
+        }
+
+        h3, .callout-large>div{
+          font-size: 16px !important;
+          font-weight: bold;
+          margin: 0;
         }
 
         .callout-large>div {
-            text-align: center !important;
-            color: #fff !important;
-            font-size: 16px !important;
-            font-weight: bold;
-            padding: 0;
+          text-align: center !important;
+          padding: 0;
         }
 
         .callout-small>div {
-            text-align: center !important;
-            color: #fff !important;
-            font-size: 14px !important;
-            padding: 0;
+          text-align: center !important;
+          font-size: 14px !important;
+          padding: 0;
+        }
+
+        @media print {
+          .callout, .print-white, .print-white>table {
+            background-color: #FFFFFF !important;
+          }
+
+          .print-invisible {
+            display: none !important;
+          }
         }
 
         ul.address {
-            list-style-type: none;
-            padding: 0;
+          list-style-type: none;
+          padding: 0;
         }
 
         tr.order-row td {
-            border-bottom: 1px dashed #eee;
+          border-bottom: 1px dashed #eee;
         }
 
         tr.order-row td:last-child {
-            text-align: center;
+          text-align: center;
         }
 
         tr.total-row {
-            font-weight: bold;
-        }
-
-        .bg-off-white {
-            background-color: #f5f5f5;
+          font-weight: bold;
         }
     </style>
 </mj-raw>
 
-<mj-section background-color="white">
+<mj-section background-color="white" padding="5px 0 10px 0">
     <mj-column>
-        <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
             <h3>Nouvel ordre</h3>
         </mj-text>
     </mj-column>
 </mj-section>
 
 
-<mj-section css-class="callout print-collapse-table">
+<mj-section css-class="callout print-collapse-table" padding="10px 0">
     <mj-column>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Bestellnummer</strong>
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-large"><strong>Bestellnummer</strong>
         </mj-text>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">{{ order.id }}</mj-text>
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-small">{{ order.id }}</mj-text>
     </mj-column>
     <mj-column>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Bestelldatum</strong>
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-large"><strong>Bestelldatum</strong>
         </mj-text>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-small">
             {{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}
         </mj-text>
     </mj-column>
     <mj-column css-class="print-invisible">
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-large"><strong>Gesamtbetrag</strong>
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-large"><strong>Gesamtbetrag</strong>
         </mj-text>
-        <mj-text font-family="'Roboto Condensed', sans-serif" css-class="callout-small">
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-small">
             CHF {{ formatMoney order.total }}
         </mj-text>
     </mj-column>
 </mj-section>
 
 
-<mj-section css-class="bg-off-white">
+<mj-section background-color="white" padding="10px 0">
     <mj-column css-class="print-fix-50">
-        <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
             {{#with order.billingAddress }}
             <h3>Facture à: {{ fullName }}</h3>
             <ul class="address">
@@ -112,7 +119,7 @@
         </mj-text>
     </mj-column>
     <mj-column css-class="print-fix-50">
-        <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
             {{#with order.shippingAddress }}
             <h3>Livraison à: {{ fullName }}</h3>
             <ul class="address">
@@ -146,12 +153,12 @@
     </mj-column>
 </mj-section>
 
-<mj-section background-color="#ffffff">
+<mj-section background-color="white" padding="10px 0">
     <mj-column>
-        <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
             <h3>Résumé:</h3>
         </mj-text>
-        <mj-table cellpadding="6px" font-family="'Roboto Condensed', sans-serif">
+        <mj-table cellpadding="6px" font-family="'Helvetica Neue Condensed', sans-serif">
             {{#each order.lines }}
             <tr class="order-row">
                 <td class="print-invisible">
@@ -191,9 +198,9 @@
     </mj-column>
 </mj-section>
 
-<mj-section background-color="white">
+<mj-section background-color="white" padding="0">
     <mj-column>
-        <mj-text font-family="'Roboto Condensed', sans-serif" line-height="1.5">
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
             Commentaire du client: {{ order.customFields.notes }}
         </mj-text>
     </mj-column>
