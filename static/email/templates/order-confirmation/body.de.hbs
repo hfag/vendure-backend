@@ -40,13 +40,17 @@
         tr.total-row {
             font-weight: bold;
         }
+
+        .line-price {
+            white-space: nowrap;
+        }
     </style>
 </mj-raw>
 
 <mj-section background-color="white" padding="0 0 10px 0">
     <mj-column>
         <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
-            Vielen Dank für Ihre Bestellung!
+            Vielen Dank für Ihre Bestellung. Sie ist bei uns eingegangen und wird nun bearbeitet. Ihre Bestelldetails werden nachstehend zur Kontrolle angezeigt:
         </mj-text>
     </mj-column>
 </mj-section>
@@ -69,7 +73,7 @@
         <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-large"><strong>Gesamtbetrag</strong>
         </mj-text>
         <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-small">
-            CHF {{ formatMoney order.total }}
+            CHF {{ formatMoney order.totalWithTax }}
         </mj-text>
     </mj-column>
 </mj-section>
@@ -168,7 +172,7 @@
                     {{ description }}
                 </td>
                 <td class="print-only"></td>
-                <td>CHF {{ formatMoney proratedLinePrice }}</td>
+                <td class="line-price">CHF {{ formatMoney proratedLinePrice }}</td>
             </tr>
             {{/each}}
             <tr class="order-row">
@@ -191,6 +195,7 @@
     </mj-column>
 </mj-section>
 
+{{#if order.customFields.notes }}
 <mj-section background-color="white" padding="0">
     <mj-column>
         <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
@@ -198,5 +203,6 @@
         </mj-text>
     </mj-column>
 </mj-section>
+{{/if}}
 
 {{> footer.de }}

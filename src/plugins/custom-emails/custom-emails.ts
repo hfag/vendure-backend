@@ -2,6 +2,8 @@ import {
   AdjustmentType,
   Asset,
   Customer,
+  CustomerService,
+  ID,
   Injector,
   LanguageCode,
   Order,
@@ -9,7 +11,9 @@ import {
   OrderLine,
   OrderStateTransitionEvent,
   Payment,
+  ProductOptionGroupService,
   ProductVariant,
+  ProductVariantService,
   ShippingMethod,
   TransactionalConnection,
 } from "@vendure/core";
@@ -30,6 +34,9 @@ const orderLoadData = async (context: {
   const featuredAssets: {
     [productVariantId: string]: Asset;
   } = {};
+  const productOptions: {
+    [productVariantId: string]: string;
+  } = {};
 
   for (const line of context.event.order.shippingLines || []) {
     let shippingMethod: ShippingMethod | undefined;
@@ -47,21 +54,32 @@ const orderLoadData = async (context: {
   }
 
   const variants: ProductVariant[] = await context.injector
-    .get(TransactionalConnection)
-    .getRepository(ProductVariant)
+    .get(ProductVariantService)
     .findByIds(
-      context.event.order.lines.map((l) => l.productVariant.id),
-      { relations: ["featuredAsset"] }
+      context.event.ctx,
+      context.event.order.lines.map((l) => l.productVariant.id)
     );
 
   for (const variant of variants) {
     featuredAssets[variant.id] = variant.featuredAsset;
+    productOptions[variant.id] = variant.options.map((o) => o.name).join(", ");
+  }
+
+  let groups = "";
+  if (context.event.order.customer?.id) {
+    const gs = await context.injector
+      .get(CustomerService)
+      .getCustomerGroups(context.event.ctx, context.event.order.customer.id);
+
+    groups = gs.map((g) => g.name).join(", ");
   }
 
   return {
     shippingMethods,
     featuredAssets,
+    productOptions,
     totalTaxes: context.event.order.totalWithTax - context.event.order.total,
+    groups,
   };
 };
 
@@ -73,7 +91,11 @@ const orderSetTemplateVars = (
       featuredAssets: {
         [productVariantId: string]: Asset;
       };
+      productOptions: {
+        [productVariantId: string]: string;
+      };
       totalTaxes: number;
+      groups?: string;
     }
   >
 ) => ({
@@ -107,15 +129,20 @@ const orderSetTemplateVars = (
       }
 
       //@ts-ignore
-      line.description = customizationString || "";
-      /*(optionsString || "") +
-        (optionsString && customizationString ? ", " : "") +*/
+      line.description =
+        (event.data.productOptions[line.productVariant.id] || "") +
+        (event.data.productOptions[line.productVariant.id] &&
+        customizationString
+          ? ", "
+          : "") +
+        (customizationString || "");
 
       return line;
     }),
     totalTaxes: event.data.totalTaxes,
   },
   shippingMethods: event.data.shippingMethods,
+  groups: event.data.groups,
 });
 
 export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
@@ -168,6 +195,7 @@ export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
       lastName: "Doe",
       emailAddress: "john@doe.us",
       phoneNumber: "+41 00 000 00 00",
+      groups: [{ name: "Schilder-20" }],
     }),
     subTotal: 1000,
     subTotalWithTax: 1070,
@@ -177,6 +205,9 @@ export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
     shipping: 1250,
     shippingWithTax: 1338,
     taxZoneId: 1,
+    customFields: {
+      notes: "Some customer note",
+    },
   })
 );
 
@@ -204,19 +235,20 @@ const orderConfirmationCopyHandler = new EmailEventListener(
     return payment.metadata.copyEmail;
   })
   .setFrom("{{ fromAddress }}")
-  .setSubject("New order #{{ order.id }}")
+  .setSubject("Order ({{ order.id }}) by {{ order.billingAddress.fullName }}")
   .setTemplateVars(orderSetTemplateVars)
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.de,
     templateFile: "body.de.hbs",
-    subject: "Neue Bestellung #{{ order.id }}",
+    subject:
+      "Bestellung ({{ order.id }}) von {{ order.billingAddress.fullName }}",
   })
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.fr,
     templateFile: "body.fr.hbs",
-    subject: "Neue Bestellung #{{ order.id }}",
+    subject: "Commande ({{ order.id }}) de {{ order.billingAddress.fullName }}",
   })
   .setMockEvent(mockOrderStateTransitionEvent);
 
@@ -231,19 +263,23 @@ const orderConfirmationHandler = new EmailEventListener("order-confirmation")
   .loadData(orderLoadData)
   .setRecipient((event) => event.order.customer!.emailAddress)
   .setFrom("{{ fromAddress }}")
-  .setSubject("Order confirmation for #{{ order.id }}")
+  .setSubject(
+    "Confirmation for your order on {{ formatDate order.orderPlacedAt }}"
+  )
   .setTemplateVars(orderSetTemplateVars)
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.de,
     templateFile: "body.de.hbs",
-    subject: "Bestellbestätigung für #{{ order.id }}",
+    subject:
+      "Bestätigung für ihre Bestellung vom {{ formatDate order.orderPlacedAt }}",
   })
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.fr,
     templateFile: "body.fr.hbs",
-    subject: "Bestellbestätigung für #{{ order.id }}",
+    subject:
+      "Confirmation de votre commande du {{ formatDate order.orderPlacedAt }}",
   })
   .setMockEvent(mockOrderStateTransitionEvent);
 

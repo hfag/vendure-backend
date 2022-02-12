@@ -1,88 +1,87 @@
-{{> header title="Order Receipt" noGreetings="true" }}
+{{> header title="Order Receipt" noGreetings="true" noLogo="true" }}
 
 <mj-raw>
     <style type="text/css">
-        .callout {
-          background-color: #f5f5f5;
+        h3 {
+            margin: 0;
         }
 
-        h3, .callout-large>div{
-          font-size: 16px !important;
+        .products th {
+            word-break: keep-all;
+        }
+        
+        .products td, .products th {
+          text-align: left;
+          border: #000 1px solid;
+          padding: 4px 8px;
+        }
+        .products th {
           font-weight: bold;
-          margin: 0;
-        }
-
-        .callout-large>div {
-          text-align: center !important;
-          padding: 0;
-        }
-
-        .callout-small>div {
-          text-align: center !important;
-          font-size: 14px !important;
-          padding: 0;
-        }
-
-        @media print {
-          .callout, .print-white, .print-white>table {
-            background-color: #FFFFFF !important;
-          }
-
-          .print-invisible {
-            display: none !important;
-          }
         }
 
         ul.address {
           list-style-type: none;
           padding: 0;
-        }
-
-        tr.order-row td {
-          border-bottom: 1px dashed #eee;
+          margin: 0;
         }
 
         tr.order-row td:last-child {
-          text-align: center;
+          text-align: right;
         }
 
-        tr.total-row {
-          font-weight: bold;
+        .line-price {
+            white-space: nowrap;
         }
     </style>
 </mj-raw>
 
-<mj-section background-color="white" padding="5px 0 10px 0">
+<mj-section background-color="white" padding="0">
     <mj-column>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
-            <h3>New order</h3>
-        </mj-text>
+    <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
+        <h3>New order</h3>
+        Order ID {{ order.id }} ({{ formatDate order.orderPlacedAt }}) by {{ order.billingAddress.fullName }} ({{ groups }})
+    </mj-text>
     </mj-column>
 </mj-section>
 
-
-<mj-section css-class="callout print-collapse-table" padding="10px 0">
+<mj-section background-color="white" padding="0">
     <mj-column>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-large"><strong>Order Code</strong>
-        </mj-text>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-small">{{ order.id }}</mj-text>
-    </mj-column>
-    <mj-column>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-large"><strong>Order Date</strong>
-        </mj-text>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-small">
-            {{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}
-        </mj-text>
-    </mj-column>
-    <mj-column css-class="print-invisible">
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-large"><strong>Total Price</strong>
-        </mj-text>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-small">
-            CHF {{ formatMoney order.total }}
-        </mj-text>
+        <mj-table
+            css-class="products"
+            font-family="'Helvetica Neue Condensed', sans-serif"
+        >
+            {{#each order.lines }}
+            <tr class="order-row">
+                <td>
+                    <b>{{ productVariant.sku }}</b>, {{ productVariant.name }}
+                    <br />
+                    {{ description }}
+                </td>
+                <td>{{ quantity }}</td>
+                <td class="line-price">
+                    CHF {{ formatMoney proratedLinePrice }}
+                </td>
+            </tr>
+            {{/each}}
+            <tr class="order-row">
+                <td colspan="2"><b>Subtotal:</b></td>
+                <td>CHF {{ formatMoney order.subTotal }}</td>
+            </tr>
+            <tr class="order-row">
+                <td colspan="2"><b>Shipping:</b></td>
+                <td>CHF {{ formatMoney order.shipping }}</td>
+            </tr>
+            <tr class="order-row">
+                <td colspan="2"><b>Taxes:</b></td>
+                <td>CHF {{ formatMoney order.totalTaxes }}</td>
+            </tr>
+            <tr class="order-row total-row">
+                <td colspan="2"><b>Total:</b></td>
+                <td>CHF {{ formatMoney order.totalWithTax }}</td>
+            </tr>
+        </mj-table>
     </mj-column>
 </mj-section>
-
 
 <mj-section background-color="white" padding="10px 0">
     <mj-column css-class="print-fix-50">
@@ -155,51 +154,7 @@
     </mj-column>
 </mj-section>
 
-<mj-section background-color="white" padding="10px 0">
-    <mj-column>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
-            <h3>Order Summary:</h3>
-        </mj-text>
-        <mj-table cellpadding="6px" font-family="'Helvetica Neue Condensed', sans-serif">
-            {{#each order.lines }}
-            <tr class="order-row">
-                <td class="print-invisible">
-                    {{#if productVariant.featuredAsset.preview}}
-                    <img class="print-invisible" alt="{{ productVariant.name }}" width="100" style="width: 100px; height: auto;"
-                        src="{{ ../assetUrl }}/{{ productVariant.featuredAsset.preview }}?preset=small" />
-                    {{/if}}
-                </td>
-                <td>
-                    {{ quantity }} x {{ productVariant.name }}
-                    <br />
-                    {{ productVariant.sku }}
-                    <br />
-                    {{ description }}
-                </td>
-                <td class="print-only"></td>
-                <td>CHF {{ formatMoney proratedLinePrice }}</td>
-            </tr>
-            {{/each}}
-            <tr class="order-row">
-                <td colspan="3">Subtotal:</td>
-                <td>CHF {{ formatMoney order.subTotal }}</td>
-            </tr>
-            <tr class="order-row">
-                <td colspan="3">Versand:</td>
-                <td>CHF {{ formatMoney order.shipping }}</td>
-            </tr>
-            <tr class="order-row">
-                <td colspan="3">Taxes:</td>
-                <td>CHF {{ formatMoney order.totalTaxes }}</td>
-            </tr>
-            <tr class="order-row total-row">
-                <td colspan="3">Total:</td>
-                <td>CHF {{ formatMoney order.totalWithTax }}</td>
-            </tr>
-        </mj-table>
-    </mj-column>
-</mj-section>
-
+{{#if order.customFields.notes }}
 <mj-section background-color="white" padding="0">
     <mj-column>
         <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
@@ -207,5 +162,6 @@
         </mj-text>
     </mj-column>
 </mj-section>
+{{/if}}
 
-{{> footer }}
+{{> footer noFooter="true" }}

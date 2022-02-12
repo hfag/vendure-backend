@@ -73,11 +73,14 @@
         </mj-raw>
     </mj-head>
     <mj-body>
+        {{#if noLogo}}
+        {{else}}
         <mj-section css-class="logo" background-color="white" padding="10px 0 5px 0">
             <mj-column>
                 <mj-image align="left" width="350px" src="https://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
             </mj-column>
         </mj-section>
+        {{/if}}
         {{#if noGreetings}}
         {{else}}
         <mj-section background-color="white" padding="5px 0 0 0">
