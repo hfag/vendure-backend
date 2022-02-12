@@ -5,7 +5,7 @@ export class AddProductCustomizations1641405411585
 {
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.query(
-      "ALTER TABLE `product` ADD `customFieldsCustomizationoptions` varchar(255) NULL",
+      "ALTER TABLE `product` ADD `customFieldsCustomizationoptions` TEXT NULL",
       undefined
     );
   }
