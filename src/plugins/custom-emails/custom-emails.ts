@@ -264,7 +264,7 @@ const orderConfirmationHandler = new EmailEventListener("order-confirmation")
   .setRecipient((event) => event.order.customer!.emailAddress)
   .setFrom("{{ fromAddress }}")
   .setSubject(
-    'Confirmation for your order on {{ formatDate order.orderPlacedAt "dd. mm yyyy" }}'
+    'Confirmation for your order on {{ formatDate order.orderPlacedAt "dd. mm. yyyy" }}'
   )
   .setTemplateVars(orderSetTemplateVars)
   .addTemplate({
@@ -272,14 +272,14 @@ const orderConfirmationHandler = new EmailEventListener("order-confirmation")
     languageCode: LanguageCode.de,
     templateFile: "body.de.hbs",
     subject:
-      'Bestätigung für ihre Bestellung vom {{ formatDate order.orderPlacedAt "dd. mm yyyy" }}',
+      'Bestätigung für ihre Bestellung vom {{ formatDate order.orderPlacedAt "dd. mm. yyyy" }}',
   })
   .addTemplate({
     channelCode: "default",
     languageCode: LanguageCode.fr,
     templateFile: "body.fr.hbs",
     subject:
-      'Confirmation de votre commande du {{ formatDate order.orderPlacedAt "dd. mm yyyy" }}',
+      'Confirmation de votre commande du {{ formatDate order.orderPlacedAt "dd. mm. yyyy" }}',
   })
   .setMockEvent(mockOrderStateTransitionEvent);
 
