@@ -54,7 +54,7 @@
           Neue Kundenbestellung
         </mj-text>
         <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
-          Bestellnummer {{ order.id }} ({{ formatDate order.orderPlacedAt "dd. mm. yyyy" }}) von {{ order.billingAddress.fullName }}
+          Bestellnummer {{ order.id }} ({{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}) von {{ order.billingAddress.fullName }}
         </mj-text>
       </mj-column>
     </mj-section>
