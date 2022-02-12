@@ -177,19 +177,19 @@
             {{/each}}
             <tr class="order-row">
                 <td colspan="3">Subtotal:</td>
-                <td>CHF {{ formatMoney order.subTotal }}</td>
+                <td class="line-price">CHF {{ formatMoney order.subTotal }}</td>
             </tr>
             <tr class="order-row">
                 <td colspan="3">Livraison:</td>
-                <td>CHF {{ formatMoney order.shipping }}</td>
+                <td class="line-price">CHF {{ formatMoney order.shipping }}</td>
             </tr>
             <tr class="order-row">
                 <td colspan="3">Impôts:</td>
-                <td>CHF {{ formatMoney order.totalTaxes }}</td>
+                <td class="line-price">CHF {{ formatMoney order.totalTaxes }}</td>
             </tr>
             <tr class="order-row total-row">
                 <td colspan="3">Total:</td>
-                <td>CHF {{ formatMoney order.totalWithTax }}</td>
+                <td class="line-price">CHF {{ formatMoney order.totalWithTax }}</td>
             </tr>
         </mj-table>
     </mj-column>

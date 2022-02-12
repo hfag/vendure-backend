@@ -39,7 +39,7 @@
     <mj-column>
     <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
         <h3>Nouvel ordre</h3>
-        Numéro de commande {{ order.id }} ({{ formatDate order.orderPlacedAt }}) de {{ order.billingAddress.fullName }} ({{ groups }})
+        Numéro de commande {{ order.id }} ({{ formatDate order.orderPlacedAt "dd. mm yyyy" }}) de {{ order.billingAddress.fullName }} ({{ groups }})
     </mj-text>
     </mj-column>
 </mj-section>
@@ -70,19 +70,19 @@
             {{/each}}
             <tr class="order-row">
                 <td colspan="2"><b>Subtotal:</b></td>
-                <td>CHF {{ formatMoney order.subTotal }}</td>
+                <td class="line-price">CHF {{ formatMoney order.subTotal }}</td>
             </tr>
             <tr class="order-row">
                 <td colspan="2"><b>Livraison:</b></td>
-                <td>CHF {{ formatMoney order.shipping }}</td>
+                <td class="line-price">CHF {{ formatMoney order.shipping }}</td>
             </tr>
             <tr class="order-row">
                 <td colspan="2"><b>Impôts:</b></td>
-                <td>CHF {{ formatMoney order.totalTaxes }}</td>
+                <td class="line-price">CHF {{ formatMoney order.totalTaxes }}</td>
             </tr>
             <tr class="order-row total-row">
                 <td colspan="2"><b>Total:</b></td>
-                <td>CHF {{ formatMoney order.totalWithTax }}</td>
+                <td class="line-price">CHF {{ formatMoney order.totalWithTax }}</td>
             </tr>
         </mj-table>
     </mj-column>
