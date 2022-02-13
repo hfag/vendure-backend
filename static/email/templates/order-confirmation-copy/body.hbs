@@ -87,6 +87,16 @@
     </mj-column>
 </mj-section>
 
+{{#if order.customFields.notes }}
+<mj-section background-color="white" padding="0">
+    <mj-column>
+        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
+            Customer comment: {{ order.customFields.notes }}
+        </mj-text>
+    </mj-column>
+</mj-section>
+{{/if}}
+
 <mj-section background-color="white" padding="10px 0">
     <mj-column css-class="print-fix-50">
         <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
@@ -157,15 +167,5 @@
         </mj-text>
     </mj-column>
 </mj-section>
-
-{{#if order.customFields.notes }}
-<mj-section background-color="white" padding="0">
-    <mj-column>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
-            Customer comment: {{ order.customFields.notes }}
-        </mj-text>
-    </mj-column>
-</mj-section>
-{{/if}}
 
 {{> footer noFooter="true" }}
