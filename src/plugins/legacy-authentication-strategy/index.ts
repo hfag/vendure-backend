@@ -1,19 +1,20 @@
 import {
   AuthenticationStrategy,
+  CustomerGroupService,
   CustomerService,
   ExternalAuthenticationService,
   ID,
   Injector,
-  isGraphQlErrorResult,
   NativeAuthenticationMethod,
   PasswordCipher,
   RequestContext,
   TransactionalConnection,
   User,
+  isGraphQlErrorResult,
 } from "@vendure/core";
 import { DocumentNode } from "graphql";
-import gql from "graphql-tag";
 import fetch from "node-fetch";
+import gql from "graphql-tag";
 
 type WPAddress = {
   additional_line_above: string;
@@ -36,9 +37,11 @@ export type LegacyAuthData = {
 };
 
 export class LegacyAuthenticationStrategy
-  implements AuthenticationStrategy<LegacyAuthData> {
+  implements AuthenticationStrategy<LegacyAuthData>
+{
   readonly name = "legacy";
   private customerService: CustomerService;
+  private customerGroupService: CustomerGroupService;
   private connection: TransactionalConnection;
   private passwordCipher: PasswordCipher;
 
@@ -46,6 +49,7 @@ export class LegacyAuthenticationStrategy
 
   init(injector: Injector) {
     this.customerService = injector.get(CustomerService);
+    this.customerGroupService = injector.get(CustomerGroupService);
     this.connection = injector.get(TransactionalConnection);
     this.passwordCipher = injector.get(PasswordCipher);
   }
@@ -77,6 +81,7 @@ export class LegacyAuthenticationStrategy
           billing: WPAddress;
           shipping: WPAddress;
         };
+        groups: string[];
       } = await fetch(this.url, {
         method: "POST",
         headers: {
@@ -131,6 +136,28 @@ export class LegacyAuthenticationStrategy
           );
           return false;
         }
+
+        const resellerGroups = await this.customerGroupService.findAll(ctx, {
+          filter: { name: { contains: "Wiederverkäufer" } },
+        });
+        const promises = [];
+        for (const g of req.groups) {
+          const [productGroup, discount] = g.split("-");
+          const resellerGroup = resellerGroups.items.find(
+            (rg) => rg.name == `Wiederverkäufer ${productGroup} ${discount}`
+          );
+
+          if (resellerGroup) {
+            promises.push(
+              this.customerGroupService.addCustomersToGroup(ctx, {
+                customerGroupId: resellerGroup.id,
+                customerIds: [customer.id],
+              })
+            );
+          }
+        }
+
+        await Promise.all(promises);
 
         if (
           req.account.billing.address_1.length > 0 &&
