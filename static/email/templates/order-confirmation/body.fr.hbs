@@ -184,7 +184,11 @@
                 <td class="line-price">CHF {{ formatMoney order.shipping }}</td>
             </tr>
             <tr class="order-row">
-                <td colspan="3">Impôts:</td>
+                <td colspan="3">Subtotal avec livraison:</td>
+                <td class="line-price">CHF {{ formatMoney subtotalWithShipping }}</td>
+            </tr>
+            <tr class="order-row">
+                <td colspan="3">TVA (7.7%):</td>
                 <td class="line-price">CHF {{ formatMoney order.totalTaxes }}</td>
             </tr>
             <tr class="order-row total-row">

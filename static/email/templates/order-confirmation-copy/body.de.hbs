@@ -38,7 +38,7 @@
     <mj-column>
     <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
         <h3>Neue Kundenbestellung</h3>
-        Bestellnummer {{ order.id }} ({{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}) von {{ order.billingAddress.fullName }} ({{ groups }})
+        Bestellnummer {{ order.id }} ({{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}) von {{ order.billingAddress.fullName }} {{#if groups}} ({{ groups }}) {{/if}}
     </mj-text>
     </mj-column>
 </mj-section>
@@ -76,7 +76,11 @@
                 <td class="line-price">CHF {{ formatMoney order.shipping }}</td>
             </tr>
             <tr class="order-row">
-                <td colspan="2"><b>Steuern:</b></td>
+                <td colspan="2"><b>Zwischensumme mit Versand:</b></td>
+                <td class="line-price">CHF {{ formatMoney subtotalWithShipping }}</td>
+            </tr>
+            <tr class="order-row">
+                <td colspan="2"><b>MWST (7.7%):</b></td>
                 <td class="line-price"class="line-price">CHF {{ formatMoney order.totalTaxes }}</td>
             </tr>
             <tr class="order-row total-row">

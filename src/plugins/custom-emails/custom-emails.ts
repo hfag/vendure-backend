@@ -1,9 +1,7 @@
 import {
-  AdjustmentType,
   Asset,
   Customer,
   CustomerService,
-  ID,
   Injector,
   LanguageCode,
   Order,
@@ -11,7 +9,6 @@ import {
   OrderLine,
   OrderStateTransitionEvent,
   Payment,
-  ProductOptionGroupService,
   ProductVariant,
   ProductVariantService,
   ShippingMethod,
@@ -143,6 +140,8 @@ const orderSetTemplateVars = (
   },
   shippingMethods: event.data.shippingMethods,
   groups: event.data.groups,
+  //simple computation from data
+  subtotalWithShipping: event.order.subTotal + event.order.shipping,
 });
 
 export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
