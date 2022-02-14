@@ -39,6 +39,8 @@
     <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
         <h3>Neue Kundenbestellung</h3>
         Bestellnummer {{ order.id }} ({{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}) von {{ order.billingAddress.fullName }} {{#if groups}} ({{ groups }}) {{/if}}
+        <br/>
+        E-Mail: {{ order.customer.emailAddress }}
     </mj-text>
     </mj-column>
 </mj-section>
