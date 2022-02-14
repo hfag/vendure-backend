@@ -40,8 +40,6 @@
     <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
         <h3>Nouvel ordre</h3>
         Numéro de commande {{ order.id }} ({{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}) de {{ order.billingAddress.fullName }} {{#if groups}} ({{ groups }}) {{/if}}
-        <br/>
-        E-Mail: {{ order.customer.emailAddress }}
     </mj-text>
     </mj-column>
 </mj-section>
@@ -135,6 +133,7 @@
                 {{#if phoneNumber}}
                 <li>{{ phoneNumber }}</li>
                 {{/if}}
+                <li>{{ order.customer.emailAddress }}</li>
             </ul>
             {{/with}}
         </mj-text>
