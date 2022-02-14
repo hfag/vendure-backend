@@ -43,15 +43,15 @@ export class CustomerResellerDiscountResolver {
       .filter(
         (p) =>
           p.conditions.length === 1 &&
-          p.conditions[0].code === "group-member-all" &&
+          p.conditions[0].code === "group-member-any" &&
           p.conditions[0].args[0].name === "groups" &&
           (JSON.parse(p.conditions[0].args[0].value) as ID[]).reduce(
             (b, group) =>
-              b &&
+              b ||
               (groups.find((g) => g.id.toString() === group.toString())
                 ? true
                 : false),
-            true
+            false
           ) &&
           p.actions.length === 1 &&
           p.actions[0].code === "facet_based_discount"
@@ -107,15 +107,15 @@ export class ProductResellerDiscountResolver {
       .filter(
         (p) =>
           p.conditions.length === 1 &&
-          p.conditions[0].code === "group-member-all" &&
+          p.conditions[0].code === "group-member-any" &&
           p.conditions[0].args[0].name === "groups" &&
           (JSON.parse(p.conditions[0].args[0].value) as ID[]).reduce(
             (b, group) =>
-              b &&
+              b ||
               (groups.find((g) => g.id.toString() === group.toString())
                 ? true
                 : false),
-            true
+            false
           ) &&
           p.actions.length === 1 &&
           p.actions[0].code === "facet_based_discount"
