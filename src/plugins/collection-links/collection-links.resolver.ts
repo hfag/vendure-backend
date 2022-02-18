@@ -3,9 +3,11 @@ import {
   Asset,
   AssetService,
   Collection,
+  CollectionEvent,
   CollectionService,
   ConfigService,
   Ctx,
+  EventBus,
   ID,
   RequestContext,
   Transaction,
@@ -43,97 +45,9 @@ import { notEmpty } from "./collection-links.service";
 export class CollectionLinksAdminResolver {
   constructor(
     private collectionLinkService: CollectionLinkService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private eventBus: EventBus
   ) {}
-
-  @Transaction()
-  @Mutation()
-  @Allow(Permission.UpdateCatalog)
-  async createCollectionLinkUrl(
-    @Ctx() ctx: RequestContext,
-    @Args()
-    args: {
-      input: CreateCollectionLinkUrlInput;
-    }
-  ): Promise<Translated<Collection>> {
-    await this.collectionLinkService.createUrlLink(ctx, args.input);
-
-    return assertFound(
-      this.collectionService.findOne(ctx, args.input.collectionId)
-    );
-  }
-
-  @Transaction()
-  @Mutation()
-  @Allow(Permission.UpdateCatalog)
-  async createCollectionLinkAsset(
-    @Ctx() ctx: RequestContext,
-    @Args()
-    args: {
-      input: CreateCollectionLinkAssetInput;
-    }
-  ): Promise<Translated<Collection>> {
-    await this.collectionLinkService.createAssetLink(ctx, args.input);
-
-    return assertFound(
-      this.collectionService.findOne(ctx, args.input.collectionId)
-    );
-  }
-
-  @Transaction()
-  @Mutation()
-  @Allow(Permission.UpdateCatalog)
-  async updateCollectionAssetLink(
-    @Ctx() ctx: RequestContext,
-    @Args()
-    args: {
-      input: UpdateCollectionLinkAssetInput;
-    }
-  ): Promise<Translated<Collection>> {
-    const assetLink = await this.collectionLinkService.updateAssetLink(
-      ctx,
-      args.input
-    );
-    const collection = assertFound(
-      this.collectionService.findOne(ctx, assetLink.collectionId)
-    );
-    return collection;
-  }
-
-  @Transaction()
-  @Mutation()
-  @Allow(Permission.UpdateCatalog)
-  async updateCollectionUrlLink(
-    @Ctx() ctx: RequestContext,
-    @Args()
-    args: {
-      input: UpdateCollectionLinkUrlInput;
-    }
-  ): Promise<Translated<Collection>> {
-    const assetLink = await this.collectionLinkService.updateUrlLink(
-      ctx,
-      args.input
-    );
-    const collection = assertFound(
-      this.collectionService.findOne(ctx, assetLink.collectionId)
-    );
-    return collection;
-  }
-
-  @Transaction()
-  @Mutation()
-  @Allow(Permission.UpdateCatalog)
-  async deleteCollectionLink(
-    @Ctx() ctx: RequestContext,
-    @Args() args: { id: ID }
-  ): Promise<Collection> {
-    const link = await assertFound(
-      this.collectionLinkService.findOne(ctx, args.id)
-    );
-    await this.collectionLinkService.delete(args.id);
-
-    return assertFound(this.collectionService.findOne(ctx, link.collectionId));
-  }
 
   @Transaction()
   @Mutation()
@@ -176,10 +90,21 @@ export class CollectionLinksAdminResolver {
       );
     }
 
+    //without this ignore a weird error occurs
     //@ts-ignore
     await Promise.all(promises);
 
-    return assertFound(this.collectionService.findOne(ctx, args.collectionId));
+    const collection = await this.collectionService.findOne(
+      ctx,
+      args.collectionId
+    );
+
+    if (!collection) {
+      throw new Error("Could not find the collection we just updated!");
+    }
+
+    this.eventBus.publish(new CollectionEvent(ctx, collection, "updated"));
+    return collection;
   }
 }
 

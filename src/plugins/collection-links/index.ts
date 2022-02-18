@@ -15,7 +15,6 @@ import {
   ID,
   LanguageCode,
   PluginCommonModule,
-  PromotionCondition,
   VendurePlugin,
 } from "@vendure/core";
 import gql from "graphql-tag";

@@ -1,9 +1,8 @@
 import {
   Allow,
   Ctx,
+  EventBus,
   ID,
-  Product,
-  ProductService,
   ProductVariant,
   ProductVariantService,
   RequestContext,
@@ -26,7 +25,11 @@ import { Translated } from "@vendure/core/dist/common/types/locale-types";
 
 @Resolver()
 export class BulkDiscountAdminResolver {
-  constructor(private bulkDiscountService: BulkDiscountService) {}
+  constructor(
+    private bulkDiscountService: BulkDiscountService,
+    private productVariantService: ProductVariantService,
+    private eventBus: EventBus
+  ) {}
 
   @Transaction()
   @Mutation()
