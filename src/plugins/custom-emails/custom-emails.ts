@@ -27,28 +27,12 @@ const orderLoadData = async (context: {
   event: OrderStateTransitionEvent;
   injector: Injector;
 }) => {
-  const shippingMethods: ShippingMethod[] = [];
   const featuredAssets: {
-    [productVariantId: string]: Asset;
+    [productVariantId: string]: string;
   } = {};
   const productOptions: {
     [productVariantId: string]: string;
   } = {};
-
-  for (const line of context.event.order.shippingLines || []) {
-    let shippingMethod: ShippingMethod | undefined;
-    if (!line.shippingMethod && line.shippingMethodId) {
-      shippingMethod = await context.injector
-        .get(TransactionalConnection)
-        .getRepository(ShippingMethod)
-        .findOne(line.shippingMethodId);
-    } else if (line.shippingMethod) {
-      shippingMethod = line.shippingMethod;
-    }
-    if (shippingMethod) {
-      shippingMethods.push(shippingMethod);
-    }
-  }
 
   const variants: ProductVariant[] = await context.injector
     .get(ProductVariantService)
@@ -58,7 +42,9 @@ const orderLoadData = async (context: {
     );
 
   for (const variant of variants) {
-    featuredAssets[variant.id] = variant.featuredAsset;
+    if (variant.featuredAsset) {
+      featuredAssets[variant.id] = variant.featuredAsset.preview;
+    }
     productOptions[variant.id] = variant.options.map((o) => o.name).join(", ");
   }
 
@@ -72,10 +58,9 @@ const orderLoadData = async (context: {
   }
 
   return {
-    shippingMethods,
     featuredAssets,
     productOptions,
-    totalTaxes: context.event.order.totalWithTax - context.event.order.total,
+    totalTaxes: context.event.order.total * 0.077,
     groups,
   };
 };
@@ -84,9 +69,8 @@ const orderSetTemplateVars = (
   event: EventWithAsyncData<
     OrderStateTransitionEvent,
     {
-      shippingMethods: ShippingMethod[];
       featuredAssets: {
-        [productVariantId: string]: Asset;
+        [productVariantId: string]: string;
       };
       productOptions: {
         [productVariantId: string]: string;
@@ -97,11 +81,20 @@ const orderSetTemplateVars = (
   >
 ) => ({
   order: {
-    ...event.order,
+    id: event.order.id,
+    orderPlacedAt: event.order.orderPlacedAt,
+    billingAddress: event.order.billingAddress,
+    shippingAddress: event.order.shippingAddress,
+    subTotal: event.order.subTotal,
+    shipping: event.order.shipping,
+    //simple computation from data
+    subtotalWithShipping: event.order.subTotal + event.order.shipping,
+    totalTaxes: event.data.totalTaxes,
+    /* Otherwise orders look very weird */
+    totalWithTax: event.order.total * 1.077,
+    //@ts-ignore
+    customFields: { notes: event.order.customFields?.notes },
     lines: event.order.lines.map((line) => {
-      line.productVariant.featuredAsset =
-        event.data.featuredAssets[line.productVariant.id];
-
       /*let optionsString: string | null = null;
       if (line.productVariant.options.length > 0) {
         optionsString = line.productVariant.options
@@ -125,23 +118,27 @@ const orderSetTemplateVars = (
         } catch (e) {}
       }
 
-      //@ts-ignore
-      line.description =
-        (event.data.productOptions[line.productVariant.id] || "") +
-        (event.data.productOptions[line.productVariant.id] &&
-        customizationString
-          ? ", "
-          : "") +
-        (customizationString || "");
-
-      return line;
+      return {
+        description:
+          (event.data.productOptions[line.productVariant.id] || "") +
+          (event.data.productOptions[line.productVariant.id] &&
+          customizationString
+            ? ", "
+            : "") +
+          (customizationString || ""),
+        quantity: line.quantity,
+        proratedLinePrice: line.proratedLinePrice,
+        productVariant: {
+          name: line.productVariant.name,
+          sku: line.productVariant.sku,
+          featuredAsset: {
+            preview: event.data.featuredAssets[line.productVariant.id],
+          },
+        },
+      };
     }),
-    totalTaxes: event.data.totalTaxes,
   },
-  shippingMethods: event.data.shippingMethods,
   groups: event.data.groups,
-  //simple computation from data
-  subtotalWithShipping: event.order.subTotal + event.order.shipping,
 });
 
 export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
