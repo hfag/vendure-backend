@@ -65,6 +65,110 @@ const orderLoadData = async (context: {
   };
 };
 
+const mapProvince = (p: string) => {
+  switch (p) {
+    case "aargau":
+    case "argovie":
+      return "AG";
+    case "appenzell innerrhoden":
+    case "appenzell rhodes-intérieures":
+    case "appenzell rhodes-interieures":
+    case "appenzell rhodes intérieures":
+    case "appenzell rhodes interieures":
+      return "AI";
+    case "appenzell ausserrhoden":
+    case "appenzell rhodes-extérieures":
+    case "appenzell rhodes-exterieures":
+    case "appenzell rhodes extérieures":
+    case "appenzell rhodes exterieures":
+      return "AR";
+    case "bern":
+    case "berne":
+      return "BE";
+    case "basel-landschaft":
+    case "basel-land":
+    case "baselland":
+    case "basel land":
+    case "bâle-campagne":
+    case "bale-campagne":
+    case "bâle campagne":
+    case "bale campagne":
+      return "BL";
+    case "basel-stadt":
+    case "baselstadt":
+    case "basel stadt":
+    case "bâle-ville":
+    case "bale-ville":
+    case "bâle ville":
+    case "bale ville":
+      return "BS";
+    case "freiburg":
+    case "fribourg":
+      return "FR";
+    case "genf":
+    case "genève":
+    case "geneve":
+      return "GE";
+    case "glarus":
+    case "glaris":
+      return "GL";
+    case "graubünden":
+    case "grisons":
+      return "GR";
+    case "jura":
+      return "JU";
+    case "luzern":
+    case "lucerne":
+      return "LU";
+    case "neuenburg":
+    case "neuchâtel":
+    case "neuchatel":
+      return "NE";
+    case "nidwalden":
+    case "nidwald":
+      return "NW";
+    case "obwalden":
+    case "obwald":
+      return "OW";
+    case "st. gallen":
+    case "st.gallen":
+    case "saint-gall":
+    case "saint gall":
+      return "SG";
+    case "schaffhausen":
+    case "schaffhouse":
+      return "SH";
+    case "solothurn":
+    case "soloturn":
+    case "soleure":
+      return "SO";
+    case "schwyz":
+    case "schwytz":
+      return "SZ";
+    case "thurgau":
+    case "thurgovie":
+      return "TG";
+    case "tessin":
+      return "TI";
+    case "uri":
+      return "UR";
+    case "waadt":
+    case "vaud":
+      return "VD";
+    case "wallis":
+    case "valais":
+      return "VS";
+    case "zug":
+    case "zoug":
+      return "ZG";
+    case "zürich":
+    case "zurich":
+      return "ZH";
+    default:
+      return p;
+  }
+};
+
 const orderSetTemplateVars = (
   event: EventWithAsyncData<
     OrderStateTransitionEvent,
@@ -83,8 +187,18 @@ const orderSetTemplateVars = (
   order: {
     id: event.order.id,
     orderPlacedAt: event.order.orderPlacedAt,
-    billingAddress: event.order.billingAddress,
-    shippingAddress: event.order.shippingAddress,
+    billingAddress: {
+      ...event.order.billingAddress,
+      province: mapProvince(
+        event.order.billingAddress.province?.toLowerCase() || ""
+      ),
+    },
+    shippingAddress: {
+      ...event.order.shippingAddress,
+      province: mapProvince(
+        event.order.shippingAddress.province?.toLowerCase() || ""
+      ),
+    },
     customer: { emailAddress: event.order.customer?.emailAddress },
     subTotal: event.order.subTotal,
     shipping: event.order.shipping,
