@@ -132,7 +132,9 @@
                 {{#if phoneNumber}}
                 <li>{{ phoneNumber }}</li>
                 {{/if}}
+                {{#if ../order.customer.emailAddress}}
                 <li>{{ ../order.customer.emailAddress }}</li>
+                {{/if}}
             </ul>
             {{/with}}
         </mj-text>

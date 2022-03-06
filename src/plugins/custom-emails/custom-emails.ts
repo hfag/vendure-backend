@@ -85,6 +85,7 @@ const orderSetTemplateVars = (
     orderPlacedAt: event.order.orderPlacedAt,
     billingAddress: event.order.billingAddress,
     shippingAddress: event.order.shippingAddress,
+    customer: { emailAddress: event.order.customer?.emailAddress },
     subTotal: event.order.subTotal,
     shipping: event.order.shipping,
     //simple computation from data
