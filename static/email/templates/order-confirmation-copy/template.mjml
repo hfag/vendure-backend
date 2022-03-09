@@ -119,14 +119,14 @@
               {{#if streetLine2}}
                 <li>{{ streetLine2 }}</li>
               {{/if}}
+              {{#if postalCode}}
+                <li>{{ postalCode }}</li>
+              {{/if}}
               {{#if city}}
                 <li>{{ city }}</li>
               {{/if}}
               {{#if province}}
                 <li>{{ province }}</li>
-              {{/if}}
-              {{#if postalCode}}
-                <li>{{ postalCode }}</li>
               {{/if}}
               {{#if country}}
                 <li>{{ country }}</li>
@@ -153,14 +153,14 @@
               {{#if streetLine2}}
                 <li>{{ streetLine2 }}</li>
               {{/if}}
+              {{#if postalCode}}
+                <li>{{ postalCode }}</li>
+              {{/if}}
               {{#if city}}
                 <li>{{ city }}</li>
               {{/if}}
               {{#if province}}
                 <li>{{ province }}</li>
-              {{/if}}
-              {{#if postalCode}}
-                <li>{{ postalCode }}</li>
               {{/if}}
               {{#if country}}
                 <li>{{ country }}</li>
