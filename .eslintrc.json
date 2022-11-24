@@ -18,19 +18,18 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "sort-imports-es6-autofix"],
+  "plugins": ["@typescript-eslint", "import"],
   "rules": {
     "linebreak-style": ["error", "unix"],
     "semi": ["error", "always"],
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/ban-ts-comment": "off",
-    "sort-imports-es6-autofix/sort-imports-es6": [
-      2,
-      {
-        "ignoreCase": false,
-        "ignoreMemberSort": false,
-        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+    "import/order": [
+      "error", {
+        "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"], "type", "object"],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
       }
     ]
   }
