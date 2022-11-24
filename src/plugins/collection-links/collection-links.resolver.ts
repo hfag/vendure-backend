@@ -2,7 +2,6 @@ import {
   Args,
   Mutation,
   Parent,
-  Query,
   ResolveField,
   Resolver,
 } from "@nestjs/graphql";
@@ -14,7 +13,6 @@ import {
   Collection,
   CollectionEvent,
   CollectionService,
-  ConfigService,
   Ctx,
   EventBus,
   ID,
@@ -22,10 +20,7 @@ import {
   Transaction,
   TransactionalConnection,
   assertFound,
-  translateDeep,
 } from "@vendure/core";
-import { Translated } from "@vendure/core/dist/common/types/locale-types";
-import { Connection } from "typeorm";
 
 import {
   CreateCollectionLinkAssetInput,
@@ -34,11 +29,7 @@ import {
   UpdateCollectionLinkUrlInput,
 } from ".";
 import { CollectionLinkAsset } from "./collection-link-asset.entity";
-import { CollectionLinkUrl } from "./collection-link-url.entity";
-import {
-  CollectionLink,
-  TranslatedAnyCollectionLink,
-} from "./collection-link.entity";
+import { TranslatedAnyCollectionLink } from "./collection-link.entity";
 import { CollectionLinkService } from "./collection-links.service";
 import { notEmpty } from "./collection-links.service";
 
@@ -65,7 +56,7 @@ export class CollectionLinksAdminResolver {
       toDelete: ID[];
     }
   ): Promise<Collection> {
-    const promises = [];
+    const promises: Promise<unknown>[] = [];
 
     for (const url of args.urlsToCreate) {
       promises.push(this.collectionLinkService.createUrlLink(ctx, url));
@@ -83,16 +74,12 @@ export class CollectionLinksAdminResolver {
 
     for (const id of args.toDelete) {
       promises.push(
-        assertFound(this.collectionLinkService.findOne(ctx, id)).then(
-          (link) => {
-            return this.collectionLinkService.delete(id);
-          }
-        )
+        assertFound(this.collectionLinkService.findOne(ctx, id)).then(() => {
+          return this.collectionLinkService.delete(ctx, id);
+        })
       );
     }
 
-    //without this ignore a weird error occurs
-    //@ts-ignore
     await Promise.all(promises);
 
     const collection = await this.collectionService.findOne(
@@ -181,7 +168,7 @@ export class CollectionEntityResolverShop {
     });
 
     const assets = await this.connection
-      .getRepository(Asset)
+      .getRepository(ctx, Asset)
       .findByIds(
         links.map((l) => ("assetId" in l ? l.assetId : null)).filter(notEmpty)
       );

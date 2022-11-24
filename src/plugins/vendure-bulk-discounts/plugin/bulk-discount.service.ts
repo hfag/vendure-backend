@@ -6,9 +6,9 @@ import {
 import {
   ID,
   assertFound,
-  Product,
   ProductVariant,
   TransactionalConnection,
+  RequestContext,
 } from "@vendure/core";
 import { In } from "typeorm";
 import { FindManyOptions } from "typeorm/find-options/FindManyOptions";
@@ -21,75 +21,100 @@ export class BulkDiscountService {
   constructor(private connection: TransactionalConnection) {}
 
   findAll(
+    ctx: RequestContext,
     options: FindManyOptions<BulkDiscount> | undefined
   ): Promise<BulkDiscount[]> {
-    return this.connection.getRepository(BulkDiscount).find(options);
+    return this.connection.getRepository(ctx, BulkDiscount).find(options);
   }
 
-  findByProductVariantSku(productVariantSku: string): Promise<BulkDiscount[]> {
+  findByProductVariantSku(
+    ctx: RequestContext,
+    productVariantSku: string
+  ): Promise<BulkDiscount[]> {
     return this.connection
-      .getRepository(BulkDiscount)
+      .getRepository(ctx, BulkDiscount)
       .createQueryBuilder("bulkDiscount")
       .leftJoinAndSelect("bulkDiscount.productVariant", "productVariant")
       .where("productVariant.sku = :sku", { sku: productVariantSku })
       .getMany();
   }
 
-  findByProductVariantId(productVariantId: ID): Promise<BulkDiscount[]> {
+  findByProductVariantId(
+    ctx: RequestContext,
+    productVariantId: ID
+  ): Promise<BulkDiscount[]> {
     return this.connection
-      .getRepository(BulkDiscount)
+      .getRepository(ctx, BulkDiscount)
       .createQueryBuilder("bulkDiscount")
       .leftJoinAndSelect("bulkDiscount.productVariant", "productVariant")
       .where("productVariant.id = :productVariantId", { productVariantId })
       .getMany();
   }
 
-  findByProductId(productId: ID): Promise<BulkDiscount[]> {
+  findByProductId(ctx: RequestContext, productId: ID): Promise<BulkDiscount[]> {
     return this.connection
-      .getRepository(BulkDiscount)
+      .getRepository(ctx, BulkDiscount)
       .createQueryBuilder("bulkDiscount")
       .leftJoinAndSelect("bulkDiscount.productVariant", "productVariant")
       .where("productVariant.productId = :productId", { productId })
       .getMany();
   }
 
-  async findProductVariantIdBySku(sku: string): Promise<ID> {
+  async findProductVariantIdBySku(
+    ctx: RequestContext,
+    sku: string
+  ): Promise<ID> {
     return assertFound(
-      this.connection.getRepository(ProductVariant).findOne({ where: { sku } })
+      this.connection
+        .getRepository(ctx, ProductVariant)
+        .findOne({ where: { sku } })
     ).then((v) => {
       return v.id;
     });
   }
 
-  findOne(recommendationId: ID): Promise<BulkDiscount | undefined> {
+  findOne(
+    ctx: RequestContext,
+    recommendationId: ID
+  ): Promise<BulkDiscount | undefined> {
     return this.connection
-      .getRepository(BulkDiscount)
+      .getRepository(ctx, BulkDiscount)
       .findOne(recommendationId, { loadEagerRelations: true });
   }
 
-  async create(input: BulkDiscountInput): Promise<BulkDiscount[]> {
+  async create(
+    ctx: RequestContext,
+    input: BulkDiscountInput
+  ): Promise<BulkDiscount[]> {
     const discounts = [];
 
     for (const d of input.discounts) {
       const discount = new BulkDiscount({
         productVariant: await this.connection
-          .getRepository(ProductVariant)
+          .getRepository(ctx, ProductVariant)
           .findOne(input.productVariantId),
         quantity: d.quantity,
         price: d.price,
       });
 
       discounts.push(
-        assertFound(this.connection.getRepository(BulkDiscount).save(discount))
+        assertFound(
+          this.connection.getRepository(ctx, BulkDiscount).save(discount)
+        )
       );
     }
 
     return Promise.all(discounts);
   }
 
-  async update(id: number, quantity: number, price: number) {
+  async update(
+    ctx: RequestContext,
+    id: number,
+    quantity: number,
+    price: number
+  ) {
     return this.connection
-      .getRepository(BulkDiscount)
+      .getRepository(ctx, BulkDiscount)
       .update({ id }, { quantity, price });
   }
 
@@ -108,7 +133,7 @@ export class BulkDiscountService {
     } catch (e) {
       return {
         result: DeletionResult.NOT_DELETED,
-        message: e.toString(),
+        message: e?.toString() || `Unkown error: ${JSON.stringify(e)}`,
       };
     }
   }

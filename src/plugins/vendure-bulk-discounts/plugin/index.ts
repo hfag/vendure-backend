@@ -35,7 +35,7 @@ const always = new PromotionCondition({
   ],
   code: "always",
   args: {},
-  check(order, args) {
+  check() {
     return true;
   },
   priorityValue: 10,
@@ -59,7 +59,7 @@ const applyBulkDiscount = new PromotionItemAction({
   ],
   code: "bulk-discount",
   args: {},
-  execute: async function (ctx, orderItem, orderLine, args) {
+  execute: async function (ctx, orderItem, orderLine) {
     if (!bulkDiscountService) {
       console.error(
         "bulkDiscountService has already been destroyed or not created yet. No discounts are applied."
@@ -69,6 +69,7 @@ const applyBulkDiscount = new PromotionItemAction({
     }
 
     const discounts = await bulkDiscountService.findByProductVariantId(
+      ctx,
       orderLine.productVariant.id
     );
     const discount = discounts

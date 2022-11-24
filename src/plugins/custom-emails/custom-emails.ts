@@ -1,5 +1,4 @@
 import {
-  Asset,
   Customer,
   CustomerService,
   Injector,
@@ -11,8 +10,7 @@ import {
   Payment,
   ProductVariant,
   ProductVariantService,
-  ShippingMethod,
-  TransactionalConnection,
+  RequestContext,
 } from "@vendure/core";
 import {
   EmailEventHandler,
@@ -217,7 +215,7 @@ const orderSetTemplateVars = (
           .join(", ");
       }*/
 
-      const customFields = line.customFields as { [key: string]: any };
+      const customFields = line.customFields as { customizations?: string };
       let customizationString: string | null = null;
 
       if (customFields?.customizations) {
@@ -259,7 +257,7 @@ const orderSetTemplateVars = (
 export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
   "ArrangingPayment",
   "PaymentSettled",
-  {} as any,
+  {} as RequestContext,
   new Order({
     id: 1,
     billingAddress: {
@@ -372,7 +370,14 @@ const orderConfirmationHandler = new EmailEventListener("order-confirmation")
       !!event.order.customer
   )
   .loadData(orderLoadData)
-  .setRecipient((event) => event.order.customer!.emailAddress)
+  .setRecipient((event) => {
+    if (!event.order.customer) {
+      throw new Error(
+        "'event.order.customer is undefined in 'order-confirmation''"
+      );
+    }
+    return event.order.customer.emailAddress;
+  })
   .setFrom("{{ fromAddress }}")
   .setSubject(
     'Confirmation for your order on {{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}'

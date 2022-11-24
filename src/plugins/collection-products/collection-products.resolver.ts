@@ -1,4 +1,4 @@
-import { Args, Resolver, Query, ResolveField, Parent } from "@nestjs/graphql";
+import { Resolver, ResolveField, Parent } from "@nestjs/graphql";
 import {
   Ctx,
   RequestContext,
@@ -6,7 +6,6 @@ import {
   ProductService,
   Collection,
   TransactionalConnection,
-  CollectionService,
 } from "@vendure/core";
 import { Translated } from "@vendure/core/dist/common/types/locale-types";
 
@@ -23,7 +22,7 @@ export class CollectionProductResolver {
     @Parent() collection: Collection
   ): Promise<Translated<Product>[]> {
     const products = await this.connection
-      .getRepository(Product)
+      .getRepository(ctx, Product)
       .createQueryBuilder("product")
       .select("product.id") //reduce memory consumption
       .innerJoin("product.variants", "variant")

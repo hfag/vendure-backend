@@ -28,7 +28,6 @@ import {
   CreateCollectionLinkAssetInput,
   UpdateCollectionLinkUrlInput,
   UpdateCollectionLinkAssetInput,
-  UpdateCollectionLinkInput,
 } from "./index";
 
 export function notEmpty<TValue>(
@@ -52,7 +51,7 @@ export class CollectionLinkService {
     options?: FindManyOptions<CollectionLink>
   ): Promise<TranslatedAnyCollectionLink[]> {
     const collectionLinks = await this.connection
-      .getRepository(CollectionLink)
+      .getRepository(ctx, CollectionLink)
       .find(options);
 
     if (collectionLinks.length === 0) {
@@ -66,7 +65,7 @@ export class CollectionLinkService {
       urlLinks.length === 0
         ? Promise.resolve([])
         : this.connection
-            .getRepository(CollectionLinkUrl)
+            .getRepository(ctx, CollectionLinkUrl)
             .find({
               where: urlLinks.map((collectionLink) => ({ collectionLink })),
             })
@@ -74,7 +73,13 @@ export class CollectionLinkService {
               links.map((urlLink) => {
                 const collectionLink = urlLinks.find(
                   (l) => l.id == urlLink.collectionLinkId
-                )!;
+                );
+
+                if (!collectionLink) {
+                  throw new Error(
+                    "Invariant violated, coult not find any 'CollectionLinkUrl' corresponding to a 'CollectionLink' of type 'url'"
+                  );
+                }
 
                 return {
                   ...collectionLink,
@@ -89,7 +94,7 @@ export class CollectionLinkService {
       assetLinks.length === 0
         ? Promise.resolve([])
         : this.connection
-            .getRepository(CollectionLinkAsset)
+            .getRepository(ctx, CollectionLinkAsset)
             .find({
               where: assetLinks.map((collectionLink) => ({ collectionLink })),
             })
@@ -97,7 +102,13 @@ export class CollectionLinkService {
               links.map((assetLink) => {
                 const collectionLink = assetLinks.find(
                   (l) => l.id == assetLink.collectionLinkId
-                )!;
+                );
+
+                if (!collectionLink) {
+                  throw new Error(
+                    "Invariant violated, coult not find any 'CollectionLinkAsset' corresponding to a 'CollectionLink' of type 'asset'"
+                  );
+                }
 
                 return {
                   ...collectionLink,
@@ -128,17 +139,20 @@ export class CollectionLinkService {
     collectionLinkId: ID
   ): Promise<TranslatedAnyCollectionLink | undefined> {
     const collectionLink = await this.connection
-      .getRepository(CollectionLink)
+      .getRepository(ctx, CollectionLink)
       .findOne(collectionLinkId, { loadEagerRelations: true });
 
     if (!collectionLink) {
       return;
     }
 
+    let url: CollectionLinkUrl | undefined;
+    let asset: CollectionLinkAsset | undefined;
+
     switch (collectionLink.type) {
       case "url":
-        const url = await this.connection
-          .getRepository(CollectionLinkUrl)
+        url = await this.connection
+          .getRepository(ctx, CollectionLinkUrl)
           .findOne({ where: { collectionLink } });
         if (!url) {
           return;
@@ -151,9 +165,10 @@ export class CollectionLinkService {
           linkUrlId: url.id,
         };
       case "asset":
-        const asset = await this.connection
-          .getRepository(CollectionLinkAsset)
+        asset = await this.connection
+          .getRepository(ctx, CollectionLinkAsset)
           .findOne({ where: { collectionLink } });
+
         if (!asset) {
           return;
         }
@@ -180,7 +195,7 @@ export class CollectionLinkService {
     );
 
     const collectionLink = await this.connection
-      .getRepository(CollectionLink)
+      .getRepository(ctx, CollectionLink)
       .save(
         new CollectionLink({
           collection,
@@ -220,7 +235,7 @@ export class CollectionLinkService {
     );
 
     const collectionLink = await this.connection
-      .getRepository(CollectionLink)
+      .getRepository(ctx, CollectionLink)
       .save(
         new CollectionLink({
           collection,
@@ -231,7 +246,7 @@ export class CollectionLinkService {
       );
 
     const collectionLinkAsset = await this.connection
-      .getRepository(CollectionLinkAsset)
+      .getRepository(ctx, CollectionLinkAsset)
       .save(
         new CollectionLinkAsset({
           collectionLink,
@@ -255,7 +270,7 @@ export class CollectionLinkService {
       CollectionLinkUrl,
       input.id
     );
-    const updatedCollectionLinkUrl = await this.translatableSaver.update({
+    await this.translatableSaver.update({
       ctx,
       input,
       entityType: CollectionLinkUrl,
@@ -263,7 +278,7 @@ export class CollectionLinkService {
     });
 
     const collectionLink = await this.connection
-      .getRepository(CollectionLink)
+      .getRepository(ctx, CollectionLink)
       .save({
         id: collectionLinkUrl.collectionLinkId,
         icon: input.icon,
@@ -287,12 +302,12 @@ export class CollectionLinkService {
       this.assetService.findOne(ctx, input.assetId)
     );
 
-    const collectionLinkAssetUpdate = await this.connection
-      .getRepository(CollectionLinkAsset)
+    await this.connection
+      .getRepository(ctx, CollectionLinkAsset)
       .save({ id: input.id, asset, languageCode: input.languageCode });
 
     const collectionLink = await this.connection
-      .getRepository(CollectionLink)
+      .getRepository(ctx, CollectionLink)
       .save({
         id: collectionLinkAsset.collectionLinkId,
         icon: input.icon,
@@ -302,9 +317,12 @@ export class CollectionLinkService {
     return assertFound(this.findOne(ctx, collectionLink.id));
   }
 
-  async delete(collectionLinkId: ID): Promise<DeletionResponse> {
+  async delete(
+    ctx: RequestContext,
+    collectionLinkId: ID
+  ): Promise<DeletionResponse> {
     await this.connection
-      .getRepository(CollectionLink)
+      .getRepository(ctx, CollectionLink)
       .delete(collectionLinkId);
 
     return {

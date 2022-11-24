@@ -59,7 +59,7 @@ export class BulkDiscountAdminResolver {
         return false;
       }
 
-      const discounts = await this.bulkDiscountService.findAll({
+      const discounts = await this.bulkDiscountService.findAll(ctx, {
         where: { productVariant: discount.productVariantId },
       });
 
@@ -102,10 +102,11 @@ export class BulkDiscountAdminResolver {
       }
     }
 
-    const promises: Promise<any>[] = [];
+    const promises: Promise<unknown>[] = [];
     for (const update of updates) {
       promises.push(
         this.bulkDiscountService.update(
+          ctx,
           update.id,
           update.quantity,
           update.price
@@ -114,7 +115,7 @@ export class BulkDiscountAdminResolver {
     }
     for (const productVariantId of Object.keys(creations)) {
       promises.push(
-        this.bulkDiscountService.create({
+        this.bulkDiscountService.create(ctx, {
           productVariantId: productVariantId,
           discounts: creations[productVariantId],
         })
@@ -132,7 +133,7 @@ export class BulkDiscountAdminResolver {
     @Ctx() ctx: RequestContext,
     @Args() args: { productId: ID }
   ): Promise<BulkDiscount[]> {
-    return await this.bulkDiscountService.findByProductId(args.productId);
+    return await this.bulkDiscountService.findByProductId(ctx, args.productId);
   }
 }
 
@@ -145,7 +146,7 @@ export class BulkDiscountShopResolver {
     @Ctx() ctx: RequestContext,
     @Args() args: { productId: ID }
   ): Promise<BulkDiscount[]> {
-    return await this.bulkDiscountService.findByProductId(args.productId);
+    return await this.bulkDiscountService.findByProductId(ctx, args.productId);
   }
 }
 
@@ -182,6 +183,9 @@ export class ProductVariantEntityResolver {
     @Ctx() ctx: RequestContext,
     @Parent() productVariant: ProductVariant
   ): Promise<BulkDiscount[]> {
-    return this.bulkDiscountService.findByProductVariantId(productVariant.id);
+    return this.bulkDiscountService.findByProductVariantId(
+      ctx,
+      productVariant.id
+    );
   }
 }

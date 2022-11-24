@@ -33,7 +33,7 @@ export class CustomerResellerDiscountResolver {
       customer.id
     );
     const activePromotions = await this.connection
-      .getRepository(Promotion)
+      .getRepository(ctx, Promotion)
       .find({
         where: { enabled: true },
       });
@@ -97,7 +97,7 @@ export class ProductResellerDiscountResolver {
       customer.id
     );
     const activePromotions = await this.connection
-      .getRepository(Promotion)
+      .getRepository(ctx, Promotion)
       .find({
         where: { enabled: true },
       });
@@ -169,7 +169,7 @@ export class ProductVariantResellerDiscountResolver {
       customer.id
     );
     const activePromotions = await this.connection
-      .getRepository(Promotion)
+      .getRepository(ctx, Promotion)
       .find({
         where: { enabled: true },
       });

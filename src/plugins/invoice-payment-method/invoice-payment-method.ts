@@ -53,8 +53,7 @@ export const InvoicePaymentIntegration = new PaymentMethodHandler({
     ctx,
     order,
     amount,
-    args,
-    metadata
+    args
   ): Promise<CreatePaymentResult | CreatePaymentErrorResult> {
     if (!connection) {
       throw new Error(
@@ -69,7 +68,7 @@ export const InvoicePaymentIntegration = new PaymentMethodHandler({
       metadata: { copyEmail: args.copyEmail },
     };
   },
-  settlePayment: async (order, payment, args): Promise<SettlePaymentResult> => {
+  settlePayment: async (): Promise<SettlePaymentResult> => {
     return { success: true };
   },
 });

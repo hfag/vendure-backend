@@ -103,9 +103,14 @@ dist
 # TernJS port file
 .tern-port
 
+.DS_Store
+
 # vendure
 admin-ui
 __admin-ui
 static/assets/
 static/email/test-emails/
 src/vendure-config.ts
+
+# no typescript docs until properly configured
+docs/

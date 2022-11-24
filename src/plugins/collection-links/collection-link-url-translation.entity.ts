@@ -2,7 +2,7 @@ import { LanguageCode } from "@vendure/common/lib/generated-types";
 import { DeepPartial, ID } from "@vendure/common/lib/shared-types";
 import { VendureEntity } from "@vendure/core";
 import { Translation } from "@vendure/core/dist/common/types/locale-types";
-import { Column, Entity, Index, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, ManyToOne, RelationId } from "typeorm";
 
 import { CollectionLinkUrl } from "./collection-link-url.entity";
 
@@ -24,7 +24,7 @@ export class CollectionLinkUrlTranslation
   @Column()
   url: string;
 
-  @ManyToOne((type) => CollectionLinkUrl, (base) => base.translations, {
+  @ManyToOne(() => CollectionLinkUrl, (base) => base.translations, {
     onDelete: "CASCADE",
   })
   base: CollectionLinkUrl;

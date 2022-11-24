@@ -1,18 +1,11 @@
 import { DeepPartial, ID } from "@vendure/common/lib/shared-types";
-import { VendureEntity, Product, Collection } from "@vendure/core";
+import { VendureEntity } from "@vendure/core";
 import {
   Translatable,
   LocaleString,
   Translation,
 } from "@vendure/core/dist/common/types/locale-types";
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  JoinColumn,
-  RelationId,
-} from "typeorm";
+import { Entity, ManyToOne, OneToMany, JoinColumn, RelationId } from "typeorm";
 
 import { CollectionLinkUrlTranslation } from "./collection-link-url-translation.entity";
 import { CollectionLink } from "./collection-link.entity";
@@ -23,7 +16,7 @@ export class CollectionLinkUrl extends VendureEntity implements Translatable {
     super(input);
   }
 
-  @ManyToOne((type) => CollectionLink, {
+  @ManyToOne(() => CollectionLink, {
     onDelete: "CASCADE",
     nullable: false,
     eager: false,
@@ -35,7 +28,7 @@ export class CollectionLinkUrl extends VendureEntity implements Translatable {
   collectionLinkId: ID;
 
   @OneToMany(
-    (type) => CollectionLinkUrlTranslation,
+    () => CollectionLinkUrlTranslation,
     (translation) => translation.base,
     { eager: true }
   )

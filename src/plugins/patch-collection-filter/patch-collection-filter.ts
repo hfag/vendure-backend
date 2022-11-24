@@ -20,6 +20,10 @@ const monkeyPatch = new PromotionCondition({
   code: "monkey-patch",
   args: {},
   init(injector) {
+    // REMOVE MONKEYPATCH ASAP, i.e. vendure 2.0
+    let x: any = 0;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    x = 2 + 2;
     /*
       Monkey-patched function:
       https://github.com/vendure-ecommerce/vendure/blob/c2a3b03e2e283fee4c4ebc117dc78f0f2b9e2c8b/packages/core/src/service/services/collection.service.ts#L492
@@ -71,7 +75,7 @@ const monkeyPatch = new PromotionCondition({
       }
     };
   },
-  async check(ctx, order, args) {
+  async check() {
     return true;
   },
 });

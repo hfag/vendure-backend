@@ -37,12 +37,14 @@ export class ProductCustomerCustomizationsResolver {
   ): Promise<ErrorResultUnion<UpdateOrderItemsResult, Order>> {
     const order = await this.activeOrderService.getOrderFromContext(ctx, true);
 
-    let customizations: { [key: string]: any } | null = null;
+    let customizations: { [key: string]: unknown } | null = null;
 
     if (args.customizations) {
       try {
-        const validatedCustomizations: { [key: string]: any } = {};
-        const input: { [key: string]: any } = JSON.parse(args.customizations);
+        const validatedCustomizations: { [key: string]: unknown } = {};
+        const input: { [key: string]: unknown } = JSON.parse(
+          args.customizations
+        );
 
         const productVariant = await this.productVariantService.findOne(
           ctx,
@@ -59,9 +61,11 @@ export class ProductCustomerCustomizationsResolver {
           return new OrderModificationError();
         }
 
-        const customFields = product.customFields as any;
+        const customFields = product.customFields as {
+          customizationOptions?: string;
+        };
 
-        if ("customizationOptions" in customFields) {
+        if (customFields?.customizationOptions) {
           const customizationOptions = JSON.parse(
             customFields.customizationOptions
           );

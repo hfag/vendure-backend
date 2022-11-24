@@ -8,11 +8,12 @@ import {
   DefaultSearchPlugin,
   DefaultJobQueuePlugin,
 } from "@vendure/core";
+// is used in uncommented code
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ElasticsearchPlugin } from "@vendure/elasticsearch-plugin";
 import { EmailPlugin } from "@vendure/email-plugin";
 import { ProductRecommendationsPlugin } from "vendure-product-recommendations";
 
-import { ADMIN_UI_EXTENSIONS } from "./compile-admin-ui";
 import { AssetByNamePlugin } from "./plugins/asset-by-name/asset-by-name";
 import { CollectionLinksPlugin } from "./plugins/collection-links";
 import { CollectionProductsPlugin } from "./plugins/collection-products/collection-products";

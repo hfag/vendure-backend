@@ -10,7 +10,7 @@ export class CollectionLinkAsset extends VendureEntity {
     super(input);
   }
 
-  @ManyToOne((type) => CollectionLink, {
+  @ManyToOne(() => CollectionLink, {
     onDelete: "CASCADE",
     nullable: false,
     eager: false,
@@ -24,7 +24,7 @@ export class CollectionLinkAsset extends VendureEntity {
   @Column("varchar")
   languageCode: LanguageCode;
 
-  @ManyToOne((type) => Asset, {
+  @ManyToOne(() => Asset, {
     onDelete: "CASCADE",
     nullable: false,
     eager: false,

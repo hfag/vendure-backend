@@ -4,7 +4,7 @@ import { config } from "./vendure-config";
 
 bootstrapWorker(config)
   .then((worker) => worker.startJobQueue())
-  .catch((err: any) => {
+  .catch((err) => {
     console.log(err);
     process.exit(1);
   });

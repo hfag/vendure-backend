@@ -17,7 +17,7 @@ export class AssetByNameResolver {
     @Args() args: { name: string }
   ): Promise<Asset | undefined> {
     return this.connection
-      .getRepository(Asset)
+      .getRepository(ctx, Asset)
       .findOne({ where: { source: Like("%" + args.name) } });
   }
 }

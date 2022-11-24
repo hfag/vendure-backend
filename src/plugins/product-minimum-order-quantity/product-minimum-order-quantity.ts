@@ -1,9 +1,4 @@
-import {
-  ID,
-  LanguageCode,
-  PluginCommonModule,
-  VendurePlugin,
-} from "@vendure/core";
+import { LanguageCode, PluginCommonModule, VendurePlugin } from "@vendure/core";
 
 @VendurePlugin({
   imports: [PluginCommonModule],

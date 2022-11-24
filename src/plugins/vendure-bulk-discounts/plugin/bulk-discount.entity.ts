@@ -18,7 +18,7 @@ export class BulkDiscount extends VendureEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne((type) => ProductVariant, {
+  @ManyToOne(() => ProductVariant, {
     onDelete: "CASCADE",
     nullable: false,
     eager: true,

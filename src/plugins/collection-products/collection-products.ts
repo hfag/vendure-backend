@@ -1,9 +1,4 @@
-import {
-  VendurePlugin,
-  PluginCommonModule,
-  ID,
-  LanguageCode,
-} from "@vendure/core";
+import { VendurePlugin, PluginCommonModule } from "@vendure/core";
 import gql from "graphql-tag";
 
 import { CollectionProductResolver } from "./collection-products.resolver";

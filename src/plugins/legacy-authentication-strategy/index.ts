@@ -2,7 +2,6 @@ import {
   AuthenticationStrategy,
   CustomerGroupService,
   CustomerService,
-  ExternalAuthenticationService,
   ID,
   Injector,
   NativeAuthenticationMethod,
@@ -74,15 +73,7 @@ export class LegacyAuthenticationStrategy
     const user = await this.getUserFromIdentifier(ctx, data.email);
     if (!user) {
       //but in case no user is found, we also try to authenticate with the old shop
-      const req: {
-        success: boolean;
-        account: {
-          email: string;
-          billing: WPAddress;
-          shipping: WPAddress;
-        };
-        groups: string[];
-      } = await fetch(this.url, {
+      const req = await fetch(this.url, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -94,7 +85,18 @@ export class LegacyAuthenticationStrategy
           username: data.email,
           password: data.password,
         }),
-      }).then((response) => response.json());
+      }).then(
+        (response) =>
+          response.json() as Promise<{
+            success: boolean;
+            account: {
+              email: string;
+              billing: WPAddress;
+              shipping: WPAddress;
+            };
+            groups: string[];
+          }>
+      );
 
       if (!req.success) {
         //the old shop also denies authentication

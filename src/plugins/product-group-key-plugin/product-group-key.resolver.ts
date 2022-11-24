@@ -1,11 +1,8 @@
 import { Args, Resolver, Query } from "@nestjs/graphql";
 import {
-  Allow,
   Ctx,
   RequestContext,
-  ID,
   Product,
-  assertFound,
   TransactionalConnection,
 } from "@vendure/core";
 
@@ -19,7 +16,7 @@ export class ProductGroupKeyAdminResolver {
     @Args() args: { productGroupKey: string }
   ): Promise<Product | undefined> {
     return this.connection
-      .getRepository(Product)
+      .getRepository(ctx, Product)
       .createQueryBuilder("product")
       .where("customFieldsGroupkey = :key AND deletedAt IS NULL", {
         key: args.productGroupKey,
@@ -33,7 +30,7 @@ export class ProductGroupKeyAdminResolver {
     @Args() args: { productGroupKeys: string[] }
   ): Promise<Product[]> {
     return this.connection
-      .getRepository(Product)
+      .getRepository(ctx, Product)
       .createQueryBuilder("product")
       .where("customFieldsGroupkey IN (:keys) AND deletedAt IS NULL", {
         keys: args.productGroupKeys,

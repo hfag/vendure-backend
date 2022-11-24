@@ -15,7 +15,8 @@
     "compile-admin-ui": "rimraf dist/admin-ui && ts-node src/compile-admin-ui.ts",
     "test": "echo 'sometime in the future'",
     "deploy": "yarn build && cp -r dist/migrations/*.js migrations/ && rm migrations/*.ts",
-    "eslint": "eslint ./src"
+    "eslint": "eslint ./src",
+    "docs": "typedoc src/"
   },
   "resolutions": {
     "graphql": "15.5.1"
@@ -42,6 +43,7 @@
     "node-fetch": "^3.3.0",
     "prettier": "^2.8.0",
     "rimraf": "^3.0.2",
+    "typedoc": "^0.23.21",
     "typescript": "4.3.5",
     "vendure-product-recommendations": "^0.1.21"
   },
