@@ -1,11 +1,11 @@
 import { Args, Resolver, Query } from "@nestjs/graphql";
-import { Like } from "typeorm";
 import {
   Ctx,
   RequestContext,
   Asset,
   TransactionalConnection,
 } from "@vendure/core";
+import { Like } from "typeorm";
 
 @Resolver()
 export class AssetByNameResolver {

@@ -1,5 +1,4 @@
 import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
-
 import {
   Ctx,
   Customer,

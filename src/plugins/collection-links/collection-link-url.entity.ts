@@ -1,6 +1,11 @@
 import { DeepPartial, ID } from "@vendure/common/lib/shared-types";
 import { VendureEntity, Product, Collection } from "@vendure/core";
 import {
+  Translatable,
+  LocaleString,
+  Translation,
+} from "@vendure/core/dist/common/types/locale-types";
+import {
   Column,
   Entity,
   ManyToOne,
@@ -8,11 +13,7 @@ import {
   JoinColumn,
   RelationId,
 } from "typeorm";
-import {
-  Translatable,
-  LocaleString,
-  Translation,
-} from "@vendure/core/dist/common/types/locale-types";
+
 import { CollectionLinkUrlTranslation } from "./collection-link-url-translation.entity";
 import { CollectionLink } from "./collection-link.entity";
 

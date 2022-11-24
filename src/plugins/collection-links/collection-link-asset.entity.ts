@@ -1,6 +1,7 @@
 import { DeepPartial, ID } from "@vendure/common/lib/shared-types";
 import { VendureEntity, LanguageCode, Asset } from "@vendure/core";
 import { Column, Entity, ManyToOne, JoinColumn, RelationId } from "typeorm";
+
 import { CollectionLink } from "./collection-link.entity";
 
 @Entity()

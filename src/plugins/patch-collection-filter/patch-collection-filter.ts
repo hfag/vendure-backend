@@ -1,3 +1,4 @@
+import { pick } from "@vendure/common/lib/pick";
 import {
   Collection,
   CollectionService,
@@ -8,7 +9,6 @@ import {
   PromotionCondition,
   VendurePlugin,
 } from "@vendure/core";
-import { pick } from "@vendure/common/lib/pick";
 
 const monkeyPatch = new PromotionCondition({
   description: [

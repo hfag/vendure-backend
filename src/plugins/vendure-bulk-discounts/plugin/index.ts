@@ -1,11 +1,3 @@
-import { BulkDiscount } from "./bulk-discount.entity";
-import {
-  BulkDiscountAdminResolver,
-  BulkDiscountEntityResolver,
-  BulkDiscountShopResolver,
-  ProductVariantEntityResolver,
-} from "./bulk-discount.resolver";
-import { BulkDiscountService } from "./bulk-discount.service";
 import {
   ID,
   LanguageCode,
@@ -15,6 +7,15 @@ import {
   VendurePlugin,
 } from "@vendure/core";
 import gql from "graphql-tag";
+
+import { BulkDiscount } from "./bulk-discount.entity";
+import {
+  BulkDiscountAdminResolver,
+  BulkDiscountEntityResolver,
+  BulkDiscountShopResolver,
+  ProductVariantEntityResolver,
+} from "./bulk-discount.resolver";
+import { BulkDiscountService } from "./bulk-discount.service";
 
 export type BulkDiscountInput = {
   productVariantId: ID;

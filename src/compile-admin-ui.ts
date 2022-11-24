@@ -1,5 +1,7 @@
-import { compileUiExtensions } from "@vendure/ui-devkit/compiler";
 import * as path from "path";
+
+import { compileUiExtensions } from "@vendure/ui-devkit/compiler";
+
 import { BulkDiscountsInputModule } from "./plugins/vendure-bulk-discounts";
 
 export const ADMIN_UI_EXTENSIONS = [

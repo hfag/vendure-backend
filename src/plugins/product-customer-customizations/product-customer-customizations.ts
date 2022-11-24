@@ -1,7 +1,7 @@
 import { LanguageCode, PluginCommonModule, VendurePlugin } from "@vendure/core";
+import gql from "graphql-tag";
 
 import { ProductCustomerCustomizationsResolver } from "./product-customer-customizations.resolver";
-import gql from "graphql-tag";
 
 const shopSchemaExtension = gql`
   extend type Mutation {

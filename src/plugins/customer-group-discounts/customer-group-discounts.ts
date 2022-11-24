@@ -6,6 +6,7 @@ import {
   CustomerService,
 } from "@vendure/core";
 import gql from "graphql-tag";
+
 import {
   CustomerResellerDiscountResolver,
   ProductResellerDiscountResolver,

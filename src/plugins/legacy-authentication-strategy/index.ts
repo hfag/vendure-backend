@@ -13,8 +13,8 @@ import {
   isGraphQlErrorResult,
 } from "@vendure/core";
 import { DocumentNode } from "graphql";
-import fetch from "node-fetch";
 import gql from "graphql-tag";
+import fetch from "node-fetch";
 
 type WPAddress = {
   additional_line_above: string;

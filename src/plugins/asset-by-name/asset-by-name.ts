@@ -1,5 +1,6 @@
 import { VendurePlugin, PluginCommonModule } from "@vendure/core";
 import gql from "graphql-tag";
+
 import { AssetByNameResolver } from "./asset-by-name.resolver";
 
 const schemaExtension = gql`

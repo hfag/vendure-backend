@@ -1,4 +1,3 @@
-import { ActivatedRoute } from "@angular/router";
 import {
   ChangeDetectorRef,
   Component,
@@ -6,6 +5,8 @@ import {
   OnDestroy,
   OnInit,
 } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import {
   CustomFieldConfigType,
   CustomFieldControl,
@@ -13,7 +14,6 @@ import {
   SharedModule,
   registerCustomFieldComponent,
 } from "@vendure/admin-ui/core";
-import { FormControl } from "@angular/forms";
 import { ID } from "@vendure/core";
 import { notify } from "@vendure/ui-devkit";
 import { parse } from "graphql";

@@ -1,3 +1,4 @@
+import { OnApplicationBootstrap } from "@nestjs/common";
 import {
   CollectionEvent,
   EventBus,
@@ -6,7 +7,6 @@ import {
   Type,
   VendurePlugin,
 } from "@vendure/core";
-import { OnApplicationBootstrap } from "@nestjs/common";
 import fetch from "node-fetch";
 
 const arrayToGetParameter = (name: string, array: string[]): string =>

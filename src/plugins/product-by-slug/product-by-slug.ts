@@ -1,5 +1,6 @@
 import { VendurePlugin, PluginCommonModule } from "@vendure/core";
 import gql from "graphql-tag";
+
 import { ProductBySlugResolver } from "./product-by-slug.resolver";
 
 const schemaExtension = gql`

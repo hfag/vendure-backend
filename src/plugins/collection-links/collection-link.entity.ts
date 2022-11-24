@@ -1,9 +1,10 @@
 import { DeepPartial, ID } from "@vendure/common/lib/shared-types";
 import { VendureEntity, Collection } from "@vendure/core";
-import { Column, Entity, ManyToOne, JoinColumn, RelationId } from "typeorm";
-import { CollectionLinkUrl } from "./collection-link-url.entity";
-import { CollectionLinkAsset } from "./collection-link-asset.entity";
 import { Translated } from "@vendure/core/dist/common/types/locale-types";
+import { Column, Entity, ManyToOne, JoinColumn, RelationId } from "typeorm";
+
+import { CollectionLinkAsset } from "./collection-link-asset.entity";
+import { CollectionLinkUrl } from "./collection-link-url.entity";
 
 type CollectionLinkType = "url" | "asset";
 

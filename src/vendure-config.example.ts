@@ -1,3 +1,7 @@
+import path from "path";
+
+import { AdminUiPlugin } from "@vendure/admin-ui-plugin";
+import { AssetServerPlugin } from "@vendure/asset-server-plugin";
 import {
   VendureConfig,
   LanguageCode,
@@ -6,21 +10,18 @@ import {
 } from "@vendure/core";
 import { ElasticsearchPlugin } from "@vendure/elasticsearch-plugin";
 import { EmailPlugin } from "@vendure/email-plugin";
-import { AssetServerPlugin } from "@vendure/asset-server-plugin";
-import { AdminUiPlugin } from "@vendure/admin-ui-plugin";
-import path from "path";
-
 import { ProductRecommendationsPlugin } from "vendure-product-recommendations";
-import { ProductMinimumOrderQuantityPlugin } from "./plugins/product-minimum-order-quantity/product-minimum-order-quantity";
-import { ProductGroupKeyPlugin } from "./plugins/product-group-key-plugin/product-group-key";
+
+import { ADMIN_UI_EXTENSIONS } from "./compile-admin-ui";
+import { AssetByNamePlugin } from "./plugins/asset-by-name/asset-by-name";
+import { CollectionLinksPlugin } from "./plugins/collection-links";
 import { CollectionProductsPlugin } from "./plugins/collection-products/collection-products";
-import { ProductBySlugPlugin } from "./plugins/product-by-slug/product-by-slug";
-import { InvoicePaymentIntegration } from "./plugins/invoice-payment-method/invoice-payment-method";
 import { emailHandlers } from "./plugins/custom-emails/custom-emails";
 import { CustomerGroupDiscountsPlugin } from "./plugins/customer-group-discounts/customer-group-discounts";
-import { CollectionLinksPlugin } from "./plugins/collection-links";
-import { AssetByNamePlugin } from "./plugins/asset-by-name/asset-by-name";
-import { ADMIN_UI_EXTENSIONS } from "./compile-admin-ui";
+import { InvoicePaymentIntegration } from "./plugins/invoice-payment-method/invoice-payment-method";
+import { ProductBySlugPlugin } from "./plugins/product-by-slug/product-by-slug";
+import { ProductGroupKeyPlugin } from "./plugins/product-group-key-plugin/product-group-key";
+import { ProductMinimumOrderQuantityPlugin } from "./plugins/product-minimum-order-quantity/product-minimum-order-quantity";
 import { BulkDiscountPlugin } from "./plugins/vendure-bulk-discounts";
 
 export const config: VendureConfig = {

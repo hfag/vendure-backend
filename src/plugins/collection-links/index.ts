@@ -1,4 +1,16 @@
+import {
+  ID,
+  LanguageCode,
+  PluginCommonModule,
+  VendurePlugin,
+} from "@vendure/core";
 import { AdminUiExtension } from "@vendure/ui-devkit/compiler";
+import gql from "graphql-tag";
+
+import { CollectionLinkAsset } from "./collection-link-asset.entity";
+import { CollectionLinkUrlTranslation } from "./collection-link-url-translation.entity";
+import { CollectionLinkUrl } from "./collection-link-url.entity";
+import { CollectionLink } from "./collection-link.entity";
 import {
   CollectionAssetLinkResolverAdmin,
   CollectionEntityResolverAdmin,
@@ -6,18 +18,7 @@ import {
   CollectionLinkEntityResolver,
   CollectionLinksAdminResolver,
 } from "./collection-links.resolver";
-import { CollectionLink } from "./collection-link.entity";
-import { CollectionLinkAsset } from "./collection-link-asset.entity";
 import { CollectionLinkService } from "./collection-links.service";
-import { CollectionLinkUrl } from "./collection-link-url.entity";
-import { CollectionLinkUrlTranslation } from "./collection-link-url-translation.entity";
-import {
-  ID,
-  LanguageCode,
-  PluginCommonModule,
-  VendurePlugin,
-} from "@vendure/core";
-import gql from "graphql-tag";
 
 export type CreateCollectionLinkUrlInput = {
   collectionId: ID;

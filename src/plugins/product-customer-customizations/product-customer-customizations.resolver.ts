@@ -1,3 +1,8 @@
+import { Args, Mutation, Resolver } from "@nestjs/graphql";
+import {
+  MutationAddItemToOrderArgs,
+  UpdateOrderItemsResult,
+} from "@vendure/common/lib/generated-shop-types";
 import {
   ActiveOrderService,
   Allow,
@@ -11,12 +16,6 @@ import {
   RequestContext,
   Transaction,
 } from "@vendure/core";
-import { Args, Mutation, Resolver } from "@nestjs/graphql";
-
-import {
-  MutationAddItemToOrderArgs,
-  UpdateOrderItemsResult,
-} from "@vendure/common/lib/generated-shop-types";
 import { OrderModificationError } from "@vendure/core/dist/common/error/generated-graphql-shop-errors";
 
 @Resolver()

@@ -1,4 +1,13 @@
 import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from "@nestjs/graphql";
+import { Permission } from "@vendure/common/lib/generated-types";
+import {
   Allow,
   Ctx,
   EventBus,
@@ -8,20 +17,11 @@ import {
   RequestContext,
   Transaction,
 } from "@vendure/core";
-import {
-  Args,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from "@nestjs/graphql";
-import { Permission } from "@vendure/common/lib/generated-types";
-
-import { BulkDiscount } from "./bulk-discount.entity";
-import { BulkDiscountInput } from ".";
-import { BulkDiscountService } from "./bulk-discount.service";
 import { Translated } from "@vendure/core/dist/common/types/locale-types";
+
+import { BulkDiscountInput } from ".";
+import { BulkDiscount } from "./bulk-discount.entity";
+import { BulkDiscountService } from "./bulk-discount.service";
 
 @Resolver()
 export class BulkDiscountAdminResolver {

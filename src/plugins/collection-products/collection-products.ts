@@ -5,6 +5,7 @@ import {
   LanguageCode,
 } from "@vendure/core";
 import gql from "graphql-tag";
+
 import { CollectionProductResolver } from "./collection-products.resolver";
 
 const schemaExtension = gql`

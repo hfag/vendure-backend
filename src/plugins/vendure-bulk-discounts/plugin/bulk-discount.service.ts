@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { In } from "typeorm";
-import { FindManyOptions } from "typeorm/find-options/FindManyOptions";
+import {
+  DeletionResponse,
+  DeletionResult,
+} from "@vendure/common/lib/generated-types";
 import {
   ID,
   assertFound,
@@ -8,10 +10,9 @@ import {
   ProductVariant,
   TransactionalConnection,
 } from "@vendure/core";
-import {
-  DeletionResponse,
-  DeletionResult,
-} from "@vendure/common/lib/generated-types";
+import { In } from "typeorm";
+import { FindManyOptions } from "typeorm/find-options/FindManyOptions";
+
 import { BulkDiscount } from "./bulk-discount.entity";
 import { BulkDiscountInput } from "./index";
 
