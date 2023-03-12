@@ -1,4 +1,3 @@
-import { pick } from "@vendure/common/lib/pick";
 import {
   Collection,
   CollectionService,
@@ -21,9 +20,6 @@ const monkeyPatch = new PromotionCondition({
   args: {},
   init(injector) {
     // REMOVE MONKEYPATCH ASAP, i.e. vendure 2.0
-    let x: any = 0;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    x = 2 + 2;
     /*
       Monkey-patched function:
       https://github.com/vendure-ecommerce/vendure/blob/c2a3b03e2e283fee4c4ebc117dc78f0f2b9e2c8b/packages/core/src/service/services/collection.service.ts#L492
@@ -43,27 +39,44 @@ const monkeyPatch = new PromotionCondition({
           )
       );*/
       const preIds = await this.getCollectionProductVariantIds(collection);
-      collection.productVariants = await this["getFilteredProductVariants"](
-        collection.filters || []
-      );
-      const postIds = collection.productVariants.map((v) => v.id);
-      try {
-        await this["connection"]
-          .getRepository(Collection)
-          // Only update the exact changed properties, to avoid VERY hard-to-debug
-          // non-deterministic race conditions e.g. when the "position" is changed
-          // by moving a Collection and then this save operation clobbers it back
-          // to the old value.
-          .save(pick(collection, ["id", "productVariants"]), {
-            chunk: Math.ceil(collection.productVariants.length / 500),
-            reload: false,
-          });
-      } catch (e) {
-        //@ts-ignore
-        Logger.error(e);
-      }
+      const filteredVariantIds: any[] = await this[
+        "getFilteredProductVariantIds"
+      ]([
+        /*...ancestorFilters,*/
+        ...(collection.filters || []),
+      ]);
+      const postIds = filteredVariantIds.map((v) => v.id);
       const preIdsSet = new Set(preIds);
       const postIdsSet = new Set(postIds);
+
+      const toDeleteIds = preIds.filter((id) => !postIdsSet.has(id));
+      const toAddIds = postIds.filter((id) => !preIdsSet.has(id));
+
+      try {
+        // First we remove variants that are no longer in the collection
+        const chunkedDeleteIds = this["chunkArray"](toDeleteIds, 500);
+
+        for (const chunkedDeleteId of chunkedDeleteIds) {
+          await this["connection"].rawConnection
+            .createQueryBuilder()
+            .relation(Collection, "productVariants")
+            .of(collection)
+            .remove(chunkedDeleteId);
+        }
+
+        // Then we add variants have been added
+        const chunkedAddIds = this["chunkArray"](toAddIds, 500);
+
+        for (const chunkedAddId of chunkedAddIds) {
+          await this["connection"].rawConnection
+            .createQueryBuilder()
+            .relation(Collection, "productVariants")
+            .of(collection)
+            .add(chunkedAddId);
+        }
+      } catch (e: any) {
+        Logger.error(e);
+      }
 
       if (applyToChangedVariantsOnly) {
         return [
