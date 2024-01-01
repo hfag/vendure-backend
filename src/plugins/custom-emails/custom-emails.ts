@@ -58,7 +58,7 @@ const orderLoadData = async (context: {
   return {
     featuredAssets,
     productOptions,
-    totalTaxes: context.event.order.total * 0.077,
+    totalTaxes: context.event.order.total * 0.081,
     groups,
   };
 };
@@ -204,7 +204,7 @@ const orderSetTemplateVars = (
     subtotalWithShipping: event.order.subTotal + event.order.shipping,
     totalTaxes: event.data.totalTaxes,
     /* Otherwise orders look very weird */
-    totalWithTax: event.order.total * 1.077,
+    totalWithTax: event.order.total * 1.081,
     //@ts-ignore
     customFields: { notes: event.order.customFields?.notes },
     lines: event.order.lines.map((line) => {
