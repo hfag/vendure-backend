@@ -132,7 +132,6 @@ export const flatShippingCalculator = new ShippingCalculator({
         );
 
         if (!product) {
-          console.log(products);
           throw new Error(
             `This should not be able to happen, we loaded this product before (id = ${line.productVariant.productId})`
           );
@@ -152,9 +151,8 @@ export const flatShippingCalculator = new ShippingCalculator({
         ].map((v) => v.id);
 
         const maxPriceOverFacets = args.facets.reduce<number>(
-          (maxPrice, facetId) => {
-            const idx = facetValueIds.findIndex((id) => id == facetId);
-            if (idx < 0) {
+          (maxPrice, facetId, idx) => {
+            if (!facetValueIds.find((id) => id == facetId)) {
               return maxPrice;
             }
 
