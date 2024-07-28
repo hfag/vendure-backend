@@ -176,9 +176,5 @@ function q(
 
 function isPostgres(queryRunner: QueryRunner): boolean {
   const { type } = queryRunner.connection.options;
-  return (
-    type === "postgres" ||
-    type === "aurora-data-api-pg" ||
-    type === "cockroachdb"
-  );
+  return type === "postgres" || type === "cockroachdb";
 }

@@ -8,14 +8,14 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2017",
+    "target": "es2019",
     "strict": true,
     "strictPropertyInitialization": false,
     "sourceMap": false,
     "newLine": "LF",
     "resolveJsonModule": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./"
   },
   "exclude": [
     "node_modules",

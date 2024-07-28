@@ -2469,17 +2469,17 @@
     "@typescript-eslint/types" "5.54.1"
     eslint-visitor-keys "^3.3.0"
 
-"@vendure/admin-ui-plugin@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@vendure/admin-ui-plugin/-/admin-ui-plugin-1.9.3.tgz#68a3d73e600d7d0e54cd0ca01dabe7c3218c1bf3"
-  integrity sha512-kcoNENxW36k4ns68cwqzQtRFKRerTnnX5u7WXC3gYCvRI4az/c2yRJ25mgkuUXCUpD7nUAH7PUei3uvtrUpWFQ==
+"@vendure/admin-ui-plugin@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@vendure/admin-ui-plugin/-/admin-ui-plugin-1.9.7.tgz#8b142bc342a9db6bf851d9db28b70280b8dd0504"
+  integrity sha512-YqGrcDD39O0JZ6CF/SKbKd1hRFSW3BALVmVYNnu/UafyNK+FtpZ/nTSo6ko4GTVflyVxlvWoLUMYXygnXcfbQg==
   dependencies:
     fs-extra "^10.0.0"
 
-"@vendure/admin-ui@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@vendure/admin-ui/-/admin-ui-1.9.3.tgz#5b7b1a3804391c29749e0a925e23a909f59d1711"
-  integrity sha512-2VqnaMqPWgXOhl8PSkCozpVVTwcA6t0HISbNI2e9VVPlOSkD8iQ3VZVstlotBAHT8mPN8jgZpVwjxnbaIDzXUA==
+"@vendure/admin-ui@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@vendure/admin-ui/-/admin-ui-1.9.7.tgz#76cdcf1dba9bbcb0accda03903586bd3918170e9"
+  integrity sha512-pf3clZWwezC9OBmiW9HniiqrOw8Rq73cnogLtWk/fwrtpTB+ncq35ZZ6wGHULWyczC91qxRQIj8kLmJ4XkmlFg==
   dependencies:
     "@angular/animations" "12.2.16"
     "@angular/cdk" "12.2.13"
@@ -2500,7 +2500,7 @@
     "@ng-select/ng-select" "^7.2.0"
     "@ngx-translate/core" "^13.0.0"
     "@ngx-translate/http-loader" "^6.0.0"
-    "@vendure/common" "^1.9.3"
+    "@vendure/common" "^1.9.7"
     "@webcomponents/custom-elements" "^1.4.3"
     apollo-angular "^2.6.0"
     apollo-upload-client "^16.0.0"
@@ -2526,24 +2526,24 @@
     tslib "^2.1.0"
     zone.js "~0.11.4"
 
-"@vendure/asset-server-plugin@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@vendure/asset-server-plugin/-/asset-server-plugin-1.9.3.tgz#f9b1904956a0fa29a462a0ce55c8bd992becb6d8"
-  integrity sha512-X+PDNng1NNb8VW5lpgAQpEfYYT73ZjpJ6mztvAFjr1O6ntbv0dTwT31g2vL5pDYR7+Jn7ib9hmjUUftipCbKkw==
+"@vendure/asset-server-plugin@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@vendure/asset-server-plugin/-/asset-server-plugin-1.9.7.tgz#5bb9916bb05241b673915d4340b66dadeaf5d5d7"
+  integrity sha512-POGUCpwcAxZaXojA59qL8jHt8xfs7RdrplxB2+7VjMmGH5QWY0TBozjQZ3gqmg0a3IAmUmeWvzhFhhSe4HQFrQ==
   dependencies:
     file-type "^16.2.0"
     fs-extra "^10.0.0"
     sharp "~0.31.2"
 
-"@vendure/common@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@vendure/common/-/common-1.9.3.tgz#1667b9ee0bfbddefd227580fdbd516a816eca5d4"
-  integrity sha512-BqsBFmuuJVII1qGrJX0x8ectu/+oPwIjdYfz1NX9iO+U4qLNePKKAkUn+YmjSsq/iUEVaB7qQOAYVkszw9uX3w==
+"@vendure/common@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@vendure/common/-/common-1.9.7.tgz#8e2f37ac5ed0b3bc2dd645c73bf916be5de722ba"
+  integrity sha512-uoLTIe5fHJUc+/lEFzHL+AUdg+/zX47Q7nWJjLelzvuc4GYgnOD70eKLmiD77SRXLeyorkxLJ/jmXGK6JICuug==
 
-"@vendure/core@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@vendure/core/-/core-1.9.3.tgz#22709213c7cd79741f19674b5ad2c5703e7475dd"
-  integrity sha512-seY0mV5Eo2bkuxkRP+zTsxeS/Qyu7nIafxRgKNa9YaS0ipW0FQiDQVv9jnK2fivUKs4lAapzUXrGyxbCni7Cdg==
+"@vendure/core@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@vendure/core/-/core-1.9.7.tgz#c51883d4e8a38a25b1336b0c4ad8ee695f4f5f33"
+  integrity sha512-SKnLlZAbxpm8XvcV/Z+pt2Fl71Oqcm94th5lDaLX7Wi1tjZv0tHbB9kWUn5FUWbONU0/xgh3RMcGGiTJYDdbeQ==
   dependencies:
     "@graphql-tools/stitch" "^7.5.3"
     "@nestjs/common" "7.6.17"
@@ -2554,7 +2554,7 @@
     "@nestjs/testing" "7.6.17"
     "@nestjs/typeorm" "7.1.5"
     "@types/fs-extra" "^9.0.1"
-    "@vendure/common" "^1.9.3"
+    "@vendure/common" "^1.9.7"
     apollo-server-express "2.24.1"
     bcrypt "^5.1.0"
     body-parser "^1.19.0"
@@ -2583,19 +2583,19 @@
     rxjs "^6.6.3"
     typeorm "0.2.45"
 
-"@vendure/elasticsearch-plugin@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@vendure/elasticsearch-plugin/-/elasticsearch-plugin-1.9.3.tgz#8e216b0333b7ffbb3f4d84fd0dfec9bfe9d9b8e7"
-  integrity sha512-8d8D2UwajRv9b8oQ/eHztBV3BC8R6KOsNK1iLjpknR3vzU6IOy8Gy848Ku+aZudgHSoWWHNnkzxjeG+S6HiKEg==
+"@vendure/elasticsearch-plugin@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@vendure/elasticsearch-plugin/-/elasticsearch-plugin-1.9.7.tgz#bbc0bfab168408da8ffc7729ad05b9949341dcb5"
+  integrity sha512-jqQ70wKwKAjpoxDQ4JvjaH5nX2V9TjkLTk8d9OVeRZSGJoWzZFkTNSO8Z+2AuJ/oClV/J+lkDTSKd0nojxCVjg==
   dependencies:
     "@elastic/elasticsearch" "^7.9.1"
     deepmerge "^4.2.2"
     fast-deep-equal "^3.1.3"
 
-"@vendure/email-plugin@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@vendure/email-plugin/-/email-plugin-1.9.3.tgz#7cde8421c562753c9f7beafc8c4f772975087ca7"
-  integrity sha512-CzJbY6BQr5H0g+TmlXaBa71E0WUYPgVKQ+L+Djt/Ng07JusL5yuclMS7lV+oQAFCbdhaPCmhLFqzunrgdfaS9A==
+"@vendure/email-plugin@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@vendure/email-plugin/-/email-plugin-1.9.7.tgz#620ca4970596f85abc48ef2739776b7d29da756d"
+  integrity sha512-F2DhFeFL1kSG1Z2e9xXMeG3CFTWZFplPHyeN4NpKe3V6X2CI+W/WWUXccJorx4xmfK2XhuxnRbH9k0P8HiocFA==
   dependencies:
     "@types/nodemailer" "^6.4.0"
     dateformat "^3.0.3"
@@ -2605,17 +2605,17 @@
     mjml "^4.7.1"
     nodemailer "^6.4.13"
 
-"@vendure/ui-devkit@^1.9.3":
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/@vendure/ui-devkit/-/ui-devkit-1.9.3.tgz#208fb2c6c299e75b08f2feea330714038df65c51"
-  integrity sha512-VZzY27+tcIq98s5UMJ2ndanVGOIu5+xCmL7PbOBgRLLGrx2bd7Xjhg1eFrEqfZzEdU4zonAxE5j9vFpmxpQ5wQ==
+"@vendure/ui-devkit@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@vendure/ui-devkit/-/ui-devkit-1.9.7.tgz#2eb9c28b0e1de59d7259233ea277102f9485326e"
+  integrity sha512-cSCiKrLkUPtpga4wskhXVQGazusGPnNmDBI6d7r7FojMJtqJrV/hbtzgwHf9LZ7P4EBl1Z+/TAICvEg+BZF27w==
   dependencies:
     "@angular-devkit/build-angular" "12.2.16"
     "@angular/cli" "12.2.16"
     "@angular/compiler" "12.2.16"
     "@angular/compiler-cli" "12.2.16"
-    "@vendure/admin-ui" "^1.9.3"
-    "@vendure/common" "^1.9.3"
+    "@vendure/admin-ui" "^1.9.7"
+    "@vendure/common" "^1.9.7"
     chalk "^4.1.0"
     chokidar "^3.5.1"
     fs-extra "^10.0.0"

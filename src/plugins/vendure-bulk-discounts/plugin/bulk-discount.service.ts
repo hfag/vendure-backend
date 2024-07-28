@@ -75,11 +75,11 @@ export class BulkDiscountService {
 
   findOne(
     ctx: RequestContext,
-    recommendationId: ID
+    recommendationId: number
   ): Promise<BulkDiscount | undefined> {
     return this.connection
       .getRepository(ctx, BulkDiscount)
-      .findOne(recommendationId, { loadEagerRelations: true });
+      .findOne({ where: { id: recommendationId }, loadEagerRelations: true });
   }
 
   async create(
@@ -92,7 +92,7 @@ export class BulkDiscountService {
       const discount = new BulkDiscount({
         productVariant: await this.connection
           .getRepository(ctx, ProductVariant)
-          .findOne(input.productVariantId),
+          .findOne({ where: { id: input.productVariantId } }),
         quantity: d.quantity,
         price: d.price,
       });

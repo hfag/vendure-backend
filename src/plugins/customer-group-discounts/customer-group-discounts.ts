@@ -47,7 +47,7 @@ const groupMemberAny = new PromotionCondition({
   ],
   code: "group-member-any",
   args: {
-    groups: { type: "string", list: true, config: { inputType: "default" } },
+    groups: { type: "string", list: true },
   },
   init(injector) {
     customerService = injector.get(CustomerService);
@@ -86,7 +86,7 @@ const groupMemberAll = new PromotionCondition({
   ],
   code: "group-member-all",
   args: {
-    groups: { type: "string", list: true, config: { inputType: "default" } },
+    groups: { type: "string", list: true },
   },
   init(injector) {
     customerService = injector.get(CustomerService);
@@ -125,7 +125,7 @@ const notGroupMember = new PromotionCondition({
   ],
   code: "not-group-member",
   args: {
-    groups: { type: "string", list: true, config: { inputType: "default" } },
+    groups: { type: "string", list: true },
   },
   init(injector) {
     customerService = injector.get(CustomerService);
@@ -171,7 +171,7 @@ const groupMemberPrefix = new PromotionCondition({
   ],
   code: "group-member-prefix",
   args: {
-    prefix: { type: "string", config: { inputType: "default" } },
+    prefix: { type: "string" },
   },
   init(injector) {
     customerService = injector.get(CustomerService);
@@ -214,7 +214,7 @@ const notGroupMemberPrefix = new PromotionCondition({
   ],
   code: "not-group-member-prefix",
   args: {
-    prefix: { type: "string", config: { inputType: "default" } },
+    prefix: { type: "string" },
   },
   init(injector) {
     customerService = injector.get(CustomerService);

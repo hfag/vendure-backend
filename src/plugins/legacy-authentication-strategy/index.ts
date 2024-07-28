@@ -234,7 +234,7 @@ export class LegacyAuthenticationStrategy
     identifier: string
   ): Promise<User | undefined> {
     return this.connection.getRepository(ctx, User).findOne({
-      where: { identifier, deletedAt: null },
+      where: { identifier, deletedAt: undefined },
       relations: ["roles", "roles.channels"],
     });
   }
@@ -244,11 +244,10 @@ export class LegacyAuthenticationStrategy
     userId: ID,
     password: string
   ): Promise<boolean> {
-    const user = await this.connection
-      .getRepository(ctx, User)
-      .findOne(userId, {
-        relations: ["authenticationMethods"],
-      });
+    const user = await this.connection.getRepository(ctx, User).findOne({
+      where: { id: userId },
+      relations: ["authenticationMethods"],
+    });
     if (!user) {
       return false;
     }
@@ -257,7 +256,8 @@ export class LegacyAuthenticationStrategy
       (
         await this.connection
           .getRepository(ctx, NativeAuthenticationMethod)
-          .findOne(nativeAuthMethod.id, {
+          .findOne({
+            where: { id: nativeAuthMethod.id },
             select: ["passwordHash"],
           })
       )?.passwordHash ?? "";

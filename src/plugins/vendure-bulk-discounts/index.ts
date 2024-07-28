@@ -1,8 +1,8 @@
-import { AdminUiExtension } from "@vendure/ui-devkit/compiler";
+import { AdminUiExtensionSharedModule } from "@vendure/ui-devkit/compiler";
 
 export { BulkDiscountPlugin } from "./plugin";
 
-export const BulkDiscountsInputModule: AdminUiExtension["ngModules"][0] = {
+export const BulkDiscountsInputModule: AdminUiExtensionSharedModule = {
   type: "shared",
   ngModuleFileName: "bulk-discount-input.module.ts",
   ngModuleName: "BulkDiscountInputModule",

@@ -14,7 +14,7 @@ export async function migratePaymentMethods(queryRunner: QueryRunner) {
       code: method.code,
       args: JSON.parse(method.configArgs),
     });
-    const result = await q(
+    await q(
       queryRunner,
       {
         mysql:
@@ -24,7 +24,6 @@ export async function migratePaymentMethods(queryRunner: QueryRunner) {
       },
       [handler, method.code, method.id]
     );
-    const a = result;
   }
 }
 
@@ -34,7 +33,7 @@ export async function addToDefaultChannel(
   idName: string
 ) {
   const channelTableName = `${tableName}_channels_channel`;
-  const result = await q(
+  await q(
     queryRunner,
     {
       mysql:
@@ -56,7 +55,6 @@ export async function addToDefaultChannel(
     },
     []
   );
-  const a = result;
 }
 
 function q(
@@ -72,9 +70,5 @@ function q(
 
 function isPostgres(queryRunner: QueryRunner): boolean {
   const { type } = queryRunner.connection.options;
-  return (
-    type === "postgres" ||
-    type === "aurora-data-api-pg" ||
-    type === "cockroachdb"
-  );
+  return type === "postgres" || type === "cockroachdb";
 }
