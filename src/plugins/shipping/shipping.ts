@@ -4,6 +4,7 @@ import {
   ProductVariantService,
   RequestContext,
   ShippingCalculator,
+  ShippingEligibilityChecker,
 } from "@vendure/core";
 
 enum TaxSetting {
@@ -13,10 +14,6 @@ enum TaxSetting {
 }
 
 export const flatShippingCalculator = new ShippingCalculator({
-  init: function (injector) {
-    (this as any).productService = injector.get(ProductService);
-    (this as any).productVariantService = injector.get(ProductVariantService);
-  },
   code: "flat-shipping-calculator",
   description: [
     {
@@ -90,85 +87,10 @@ export const flatShippingCalculator = new ShippingCalculator({
         { languageCode: LanguageCode.de, value: "Steursatz" },
       ],
     },
-    facets: {
-      type: "ID",
-      list: true,
-      ui: { component: "facet-value-form-input" },
-    },
-    facetRates: {
-      type: "int",
-      defaultValue: 0,
-      list: true,
-      ui: { component: "currency-form-input" },
-      label: [
-        { languageCode: LanguageCode.en, value: "Shipping price" },
-        { languageCode: LanguageCode.de, value: "Lieferkosten" },
-      ],
-    },
   },
   calculate: async function (ctx, order, args) {
-    let price = args.defaultRate;
-
-    const productService = (this as any).options
-      .productService as ProductService;
-
-    const productVaraintService = (this as any).options
-      .productVariantService as ProductVariantService;
-
-    const products = await productService.findByIds(
-      ctx,
-      order.lines.map((line) => line.productVariant.productId)
-    );
-
-    const variants = await productVaraintService.findByIds(
-      ctx,
-      order.lines.map((line) => line.productVariant.id)
-    );
-
-    if (args.facets.length === args.facetRates.length) {
-      price = order.lines.reduce((maxPrice, line) => {
-        const product = products.find(
-          (p) => p.id == line.productVariant.productId
-        );
-
-        if (!product) {
-          throw new Error(
-            `This should not be able to happen, we loaded this product before (id = ${line.productVariant.productId})`
-          );
-        }
-
-        const variant = variants.find((p) => p.id == line.productVariant.id);
-
-        if (!variant) {
-          throw new Error(
-            `This should not be able to happen, we loaded this variant before (id = ${line.productVariant.id})`
-          );
-        }
-
-        const facetValueIds = [
-          ...product.facetValues,
-          ...variant.facetValues,
-        ].map((v) => v.id);
-
-        const maxPriceOverFacets = args.facets.reduce<number>(
-          (maxPrice, facetId, idx) => {
-            if (!facetValueIds.find((id) => id == facetId)) {
-              return maxPrice;
-            }
-
-            const priceForFacet = args.facetRates[idx];
-
-            return priceForFacet > maxPrice ? priceForFacet : maxPrice;
-          },
-          args.defaultRate
-        );
-
-        return maxPriceOverFacets > maxPrice ? maxPriceOverFacets : maxPrice;
-      }, price);
-    }
-
     return {
-      price: price,
+      price: args.defaultRate,
       taxRate: args.taxRate,
       priceIncludesTax: getPriceIncludesTax(
         ctx,
@@ -191,3 +113,96 @@ function getPriceIncludesTax(
       return true;
   }
 }
+
+export const facetEligibilityChecker = new ShippingEligibilityChecker({
+  init: function (injector) {
+    (this as any).productService = injector.get(ProductService);
+    (this as any).productVariantService = injector.get(ProductVariantService);
+  },
+  code: "facet-eligibility-checker",
+  description: [
+    {
+      languageCode: LanguageCode.en,
+      value: "Facet Eligibility Checker",
+    },
+    {
+      languageCode: LanguageCode.de,
+      value: "Facetten-Prüfer",
+    },
+  ],
+  args: {
+    invalidFacets: {
+      type: "ID",
+      list: true,
+      ui: { component: "facet-value-form-input" },
+      description: [
+        {
+          languageCode: LanguageCode.en,
+          value: "Invalid Facets",
+        },
+        {
+          languageCode: LanguageCode.de,
+          value: "Ungültige Facetten",
+        },
+      ],
+    },
+  },
+  check: async function (ctx, order, args) {
+    const productService = (this as any).options
+      .productService as ProductService;
+
+    const productVaraintService = (this as any).options
+      .productVariantService as ProductVariantService;
+
+    const products = await productService.findByIds(
+      ctx,
+      order.lines.map((line) => line.productVariant.productId)
+    );
+
+    const variants = await productVaraintService.findByIds(
+      ctx,
+      order.lines.map((line) => line.productVariant.id)
+    );
+
+    return order.lines.reduce<boolean>((isEligible, line) => {
+      if (!isEligible) {
+        return false;
+      }
+
+      const product = products.find(
+        (p) => p.id == line.productVariant.productId
+      );
+
+      if (!product) {
+        throw new Error(
+          `This should not be able to happen, we loaded this product before (id = ${line.productVariant.productId})`
+        );
+      }
+
+      const variant = variants.find((p) => p.id == line.productVariant.id);
+
+      if (!variant) {
+        throw new Error(
+          `This should not be able to happen, we loaded this variant before (id = ${line.productVariant.id})`
+        );
+      }
+
+      const facetValueIds = [
+        ...product.facetValues,
+        ...variant.facetValues,
+      ].map((v) => v.id);
+
+      // assuming the number of facets is low, this O(n^2) check should be faster
+      // than sorting twice with O(2*n*log(n)) + a O(n) check
+      const containsInvalidFacet =
+        // check if there is an invalid facet
+        args.invalidFacets.find((invalidFacet) =>
+          facetValueIds.find((id) => id == invalidFacet) ? true : false
+        )
+          ? true
+          : false;
+
+      return !containsInvalidFacet;
+    }, true);
+  },
+});
