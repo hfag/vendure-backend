@@ -179,50 +179,58 @@ export const facetEligibilityChecker = new ShippingEligibilityChecker({
       order.lines.map((line) => line.productVariant.id)
     );
 
-    return order.lines.reduce<boolean>((isEligible, line) => {
-      if (!isEligible) {
-        return false;
-      }
-
-      const product = products.find(
-        (p) => p.id == line.productVariant.productId
-      );
-
-      if (!product) {
-        throw new Error(
-          `This should not be able to happen, we loaded this product before (id = ${line.productVariant.productId})`
+    const [containsRequiredFacet, containsInvalidFacet] = order.lines.reduce<
+      [boolean, boolean]
+    >(
+      ([containsRequiredFacet, containsInvalidFacet], line) => {
+        const product = products.find(
+          (p) => p.id == line.productVariant.productId
         );
-      }
 
-      const variant = variants.find((p) => p.id == line.productVariant.id);
+        if (!product) {
+          throw new Error(
+            `This should not be able to happen, we loaded this product before (id = ${line.productVariant.productId})`
+          );
+        }
 
-      if (!variant) {
-        throw new Error(
-          `This should not be able to happen, we loaded this variant before (id = ${line.productVariant.id})`
-        );
-      }
+        const variant = variants.find((p) => p.id == line.productVariant.id);
 
-      const facetValueIds = [
-        ...product.facetValues,
-        ...variant.facetValues,
-      ].map((v) => v.id);
+        if (!variant) {
+          throw new Error(
+            `This should not be able to happen, we loaded this variant before (id = ${line.productVariant.id})`
+          );
+        }
 
-      const doesNotContainAllRequiredFacets = args.requiredFacets.find(
-        (requiredFacet) =>
-          facetValueIds.find((id) => id == requiredFacet) ? false : true
-      );
+        const facetValueIds = [
+          ...product.facetValues,
+          ...variant.facetValues,
+        ].map((v) => v.id);
 
-      // assuming the number of facets is low, this O(n^2) check should be faster
-      // than sorting twice with O(2*n*log(n)) + a O(n) check
-      const containsInvalidFacet =
-        // check if there is an invalid facet
-        args.invalidFacets.find((invalidFacet) =>
-          facetValueIds.find((id) => id == invalidFacet) ? true : false
+        const containsSingleRequiredFacet = args.requiredFacets.find(
+          (requiredFacet) =>
+            facetValueIds.find((id) => id == requiredFacet) ? true : false
         )
           ? true
           : false;
 
-      return !doesNotContainAllRequiredFacets && !containsInvalidFacet;
-    }, true);
+        // assuming the number of facets is low, this O(n^2) check should be faster
+        // than sorting twice with O(2*n*log(n)) + a O(n) check
+        const containsSingleInvalidFacet =
+          // check if there is an invalid facet
+          args.invalidFacets.find((invalidFacet) =>
+            facetValueIds.find((id) => id == invalidFacet) ? true : false
+          )
+            ? true
+            : false;
+
+        return [
+          containsRequiredFacet || containsSingleRequiredFacet,
+          containsInvalidFacet || containsSingleInvalidFacet,
+        ];
+      },
+      [false, false]
+    );
+
+    return containsRequiredFacet && !containsInvalidFacet;
   },
 });
