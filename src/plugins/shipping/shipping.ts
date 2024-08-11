@@ -228,7 +228,7 @@ export const facetEligibilityChecker = new ShippingEligibilityChecker({
           containsInvalidFacet || containsSingleInvalidFacet,
         ];
       },
-      [false, false]
+      [args.requiredFacets.length == 0, false]
     );
 
     return containsRequiredFacet && !containsInvalidFacet;
