@@ -131,6 +131,21 @@ export const facetEligibilityChecker = new ShippingEligibilityChecker({
     },
   ],
   args: {
+    requiredFacets: {
+      type: "ID",
+      list: true,
+      ui: { component: "facet-value-form-input" },
+      description: [
+        {
+          languageCode: LanguageCode.en,
+          value: "Required Facets",
+        },
+        {
+          languageCode: LanguageCode.de,
+          value: "Benötigte Facetten",
+        },
+      ],
+    },
     invalidFacets: {
       type: "ID",
       list: true,
@@ -192,6 +207,11 @@ export const facetEligibilityChecker = new ShippingEligibilityChecker({
         ...variant.facetValues,
       ].map((v) => v.id);
 
+      const doesNotContainAllRequiredFacets = args.requiredFacets.find(
+        (requiredFacet) =>
+          facetValueIds.find((id) => id == requiredFacet) ? false : true
+      );
+
       // assuming the number of facets is low, this O(n^2) check should be faster
       // than sorting twice with O(2*n*log(n)) + a O(n) check
       const containsInvalidFacet =
@@ -202,7 +222,7 @@ export const facetEligibilityChecker = new ShippingEligibilityChecker({
           ? true
           : false;
 
-      return !containsInvalidFacet;
+      return !doesNotContainAllRequiredFacets && !containsInvalidFacet;
     }, true);
   },
 });
