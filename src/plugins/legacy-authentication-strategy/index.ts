@@ -234,7 +234,7 @@ export class LegacyAuthenticationStrategy
     identifier: string
   ): Promise<User | undefined> {
     return this.connection.getRepository(ctx, User).findOne({
-      where: { identifier, deletedAt: undefined },
+      where: { identifier, deletedAt: null },
       relations: ["roles", "roles.channels"],
     });
   }
