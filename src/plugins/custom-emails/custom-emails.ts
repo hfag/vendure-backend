@@ -200,6 +200,9 @@ const orderSetTemplateVars = (
     customer: { emailAddress: event.order.customer?.emailAddress },
     subTotal: event.order.subTotal,
     shipping: event.order.shipping,
+    shippingMethods: event.order.shippingLines
+      .map((line) => line.shippingMethod?.name)
+      .join(", "),
     //simple computation from data
     subtotalWithShipping: event.order.subTotal + event.order.shipping,
     totalTaxes: event.data.totalTaxes,
