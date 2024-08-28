@@ -11,6 +11,8 @@ import {
   ProductVariant,
   ProductVariantService,
   RequestContext,
+  ShippingMethod,
+  ShippingMethodService,
 } from "@vendure/core";
 import {
   EmailEventHandler,
@@ -55,11 +57,16 @@ const orderLoadData = async (context: {
     groups = gs.map((g) => g.name).join(", ");
   }
 
+  const shippingMethods = await context.injector
+    .get(ShippingMethodService)
+    .getActiveShippingMethods(context.event.ctx);
+
   return {
     featuredAssets,
     productOptions,
     totalTaxes: context.event.order.total * 0.081,
     groups,
+    shippingMethods,
   };
 };
 
@@ -179,6 +186,7 @@ const orderSetTemplateVars = (
       };
       totalTaxes: number;
       groups?: string;
+      shippingMethods: ShippingMethod[];
     }
   >
 ) => ({
@@ -201,7 +209,11 @@ const orderSetTemplateVars = (
     subTotal: event.order.subTotal,
     shipping: event.order.shipping,
     shippingMethods: event.order.shippingLines
-      .map((line) => line.shippingMethod?.name)
+      .map(
+        (line) =>
+          event.data.shippingMethods.find((m) => m.id == line.shippingMethodId)
+            ?.name
+      )
       .join(", "),
     //simple computation from data
     subtotalWithShipping: event.order.subTotal + event.order.shipping,
