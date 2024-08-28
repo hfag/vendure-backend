@@ -180,8 +180,8 @@
                 <td class="line-price">CHF {{ formatMoney order.subTotal }}</td>
             </tr>
             <tr class="order-row">
-                <td colspan="3">Livraison:</td>
-                <td class="line-price">CHF {{ formatMoney order.shipping }} ({{ order.shippingMethods }})</td>
+                <td colspan="3">Livraison ({{ order.shippingMethods }}):</td>
+                <td class="line-price">CHF {{ formatMoney order.shipping }}</td>
             </tr>
             <tr class="order-row">
                 <td colspan="3">Subtotal avec livraison:</td>
