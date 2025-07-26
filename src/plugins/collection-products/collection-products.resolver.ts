@@ -29,6 +29,7 @@ export class CollectionProductResolver {
       .innerJoin("variant.collections", "collection", "collection.id = :id", {
         id: collection.id,
       })
+      .where("product.enabled = 1")
       .getMany();
 
     if (products.length === 0) {
