@@ -11874,13 +11874,6 @@ vary@^1, vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-vendure-product-recommendations@^0.1.21:
-  version "0.1.22"
-  resolved "https://registry.yarnpkg.com/vendure-product-recommendations/-/vendure-product-recommendations-0.1.22.tgz#fd26f163a414015c83a4ed01526613009fdb49e8"
-  integrity sha512-fPEHZWI3qF8JFuMZgNS/FgG2UHqo/ROaNh2F6/ZBBEEYKoK2VCyAFDhGiXUsCN4ZyMx1evYaa2sqrxhgDZnxnw==
-  dependencies:
-    tslib "^2.3.1"
-
 vscode-oniguruma@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/vscode-oniguruma/-/vscode-oniguruma-1.7.0.tgz#439bfad8fe71abd7798338d1cd3dc53a8beea94b"

@@ -12,9 +12,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ElasticsearchPlugin } from "@vendure/elasticsearch-plugin";
 import { EmailPlugin } from "@vendure/email-plugin";
-import { ProductRecommendationsPlugin } from "vendure-product-recommendations";
 
-import { AssetByNamePlugin } from "./plugins/asset-by-name/asset-by-name";
 import { CollectionLinksPlugin } from "./plugins/collection-links";
 import { CollectionProductsPlugin } from "./plugins/collection-products/collection-products";
 import { emailHandlers } from "./plugins/custom-emails/custom-emails";
@@ -23,7 +21,6 @@ import { InvoicePaymentIntegration } from "./plugins/invoice-payment-method/invo
 import { ProductBySlugPlugin } from "./plugins/product-by-slug/product-by-slug";
 import { ProductGroupKeyPlugin } from "./plugins/product-group-key-plugin/product-group-key";
 import { ProductMinimumOrderQuantityPlugin } from "./plugins/product-minimum-order-quantity/product-minimum-order-quantity";
-import { BulkDiscountPlugin } from "./plugins/vendure-bulk-discounts";
 
 export const config: VendureConfig = {
   defaultLanguageCode: LanguageCode.de,
@@ -114,13 +111,10 @@ export const config: VendureConfig = {
       },
     }),
     CollectionLinksPlugin,
-    ProductRecommendationsPlugin,
-    BulkDiscountPlugin,
     CustomerGroupDiscountsPlugin,
     ProductMinimumOrderQuantityPlugin,
     ProductGroupKeyPlugin,
     CollectionProductsPlugin,
     ProductBySlugPlugin,
-    AssetByNamePlugin,
   ],
 };
