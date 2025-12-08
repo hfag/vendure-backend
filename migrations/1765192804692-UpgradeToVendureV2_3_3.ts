@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class UpgradeToVendureV2331765192804692 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `order_line` DROP FOREIGN KEY `FK_9f065453910ea77d4be8e92618f`",
       undefined
@@ -185,7 +185,7 @@ export class UpgradeToVendureV2331765192804692 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `role_channels_channel` DROP FOREIGN KEY `FK_e09dfee62b158307404202b43a5`",
       undefined

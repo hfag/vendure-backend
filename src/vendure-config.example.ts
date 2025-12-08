@@ -21,6 +21,8 @@ import { InvoicePaymentIntegration } from "./plugins/invoice-payment-method/invo
 import { ProductBySlugPlugin } from "./plugins/product-by-slug/product-by-slug";
 import { ProductGroupKeyPlugin } from "./plugins/product-group-key-plugin/product-group-key";
 import { ProductMinimumOrderQuantityPlugin } from "./plugins/product-minimum-order-quantity/product-minimum-order-quantity";
+import { BulkDiscountPlugin } from "./plugins/vendure-bulk-discounts";
+import { ProductRecommendationsPlugin } from "./plugins/vendure-product-recommendations";
 
 export const config: VendureConfig = {
   defaultLanguageCode: LanguageCode.de,
@@ -111,6 +113,8 @@ export const config: VendureConfig = {
       },
     }),
     CollectionLinksPlugin,
+    ProductRecommendationsPlugin,
+    BulkDiscountPlugin,
     CustomerGroupDiscountsPlugin,
     ProductMinimumOrderQuantityPlugin,
     ProductGroupKeyPlugin,

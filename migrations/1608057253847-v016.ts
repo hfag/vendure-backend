@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class v0161608057253847 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "CREATE TABLE `customer_channels_channel` (`customerId` int NOT NULL, `channelId` int NOT NULL, INDEX `IDX_a842c9fe8cd4c8ff31402d172d` (`customerId`), INDEX `IDX_dc9f69207a8867f83b0fd257e3` (`channelId`), PRIMARY KEY (`customerId`, `channelId`)) ENGINE=InnoDB",
       undefined
@@ -41,7 +41,7 @@ export class v0161608057253847 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `customer_channels_channel` DROP FOREIGN KEY `FK_dc9f69207a8867f83b0fd257e30`",
       undefined

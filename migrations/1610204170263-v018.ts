@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
+
 import {
   addProductVariantsToProductChannels,
   migrateDefaultShippingCalculatorArgs,
@@ -8,7 +9,7 @@ import {
 } from "../migration-utils-v018";
 
 export class v0181610204170263 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `order_item` DROP FOREIGN KEY `FK_eed51be48640c21e1c76d3e9fbe`",
       undefined
@@ -219,7 +220,7 @@ export class v0181610204170263 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `order_modification_order_items_order_item` DROP FOREIGN KEY `FK_9d631d7bd3d44af50eca535d728`",
       undefined

@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class FixesBeforeUpgrade1765185289327 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     // Clean corrupt data
     await queryRunner.query(
       `
@@ -482,7 +482,7 @@ export class FixesBeforeUpgrade1765185289327 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `payment_method_channels_channel` DROP FOREIGN KEY `FK_c00e36f667d35031087b382e61b`",
       undefined

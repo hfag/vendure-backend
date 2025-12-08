@@ -2,7 +2,7 @@ import { vendureV2Migrations } from "@vendure/migrate-v2";
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class UpgradeToVendureV21765189328303 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `product_option_translation` DROP FOREIGN KEY `FK_a79a443c1f7841f3851767faa6d`",
       undefined
@@ -630,7 +630,7 @@ export class UpgradeToVendureV21765189328303 implements MigrationInterface {
     // We do not -> skip.
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `collection_closure` DROP FOREIGN KEY `FK_457784c710f8ac9396010441f6c`",
       undefined

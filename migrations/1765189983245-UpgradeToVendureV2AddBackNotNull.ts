@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 export class UpgradeToVendureV2AddBackNotNull1765189983245
   implements MigrationInterface
 {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `channel` CHANGE `defaultCurrencyCode` `defaultCurrencyCode` varchar(255) NOT NULL",
       undefined
@@ -66,7 +66,7 @@ export class UpgradeToVendureV2AddBackNotNull1765189983245
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `stock_movement` DROP FOREIGN KEY `FK_a2fe7172eeae9f1cca86f8f573a`",
       undefined

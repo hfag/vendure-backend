@@ -1,8 +1,9 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
+
 import { addToDefaultChannel, migratePaymentMethods } from "../migration-utils";
 
 export class beta31615632491383 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "CREATE TABLE `tag` (`createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), `value` varchar(255) NOT NULL, `id` int NOT NULL AUTO_INCREMENT, PRIMARY KEY (`id`)) ENGINE=InnoDB",
       undefined
@@ -348,7 +349,7 @@ export class beta31615632491383 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `payment_method_channels_channel` DROP FOREIGN KEY `FK_c00e36f667d35031087b382e61b`",
       undefined

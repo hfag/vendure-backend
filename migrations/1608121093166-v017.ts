@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class v0171608121093166 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "UPDATE `order_item` SET `unitPrice` = ROUND(`unitPrice` / ((`taxRate` + 100) / 100)) WHERE `unitPriceIncludesTax` = 1",
       undefined
@@ -103,7 +103,7 @@ export class v0171608121093166 implements MigrationInterface {
     await queryRunner.query("SET FOREIGN_KEY_CHECKS=1;", undefined);
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `history_entry` DROP FOREIGN KEY `FK_3a05127e67435b4d2332ded7c9e`",
       undefined

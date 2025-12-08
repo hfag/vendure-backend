@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class v0151599822499586 implements MigrationInterface {
-  public async up(queryRunner: QueryRunner): Promise<any> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `collection` DROP FOREIGN KEY `FK_7256fef1bb42f1b38156b7449f5`",
       undefined
@@ -128,7 +128,7 @@ export class v0151599822499586 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<any> {
+  public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       "ALTER TABLE `order_channels_channel` DROP FOREIGN KEY `FK_d0d16db872499e83b15999f8c7a`",
       undefined
