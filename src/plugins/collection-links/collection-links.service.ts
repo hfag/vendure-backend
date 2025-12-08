@@ -67,7 +67,9 @@ export class CollectionLinkService {
         : this.connection
             .getRepository(ctx, CollectionLinkUrl)
             .find({
-              where: urlLinks.map((collectionLink) => ({ collectionLink })),
+              where: urlLinks.map((collectionLink) => ({
+                collectionLink: { id: collectionLink.id },
+              })),
             })
             .then((links) =>
               links.map((urlLink) => {
@@ -96,7 +98,9 @@ export class CollectionLinkService {
         : this.connection
             .getRepository(ctx, CollectionLinkAsset)
             .find({
-              where: assetLinks.map((collectionLink) => ({ collectionLink })),
+              where: assetLinks.map((collectionLink) => ({
+                collectionLink: { id: collectionLink.id },
+              })),
             })
             .then((links) =>
               links.map((assetLink) => {
@@ -140,20 +144,20 @@ export class CollectionLinkService {
   ): Promise<TranslatedAnyCollectionLink | undefined> {
     const collectionLink = await this.connection
       .getRepository(ctx, CollectionLink)
-      .findOne(collectionLinkId, { loadEagerRelations: true });
+      .findOne({ where: { id: collectionLinkId }, loadEagerRelations: true });
 
     if (!collectionLink) {
       return;
     }
 
-    let url: CollectionLinkUrl | undefined;
-    let asset: CollectionLinkAsset | undefined;
+    let url: CollectionLinkUrl | null;
+    let asset: CollectionLinkAsset | null;
 
     switch (collectionLink.type) {
       case "url":
         url = await this.connection
           .getRepository(ctx, CollectionLinkUrl)
-          .findOne({ where: { collectionLink } });
+          .findOne({ where: { collectionLink: { id: collectionLink.id } } });
         if (!url) {
           return;
         }
@@ -167,7 +171,7 @@ export class CollectionLinkService {
       case "asset":
         asset = await this.connection
           .getRepository(ctx, CollectionLinkAsset)
-          .findOne({ where: { collectionLink } });
+          .findOne({ where: { collectionLink: { id: collectionLink.id } } });
 
         if (!asset) {
           return;

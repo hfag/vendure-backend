@@ -136,7 +136,7 @@ export class CollectionEntityResolverAdmin {
     @Parent() collection: Collection
   ): Promise<TranslatedAnyCollectionLink[]> {
     return this.collectionLinkService.findAll(ctx, false, {
-      where: { collection },
+      where: { collection: { id: collection.id } },
     });
   }
 }
@@ -164,7 +164,7 @@ export class CollectionEntityResolverShop {
     }[]
   > {
     const links = await this.collectionLinkService.findAll(ctx, true, {
-      where: { collection },
+      where: { collection: { id: collection.id } },
     });
 
     const assets = await this.connection

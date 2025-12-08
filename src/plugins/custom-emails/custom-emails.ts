@@ -4,7 +4,6 @@ import {
   Injector,
   LanguageCode,
   Order,
-  OrderItem,
   OrderLine,
   OrderStateTransitionEvent,
   Payment,
@@ -305,9 +304,6 @@ export const mockOrderStateTransitionEvent = new OrderStateTransitionEvent(
           price: 1000,
           sku: "sku",
         },
-        items: [
-          new OrderItem({ listPrice: 1000, listPriceIncludesTax: false }),
-        ],
         customFields: {
           customizations: '{"field":{"label": "label","value":"value"}}',
         },

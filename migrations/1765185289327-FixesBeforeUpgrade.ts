@@ -15,6 +15,17 @@ export class FixesBeforeUpgrade1765185289327 implements MigrationInterface {
     );
 
     await queryRunner.query(
+      `
+      DELETE FROM \`shipping_line\`
+      WHERE orderId NOT IN
+      (
+          SELECT DISTINCT id FROM \`order\`
+      )
+      `,
+      undefined
+    );
+
+    await queryRunner.query(
       "ALTER TABLE `zone_members_country` DROP FOREIGN KEY `FK_7350d77b6474313fbbaf4b094c1`",
       undefined
     );

@@ -14,7 +14,7 @@ export class ProductGroupKeyAdminResolver {
   async getProductByGroupKey(
     @Ctx() ctx: RequestContext,
     @Args() args: { productGroupKey: string }
-  ): Promise<Product | undefined> {
+  ): Promise<Product | null> {
     return this.connection
       .getRepository(ctx, Product)
       .createQueryBuilder("product")
