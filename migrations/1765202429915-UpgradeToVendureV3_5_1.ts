@@ -2,6 +2,18 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class UpgradeToVendureV3511765202429915 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    // Mark product variants of deleted products as deleted.
+    // This has been solved in the meantime, see https://github.com/vendure-ecommerce/vendure/issues/1096.
+    await queryRunner.query(
+      `
+      UPDATE \`product_variant\` v
+      INNER JOIN \`product\` p
+      ON v.productId = p.id
+      SET v.deletedAt = p.deletedAt
+      `,
+      undefined
+    );
+
     // This foreign key was somehow messed up
     await queryRunner.query(
       "ALTER TABLE `order_modification` DROP FOREIGN KEY FK_1df5bc14a47ef24d2e681f45598",
