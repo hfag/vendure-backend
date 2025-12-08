@@ -5,7 +5,7 @@
   "scripts": {
     "run:server": "ts-node ./src/index.ts",
     "run:worker": "ts-node ./src/index-worker.ts",
-    "start": "concurrently yarn:run:*",
+    "start": "concurrently \"yarn run:server\" \"yarn run:worker\"",
     "build-migrations": "tsc -p tsconfig.migrations.json",
     "build": "rimraf dist/migrations && rimraf dist/src && tsc",
     "migration:generate": "ts-node migration generate",
