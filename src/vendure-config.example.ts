@@ -16,6 +16,7 @@ import { EmailPlugin } from "@vendure/email-plugin";
 import { CollectionLinksPlugin } from "./plugins/collection-links";
 import { CollectionProductsPlugin } from "./plugins/collection-products/collection-products";
 import { emailHandlers } from "./plugins/custom-emails/custom-emails";
+import { HfagEmailTemplateLoader } from "./plugins/custom-emails/hfag-email-template-loader";
 import { CustomerGroupDiscountsPlugin } from "./plugins/customer-group-discounts/customer-group-discounts";
 import { InvoicePaymentIntegration } from "./plugins/invoice-payment-method/invoice-payment-method";
 import { ProductBySlugPlugin } from "./plugins/product-by-slug/product-by-slug";
@@ -95,7 +96,9 @@ export const config: VendureConfig = {
     EmailPlugin.init({
       route: "mailbox",
       handlers: emailHandlers,
-      templatePath: path.join(__dirname, "../static/email/templates"),
+      templateLoader: new HfagEmailTemplateLoader(
+        path.join(__dirname, "../static/email/templates")
+      ),
       devMode: true,
       outputPath: path.join(__dirname, "../static/email/test-emails"),
       globalTemplateVars: {
