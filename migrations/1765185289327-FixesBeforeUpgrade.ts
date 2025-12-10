@@ -25,6 +25,19 @@ export class FixesBeforeUpgrade1765185289327 implements MigrationInterface {
       undefined
     );
 
+    // Remove recommendations towards deleted products
+    await queryRunner.query(
+      `
+      DELETE FROM \`product_recommendation\`
+      WHERE recommendationId IN
+      (
+          SELECT DISTINCT id FROM \`product\`
+          WHERE deletedAt IS NOT NULL
+      )
+      `,
+      undefined
+    );
+
     await queryRunner.query(
       "ALTER TABLE `zone_members_country` DROP FOREIGN KEY `FK_7350d77b6474313fbbaf4b094c1`",
       undefined
