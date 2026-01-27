@@ -13,7 +13,7 @@
     "migration:revert": "ts-node migration revert",
     "update-vendure": "yarn add @vendure/admin-ui-plugin @vendure/elasticsearch-plugin @vendure/admin-ui @vendure/asset-server-plugin @vendure/core @vendure/email-plugin @vendure/ui-devkit",
     "test": "echo 'sometime in the future'",
-    "deploy": "yarn build && build-migrations && cp -r dist/migrations/*.js migrations/ && rm migrations/*.ts",
+    "deploy": "yarn build && yarn build-migrations && cp -r dist/migrations/*.js migrations/ && rm migrations/*.ts",
     "eslint": "eslint ./src",
     "docs": "typedoc src/"
   },
