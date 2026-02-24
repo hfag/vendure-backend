@@ -1,20 +1,19 @@
 <mjml>
   <mj-head>
     <mj-title>Titel</mj-title>
-    <mj-font name="Helvetica Neue Condensed" href="https://feuerschutz.ch/fonts.css" />
+    <mj-font
+      name="Helvetica Neue Condensed"
+      href="https://feuerschutz.ch/fonts.css"
+    />
     <mj-style inline="inline">
-      /*h3 {
-        font-size: 18px;
-        color: #555;
-        font-weight: normal;
-      }*/
+      /*h3 { font-size: 18px; color: #555; font-weight: normal; }*/
     </mj-style>
   </mj-head>
   <mj-body>
-
     <mj-raw>
       <style type="text/css">
-        .products td, .products th {
+        .products td,
+        .products th {
           text-align: left;
           border: #000 1px solid;
           padding: 4px 8px;
@@ -29,7 +28,7 @@
         }
 
         tr.order-row td:last-child {
-          text-align: center;
+          text-align: right;
         }
 
         tr.total-row {
@@ -37,24 +36,35 @@
         }
 
         .line-price {
-            white-space: nowrap;
+          white-space: nowrap;
         }
       </style>
     </mj-raw>
 
     <mj-section background-color="white" padding="10px 0 5px 0">
       <mj-column>
-        <mj-image align="left" width="350px" src="https://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png" />
+        <mj-image
+          align="left"
+          width="350px"
+          src="https://api.feuerschutz.ch/wp-content/themes/feuerschutz-shop/img/mail/mail_header.png"
+        />
       </mj-column>
     </mj-section>
 
     <mj-section background-color="white" padding="0">
       <mj-column>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
+        <mj-text
+          font-family="'Helvetica Neue Condensed', sans-serif"
+          line-height="1.5"
+        >
           Neue Kundenbestellung
         </mj-text>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
-          Bestellnummer {{ order.id }} ({{ formatDate order.orderPlacedAt "dd.mm.yyyy" }}) von {{ order.billingAddress.fullName }}
+        <mj-text
+          font-family="'Helvetica Neue Condensed', sans-serif"
+          line-height="1.5"
+        >
+          Bestellnummer {{ order.id }} ({{ formatDate order.orderPlacedAt
+          "dd.mm.yyyy" }}) von {{ order.billingAddress.fullName }}
         </mj-text>
       </mj-column>
     </mj-section>
@@ -71,33 +81,33 @@
             <th>Preis</th>
           </tr>
           {{#each order.lines }}
-            <tr class="order-row">
-                <td>
-                    <b>{{ productVariant.sku }}</b>, {{ productVariant.name }}
-                    <br />
-                    {{ description }}
-                </td>
-                <td>{{ productVariant.quantity }}</td>
-                <td class="line-price">
-                  CHF {{ formatMoney totalPrice }}
-                </td>
-            </tr>
+          <tr class="order-row">
+            <td>
+              <b>{{ productVariant.sku }}</b>, {{ productVariant.name }}
+              <br />
+              {{ description }}
+            </td>
+            <td>{{ productVariant.quantity }}</td>
+            <td class="line-price">
+              {{ formatMoney totalPrice 'CHF' 'de-CH' }}
+            </td>
+          </tr>
           {{/each}}
           <tr class="order-row">
             <td colspan="2">Subtotal:</td>
-            <td>CHF {{ formatMoney order.subTotal }}</td>
+            <td>{{ formatMoney order.subTotal 'CHF' 'de-CH' }}</td>
           </tr>
           <tr class="order-row">
             <td colspan="2">Versand:</td>
-            <td>CHF {{ formatMoney order.shipping }}</td>
+            <td>{{ formatMoney order.shipping 'CHF' 'de-CH' }}</td>
           </tr>
           <tr class="order-row">
-              <td colspan="2">Steuern:</td>
-              <td>CHF {{ formatMoney order.totalTaxes }}</td>
+            <td colspan="2">Steuern:</td>
+            <td>{{ formatMoney order.totalTaxes 'CHF' 'de-CH' }}</td>
           </tr>
           <tr class="order-row total-row">
             <td colspan="2">Total:</td>
-            <td>CHF {{ formatMoney order.total }}</td>
+            <td>{{ formatMoney order.total 'CHF' 'de-CH' }}</td>
           </tr>
         </mj-table>
       </mj-column>
@@ -105,82 +115,76 @@
 
     <mj-section background-color="white" padding="0">
       <mj-column>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
+        <mj-text
+          font-family="'Helvetica Neue Condensed', sans-serif"
+          line-height="1.5"
+        >
           {{#with order.billingAddress }}
-            <h3>Rechnungsadresse:</h3>
-            <ul class="address">
-              <li>{{ fullName }}</li>
-              {{#if company}}
-                <li>{{ company }}</li>
-              {{/if}}
-              {{#if streetLine1}}
-                <li>{{ streetLine1 }}</li>
-              {{/if}}
-              {{#if streetLine2}}
-                <li>{{ streetLine2 }}</li>
-              {{/if}}
-              {{#if postalCode}}
-                <li>{{ postalCode }}</li>
-              {{/if}}
-              {{#if city}}
-                <li>{{ city }}</li>
-              {{/if}}
-              {{#if province}}
-                <li>{{ province }}</li>
-              {{/if}}
-              {{#if country}}
-                <li>{{ country }}</li>
-              {{/if}}
-              {{#if phoneNumber}}
-                <li>{{ phoneNumber }}</li>
-              {{/if}}
-            </ul>
+          <h3>Rechnungsadresse:</h3>
+          <ul class="address">
+            <li>{{ fullName }}</li>
+            {{#if company}}
+            <li>{{ company }}</li>
+            {{/if}} {{#if streetLine1}}
+            <li>{{ streetLine1 }}</li>
+            {{/if}} {{#if streetLine2}}
+            <li>{{ streetLine2 }}</li>
+            {{/if}} {{#if postalCode}}
+            <li>{{ postalCode }}</li>
+            {{/if}} {{#if city}}
+            <li>{{ city }}</li>
+            {{/if}} {{#if province}}
+            <li>{{ province }}</li>
+            {{/if}} {{#if country}}
+            <li>{{ country }}</li>
+            {{/if}} {{#if phoneNumber}}
+            <li>{{ phoneNumber }}</li>
+            {{/if}}
+          </ul>
           {{/with}}
         </mj-text>
       </mj-column>
       <mj-column>
-        <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
+        <mj-text
+          font-family="'Helvetica Neue Condensed', sans-serif"
+          line-height="1.5"
+        >
           {{#with order.shippingAddress }}
-            <h3>Lieferadresse:</h3>
-            <ul class="address">
-              <li>{{ fullName }}</li>
-              {{#if company}}
-                <li>{{ company }}</li>
-              {{/if}}
-              {{#if streetLine1}}
-                <li>{{ streetLine1 }}</li>
-              {{/if}}
-              {{#if streetLine2}}
-                <li>{{ streetLine2 }}</li>
-              {{/if}}
-              {{#if postalCode}}
-                <li>{{ postalCode }}</li>
-              {{/if}}
-              {{#if city}}
-                <li>{{ city }}</li>
-              {{/if}}
-              {{#if province}}
-                <li>{{ province }}</li>
-              {{/if}}
-              {{#if country}}
-                <li>{{ country }}</li>
-              {{/if}}
-              {{#if phoneNumber}}
-                <li>{{ phoneNumber }}</li>
-              {{/if}}
-            </ul>
+          <h3>Lieferadresse:</h3>
+          <ul class="address">
+            <li>{{ fullName }}</li>
+            {{#if company}}
+            <li>{{ company }}</li>
+            {{/if}} {{#if streetLine1}}
+            <li>{{ streetLine1 }}</li>
+            {{/if}} {{#if streetLine2}}
+            <li>{{ streetLine2 }}</li>
+            {{/if}} {{#if postalCode}}
+            <li>{{ postalCode }}</li>
+            {{/if}} {{#if city}}
+            <li>{{ city }}</li>
+            {{/if}} {{#if province}}
+            <li>{{ province }}</li>
+            {{/if}} {{#if country}}
+            <li>{{ country }}</li>
+            {{/if}} {{#if phoneNumber}}
+            <li>{{ phoneNumber }}</li>
+            {{/if}}
+          </ul>
           {{/with}}
         </mj-text>
       </mj-column>
     </mj-section>
 
     <mj-section background-color="white" padding="0">
-        <mj-column>
-            <mj-text font-family="'Helvetica Neue Condensed', sans-serif" line-height="1.5">
-                Kommentar vom Kunden: {{ order.customFields.notes }}
-            </mj-text>
-        </mj-column>
+      <mj-column>
+        <mj-text
+          font-family="'Helvetica Neue Condensed', sans-serif"
+          line-height="1.5"
+        >
+          Kommentar vom Kunden: {{ order.customFields.notes }}
+        </mj-text>
+      </mj-column>
     </mj-section>
-
   </mj-body>
 </mjml>

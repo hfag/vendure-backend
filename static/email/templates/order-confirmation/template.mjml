@@ -56,7 +56,7 @@
         }
 
         tr.order-row td:last-child {
-          text-align: center;
+          text-align: right;
         }
 
         tr.total-row {
@@ -138,7 +138,7 @@
         <mj-text
           font-family="'Helvetica Neue Condensed', sans-serif"
           css-class="callout-small"
-          >CHF {{ formatMoney order.totalWithTax }}</mj-text
+          >{{ formatMoney order.totalWithTax 'CHF' 'de-CH' }}</mj-text
         >
       </mj-column>
     </mj-section>
@@ -233,20 +233,22 @@
               {{ description }}
             </td>
             <td>{{ productVariant.quantity }}</td>
-            <td class="line-price">CHF {{ formatMoney totalPrice }}</td>
+            <td class="line-price">
+              {{ formatMoney totalPrice 'CHF' 'de-CH' }}
+            </td>
           </tr>
           {{/each}}
           <tr class="order-row">
             <td colspan="3">Subtotal:</td>
-            <td>CHF {{ formatMoney order.subTotal }}</td>
+            <td>{{ formatMoney order.subTotal 'CHF' 'de-CH' }}</td>
           </tr>
           <tr class="order-row">
             <td colspan="3">Versand:</td>
-            <td>CHF {{ formatMoney order.shipping }}</td>
+            <td>{{ formatMoney order.shipping 'CHF' 'de-CH' }}</td>
           </tr>
           <tr class="order-row total-row">
             <td colspan="3">Total:</td>
-            <td>CHF {{ formatMoney order.total }}</td>
+            <td>{{ formatMoney order.total 'CHF' 'de-CH' }}</td>
           </tr>
         </mj-table>
       </mj-column>

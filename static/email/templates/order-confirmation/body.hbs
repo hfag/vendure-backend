@@ -34,7 +34,7 @@
         }
 
         tr.order-row td:last-child {
-            text-align: center;
+            text-align: right;
         }
 
         tr.total-row {
@@ -73,7 +73,7 @@
         <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-large"><strong>Total Price</strong>
         </mj-text>
         <mj-text font-family="'Helvetica Neue Condensed', sans-serif" css-class="callout-small">
-            CHF {{ formatMoney order.totalWithTax }}
+            {{ formatMoney order.totalWithTax 'CHF' 'de-CH'  }}
         </mj-text>
     </mj-column>
 </mj-section>
@@ -172,28 +172,28 @@
                     {{ description }}
                 </td>
                 <td class="print-only"></td>
-                <td class="line-price">CHF {{ formatMoney proratedLinePrice }}</td>
+                <td class="line-price">{{ formatMoney proratedLinePrice 'CHF' 'de-CH'  }}</td>
             </tr>
             {{/each}}
             <tr class="order-row">
                 <td colspan="3">Sub-total:</td>
-                <td class="line-price">CHF {{ formatMoney order.subTotal }}</td>
+                <td class="line-price">{{ formatMoney order.subTotal 'CHF' 'de-CH' }}</td>
             </tr>
             <tr class="order-row">
                 <td colspan="3">Shipping ({{ order.shippingMethods }}):</td>
-                <td class="line-price">CHF {{ formatMoney order.shipping }}</td>
+                <td class="line-price">{{ formatMoney order.shipping 'CHF' 'de-CH'  }}</td>
             </tr>
             <tr class="order-row">
                 <td colspan="3">Sub-total with shipping:</td>
-                <td class="line-price">CHF {{ formatMoney order.subtotalWithShipping }}</td>
+                <td class="line-price">{{ formatMoney order.subtotalWithShipping 'CHF' 'de-CH'  }}</td>
             </tr>
             <tr class="order-row">
                 <td colspan="3">VAT (8.1%):</td>
-                <td class="line-price">CHF {{ formatMoney order.totalTaxes }}</td>
+                <td class="line-price">{{ formatMoney order.totalTaxes 'CHF' 'de-CH'  }}</td>
             </tr>
             <tr class="order-row total-row">
                 <td colspan="3">Total:</td>
-                <td class="line-price">CHF {{ formatMoney order.totalWithTax }}</td>
+                <td class="line-price">{{ formatMoney order.totalWithTax 'CHF' 'de-CH'  }}</td>
             </tr>
         </mj-table>
     </mj-column>
