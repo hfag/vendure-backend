@@ -68,24 +68,24 @@
                 </td>
             </tr>
             {{/each}}
-            <tr class="order-row">
-                <td colspan="2"><b>Subtotal:</b></td>
+            <tr class="order-row total-row">
+                <td colspan="2"><b>Total produits:</b></td>
                 <td class="line-price">{{ formatMoney order.subTotal 'CHF' 'de-CH'  }}</td>
             </tr>
             <tr class="order-row">
-                <td colspan="2"><b>Livraison ({{ order.shippingMethods }}):</b></td>
+                <td colspan="2"><b>+ Frais de port et d'emballage ({{ order.shippingMethods }}):</b></td>
                 <td class="line-price">{{ formatMoney order.shipping 'CHF' 'de-CH'  }}</td>
             </tr>
-            <tr class="order-row">
-                <td colspan="2"><b>Subtotal avec livraison:</b></td>
+            <tr class="order-row total-row">
+                <td colspan="2"><b>Total, hors TVA:</b></td>
                 <td class="line-price">{{ formatMoney order.subtotalWithShipping 'CHF' 'de-CH'  }}</td>
             </tr>
             <tr class="order-row">
-                <td colspan="2"><b>TVA (8.1%):</b></td>
+                <td colspan="2"><b>+ TVA 8.1%:</b></td>
                 <td class="line-price">{{ formatMoney order.totalTaxes 'CHF' 'de-CH'  }}</td>
             </tr>
             <tr class="order-row total-row">
-                <td colspan="2"><b>Total:</b></td>
+                <td colspan="2"><b>Total, TVA comprise:</b></td>
                 <td class="line-price">{{ formatMoney order.totalWithTax 'CHF' 'de-CH'  }}</td>
             </tr>
         </mj-table>
